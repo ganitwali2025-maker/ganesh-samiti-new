@@ -65,12 +65,11 @@ export function Dashboard({ data }: { data: ReturnType<typeof useCommitteeData> 
         {/* Total Collection */}
         <div 
           onClick={() => navigate('collection')}
-          className="min-w-[85vw] md:min-w-[280px] h-[170px] bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-[24px] p-6 shadow-[0_12px_24px_rgba(16,185,129,0.3)] snap-center relative overflow-hidden active:scale-[0.98] transition-transform flex flex-col justify-between text-white"
+          className="min-w-[85vw] md:min-w-[280px] h-[170px] bg-[#A78BFA] rounded-[24px] p-6 snap-center relative overflow-hidden active:scale-[0.98] transition-transform flex flex-col justify-between text-white"
         >
-          <div className="absolute -right-10 -top-10 w-40 h-40 bg-white/10 rounded-full blur-2xl"></div>
           <div className="flex justify-between items-start relative z-10">
-            <p className="font-bold tracking-widest text-[13px] opacity-90">कुल जमा</p>
-            <div className="w-10 h-7 bg-white/20 rounded-md backdrop-blur-sm border border-white/30 flex items-center justify-center">
+            <p className="font-medium tracking-wide text-[13px] opacity-90">कुल जमा</p>
+            <div className="w-10 h-7 bg-white/20 rounded-md flex items-center justify-center">
                <Users className="w-4 h-4 text-white" />
             </div>
           </div>
@@ -78,20 +77,19 @@ export function Dashboard({ data }: { data: ReturnType<typeof useCommitteeData> 
           <h3 className="text-[34px] font-bold relative z-10 tracking-widest mt-auto mb-3" style={{ fontFamily: 'monospace' }}>₹1,25,600</h3>
           
           <div className="flex justify-between items-end relative z-10">
-            <p className="text-[11px] opacity-90 font-bold uppercase tracking-widest">गणेश समिति</p>
-            <p className="text-[10px] opacity-80 font-bold uppercase tracking-widest">इस महीने</p>
+            <p className="text-[12px] opacity-90 font-medium tracking-wide">गणेश समिति</p>
+            <p className="text-[11px] opacity-80 font-medium">इस महीने</p>
           </div>
         </div>
 
         {/* Total Expenses */}
         <div 
           onClick={() => navigate('expense')}
-          className="min-w-[85vw] md:min-w-[280px] h-[170px] bg-gradient-to-br from-rose-500 to-rose-600 rounded-[24px] p-6 shadow-[0_12px_24px_rgba(244,63,94,0.3)] snap-center relative overflow-hidden active:scale-[0.98] transition-transform flex flex-col justify-between text-white"
+          className="min-w-[85vw] md:min-w-[280px] h-[170px] bg-[#F472B6] rounded-[24px] p-6 snap-center relative overflow-hidden active:scale-[0.98] transition-transform flex flex-col justify-between text-white"
         >
-          <div className="absolute -right-10 -top-10 w-40 h-40 bg-white/10 rounded-full blur-2xl"></div>
           <div className="flex justify-between items-start relative z-10">
-            <p className="font-bold tracking-widest text-[13px] opacity-90">कुल खर्च</p>
-            <div className="w-10 h-7 bg-white/20 rounded-md backdrop-blur-sm border border-white/30 flex items-center justify-center">
+            <p className="font-medium tracking-wide text-[13px] opacity-90">कुल खर्च</p>
+            <div className="w-10 h-7 bg-white/20 rounded-md flex items-center justify-center">
                <ArrowDownCircle className="w-4 h-4 text-white" />
             </div>
           </div>
@@ -99,20 +97,19 @@ export function Dashboard({ data }: { data: ReturnType<typeof useCommitteeData> 
           <h3 className="text-[34px] font-bold relative z-10 tracking-widest mt-auto mb-3" style={{ fontFamily: 'monospace' }}>₹68,450</h3>
           
           <div className="flex justify-between items-end relative z-10">
-            <p className="text-[11px] opacity-90 font-bold uppercase tracking-widest">गणेश समिति</p>
-            <p className="text-[10px] opacity-80 font-bold uppercase tracking-widest">इस महीने</p>
+            <p className="text-[12px] opacity-90 font-medium tracking-wide">गणेश समिति</p>
+            <p className="text-[11px] opacity-80 font-medium">इस महीने</p>
           </div>
         </div>
 
         {/* Balance */}
         <div 
           onClick={() => navigate('bank')}
-          className="min-w-[85vw] md:min-w-[280px] h-[170px] bg-gradient-to-br from-[#8066FF] to-[#5C3CE6] rounded-[24px] p-6 shadow-[0_12px_24px_rgba(108,76,241,0.3)] snap-center relative overflow-hidden active:scale-[0.98] transition-transform flex flex-col justify-between text-white"
+          className="min-w-[85vw] md:min-w-[280px] h-[170px] bg-[#6366F1] rounded-[24px] p-6 snap-center relative overflow-hidden active:scale-[0.98] transition-transform flex flex-col justify-between text-white"
         >
-          <div className="absolute -right-10 -bottom-10 w-40 h-40 bg-white/10 rounded-full blur-2xl"></div>
           <div className="flex justify-between items-start relative z-10">
-            <p className="font-bold tracking-widest text-[13px] opacity-90">शेष राशि</p>
-            <div className="w-10 h-7 bg-white/20 rounded-md backdrop-blur-sm border border-white/30 flex items-center justify-center">
+            <p className="font-medium tracking-wide text-[13px] opacity-90">शेष राशि</p>
+            <div className="w-10 h-7 bg-white/20 rounded-md flex items-center justify-center">
                <Wallet className="w-4 h-4 text-white" />
             </div>
           </div>
@@ -120,8 +117,8 @@ export function Dashboard({ data }: { data: ReturnType<typeof useCommitteeData> 
           <h3 className="text-[34px] font-bold relative z-10 tracking-widest mt-auto mb-3" style={{ fontFamily: 'monospace' }}>₹57,150</h3>
           
           <div className="flex justify-between items-end relative z-10">
-            <p className="text-[11px] opacity-90 font-bold uppercase tracking-widest">गणेश समिति</p>
-            <p className="text-[10px] opacity-80 font-bold uppercase tracking-widest">आज तक</p>
+            <p className="text-[12px] opacity-90 font-medium tracking-wide">गणेश समिति</p>
+            <p className="text-[11px] opacity-80 font-medium">आज तक</p>
           </div>
         </div>
       </div>
