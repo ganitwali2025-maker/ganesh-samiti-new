@@ -7,6 +7,9 @@ export interface Member {
   role: Role | string;
   initialContribution: number;
   joinedAt: string;
+  age?: string;
+  address?: string;
+  photo?: string;
 }
 
 export type TransactionType = 'DEPOSIT' | 'EXPENSE';

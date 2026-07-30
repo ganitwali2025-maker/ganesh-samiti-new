@@ -3,11 +3,16 @@ import { Search, Filter, Plus, UserCircle, Phone, MapPin } from 'lucide-react';
 import { useCommitteeData } from '../hooks/useCommitteeData';
 import { useNavigation } from '../context/NavigationContext';
 import { PageHeader } from '../components/PageHeader';
+import { MemberCard } from '../components/MemberCard';
+import { AddMemberModal } from '../components/AddMemberModal';
+import { Member } from '../types';
 
 export function MembersScreen() {
-  const { members } = useCommitteeData();
+  const { members, addMember } = useCommitteeData();
   const [searchTerm, setSearchTerm] = useState('');
   const { navigate } = useNavigation();
+  const [selectedMember, setSelectedMember] = useState<Member | null>(null);
+  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
 
   const filteredMembers = members.filter(m => 
     m.name.toLowerCase().includes(searchTerm.toLowerCase()) || 
@@ -44,7 +49,11 @@ export function MembersScreen() {
         {/* Member List */}
         <div className="space-y-3 pb-20">
           {filteredMembers.map(member => (
-            <div key={member.id} className="bg-white p-4 rounded-3xl shadow-[0_4px_15px_rgb(0,0,0,0.02)] border border-slate-50 flex items-center gap-4 active:scale-[0.98] transition-transform">
+            <div 
+              key={member.id} 
+              onClick={() => setSelectedMember(member)}
+              className="bg-white p-4 rounded-3xl shadow-[0_4px_15px_rgb(0,0,0,0.02)] border border-slate-50 flex items-center gap-4 active:scale-[0.98] transition-transform cursor-pointer"
+            >
               <div className="w-12 h-12 rounded-full bg-gradient-to-br from-[#FF7A00]/20 to-[#FF7A00]/10 flex items-center justify-center text-[#FF7A00]">
                 <UserCircle className="w-7 h-7" />
               </div>
@@ -71,9 +80,33 @@ export function MembersScreen() {
       </div>
 
       {/* Floating Add Button */}
-      <button className="absolute bottom-32 right-5 w-14 h-14 bg-[#FF7A00] rounded-[20px] flex items-center justify-center text-white shadow-[0_8px_20px_rgb(255,122,0,0.4)] active:scale-95 transition-transform z-10">
+      <button 
+        onClick={() => setIsAddModalOpen(true)}
+        className="absolute bottom-32 right-5 w-14 h-14 bg-[#FF7A00] rounded-[20px] flex items-center justify-center text-white shadow-[0_8px_20px_rgb(255,122,0,0.4)] active:scale-95 transition-transform z-10"
+      >
         <Plus className="w-6 h-6" />
       </button>
+
+      <AddMemberModal 
+        isOpen={isAddModalOpen}
+        onClose={() => setIsAddModalOpen(false)}
+        onAdd={addMember}
+      />
+
+      {/* Member ID Card Modal */}
+      {selectedMember && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm" onClick={() => setSelectedMember(null)}>
+          <div className="w-full max-w-md animate-in zoom-in duration-200" onClick={e => e.stopPropagation()}>
+            <MemberCard member={selectedMember} />
+            <button 
+              onClick={() => setSelectedMember(null)}
+              className="mt-4 w-full py-3 bg-white/20 text-white font-bold rounded-2xl border border-white/30 backdrop-blur-md active:scale-95 transition-transform"
+            >
+              बंद करें (Close)
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

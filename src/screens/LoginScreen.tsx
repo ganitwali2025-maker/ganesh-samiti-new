@@ -3,6 +3,31 @@ import { useNavigation } from '../context/NavigationContext';
 import { motion, AnimatePresence } from 'motion/react';
 import { ChevronRight, Info, User, MapPin } from 'lucide-react';
 
+const MandalaPattern = ({ className }: { className?: string }) => (
+  <svg viewBox="0 0 200 200" className={`absolute pointer-events-none opacity-[0.06] ${className}`} xmlns="http://www.w3.org/2000/svg">
+    <g transform="translate(100, 100)">
+      <circle r="90" stroke="white" strokeWidth="0.5" fill="none" />
+      <circle r="75" stroke="white" strokeWidth="0.5" fill="none" strokeDasharray="4 4" />
+      <circle r="60" stroke="white" strokeWidth="0.5" fill="none" />
+      <circle r="40" stroke="white" strokeWidth="0.5" fill="none" strokeDasharray="2 2" />
+      {Array.from({ length: 16 }).map((_, i) => (
+        <g key={i} transform={`rotate(${i * 22.5})`}>
+          <path d="M 0 -60 C 15 -75, -15 -75, 0 -60" stroke="white" strokeWidth="0.5" fill="none" />
+          <path d="M 0 -75 C 10 -85, -10 -85, 0 -75" stroke="white" strokeWidth="0.5" fill="none" />
+          <circle cx="0" cy="-90" r="1.5" fill="white" />
+          <path d="M 0 -40 L 5 -50 L 0 -60 L -5 -50 Z" stroke="white" strokeWidth="0.5" fill="none" />
+        </g>
+      ))}
+      {Array.from({ length: 8 }).map((_, i) => (
+        <g key={`inner-${i}`} transform={`rotate(${i * 45})`}>
+          <path d="M 0 -20 C 10 -30, -10 -30, 0 -20" stroke="white" strokeWidth="1" fill="none" />
+          <circle cx="0" cy="-35" r="2" fill="white" />
+        </g>
+      ))}
+    </g>
+  </svg>
+);
+
 export function LoginScreen() {
   const { navigate } = useNavigation();
   const [isLoading, setIsLoading] = useState(false);
@@ -103,12 +128,16 @@ export function LoginScreen() {
             className="flex flex-col h-full w-full relative z-10"
           >
              {/* Header */}
-             <div className="relative bg-gradient-to-b from-[#FF6A00] to-[#FF8C00] rounded-b-[48px] pt-16 pb-12 px-6 flex flex-col items-center shadow-[0_15px_40px_rgba(255,106,0,0.2)] shrink-0">
+             <div className="relative bg-gradient-to-b from-[#FF6A00] to-[#FF8C00] rounded-b-[48px] pt-16 pb-12 px-6 flex flex-col items-center shadow-[0_15px_40px_rgba(255,106,0,0.2)] shrink-0 overflow-hidden">
                 {/* Decorative glows */}
                 <div className="absolute top-0 right-0 w-64 h-64 bg-white/20 rounded-full blur-3xl -translate-y-1/2 translate-x-1/4 pointer-events-none"></div>
                 <div className="absolute bottom-0 left-0 w-40 h-40 bg-black/10 rounded-full blur-2xl translate-y-1/2 -translate-x-1/4 pointer-events-none"></div>
 
-                <h2 className="text-[20px] font-extrabold text-white tracking-wide leading-tight drop-shadow-sm opacity-95 mb-4 text-center">
+                {/* Mandalas */}
+                <MandalaPattern className="-left-16 top-1/2 -translate-y-1/2 w-48 h-48" />
+                <MandalaPattern className="-right-16 top-1/2 -translate-y-1/2 w-48 h-48" />
+
+                <h2 className="text-[20px] font-extrabold text-white tracking-wide leading-tight drop-shadow-sm opacity-95 mb-4 text-center relative z-10">
                   जय बजरंग युवा गणेश उत्सव
                 </h2>
                 
@@ -209,7 +238,7 @@ export function LoginScreen() {
                {/* Grid Cards */}
                <div className="grid grid-cols-2 gap-3 mt-4">
                  {/* Developer Card */}
-                 <div className="bg-[#FFF5EC] border border-[#FDE0C9] rounded-[24px] p-5 flex flex-col gap-2 items-center justify-center min-h-[140px] shadow-[0_4px_15px_rgba(0,0,0,0.02)] translate-y-4">
+                 <div className="flex flex-col gap-2 items-center justify-center translate-y-4">
                    <div className="w-12 h-12 rounded-full bg-white flex items-center justify-center shadow-sm text-[#FF7A00] shrink-0 mb-1">
                      <User className="w-6 h-6" strokeWidth={2} />
                    </div>
@@ -228,7 +257,7 @@ export function LoginScreen() {
                  </div>
 
                  {/* Address Card */}
-                 <div className="bg-[#FFF5EC] border border-[#FDE0C9] rounded-[24px] p-5 flex flex-col gap-2 items-center justify-center min-h-[140px] shadow-[0_4px_15px_rgba(0,0,0,0.02)] translate-y-4">
+                 <div className="flex flex-col gap-2 items-center justify-center translate-y-4">
                    <div className="w-12 h-12 rounded-full bg-white flex items-center justify-center shadow-sm text-[#FF7A00] shrink-0 mb-1">
                      <MapPin className="w-6 h-6" strokeWidth={2} />
                    </div>
