@@ -82,7 +82,7 @@ export function MembersScreen() {
       {/* Floating Add Button */}
       <button 
         onClick={() => setIsAddModalOpen(true)}
-        className="absolute bottom-32 right-5 w-14 h-14 bg-[#FF7A00] rounded-[20px] flex items-center justify-center text-white shadow-[0_8px_20px_rgb(255,122,0,0.4)] active:scale-95 transition-transform z-10"
+        className="fixed bottom-[100px] right-5 w-14 h-14 bg-[#FF7A00] rounded-[20px] flex items-center justify-center text-white shadow-[0_8px_20px_rgb(255,122,0,0.4)] active:scale-95 transition-transform z-[40]"
       >
         <Plus className="w-6 h-6" />
       </button>
@@ -95,7 +95,7 @@ export function MembersScreen() {
 
       {/* Member ID Card Modal */}
       {selectedMember && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm" onClick={() => setSelectedMember(null)}>
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm" onClick={() => setSelectedMember(null)}>
           <div className="w-full max-w-md animate-in zoom-in duration-200" onClick={e => e.stopPropagation()}>
             <MemberCard member={selectedMember} />
             <button 
