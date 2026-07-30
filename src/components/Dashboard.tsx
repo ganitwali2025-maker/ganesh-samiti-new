@@ -1,16 +1,33 @@
+import { useState, useRef } from 'react';
 import { useCommitteeData } from '../hooks/useCommitteeData';
 import { useNavigation } from '../context/NavigationContext';
 import { 
   Menu, Bell, Users, Landmark, Wallet, Receipt, Target, 
   Building2, BarChart3, Calendar, Megaphone,
   ArrowDownCircle, ArrowUpCircle, UserPlus, FileText,
-  HandCoins, WalletCards, ArrowUpRight, ArrowDownRight, RefreshCw
+  HandCoins, WalletCards, ArrowUpRight, ArrowDownRight, RefreshCw,
+  Banknote
 } from 'lucide-react';
 import { formatCurrency } from '../utils/format';
 
 export function Dashboard({ data }: { data: ReturnType<typeof useCommitteeData> }) {
   const { navigate, openDrawer } = useNavigation();
   const stats = data.getStats();
+
+  const [activeCard, setActiveCard] = useState(0);
+  const carouselRef = useRef<HTMLDivElement>(null);
+
+  const handleScroll = () => {
+    if (carouselRef.current) {
+      const scrollPosition = carouselRef.current.scrollLeft;
+      const cardWidth = carouselRef.current.offsetWidth;
+      // Calculate which card is currently most visible
+      const newIndex = Math.round(scrollPosition / cardWidth);
+      if (newIndex !== activeCard && newIndex >= 0 && newIndex < 4) {
+        setActiveCard(newIndex);
+      }
+    }
+  };
 
   return (
     <div className="flex flex-col relative pb-[100px] min-h-screen bg-[#FFF8F3]">
@@ -49,76 +66,159 @@ export function Dashboard({ data }: { data: ReturnType<typeof useCommitteeData> 
          </div>
       </div>
 
-      {/* 2. TOP DASHBOARD (Purple 70% / Pink 30%) */}
-      <div className="px-5 mt-[-16px] relative z-20 flex gap-3">
-         {/* Left Card (Purple) */}
-         <div className="w-[65%] bg-gradient-to-br from-[#7357FF] to-[#9A7DFF] rounded-[28px] p-5 text-white shadow-md relative overflow-hidden flex flex-col justify-between">
-            <div className="absolute right-[-20px] top-[-20px] w-32 h-32 bg-white/10 rounded-full blur-2xl"></div>
-            
-            <div>
-              <div className="flex justify-between items-start mb-1">
-                <p className="text-[13px] font-semibold opacity-90">कुल जमा राशि</p>
-                <div className="w-8 h-6 bg-white/20 rounded-lg flex items-center justify-center backdrop-blur-sm">
-                  <WalletCards className="w-4 h-4 text-white" />
-                </div>
-              </div>
-              <h3 className="text-[28px] font-bold tracking-wider mb-1" style={{ fontFamily: 'monospace' }}>₹1,25,600</h3>
-              
-              <div className="flex items-center justify-between mt-1 mb-4">
-                 <p className="text-[11px] font-medium opacity-90">गणेश समिति</p>
-                 <div className="flex items-center gap-1 bg-white/20 px-2 py-0.5 rounded-full backdrop-blur-sm cursor-pointer">
-                    <span className="text-[9px] font-semibold">इस महीने</span>
-                    <ArrowUpRight className="w-3 h-3" />
+      {/* 2. TOP DASHBOARD CAROUSEL */}
+      <div className="mt-5 relative z-20">
+         <div 
+           ref={carouselRef}
+           onScroll={handleScroll}
+           className="flex overflow-x-auto snap-x snap-mandatory scrollbar-hide px-4 gap-4 pb-2"
+           style={{ scrollBehavior: 'smooth' }}
+         >
+            {/* Card 1 (Purple) */}
+            <div className="min-w-[92vw] snap-center bg-gradient-to-br from-[#7357FF] to-[#9A7DFF] rounded-[30px] p-6 text-white shadow-md relative overflow-hidden flex flex-col justify-between">
+               <div className="absolute right-[-20px] top-[-20px] w-32 h-32 bg-white/10 rounded-full blur-2xl pointer-events-none"></div>
+               
+               <div>
+                 <div className="flex justify-between items-start mb-2">
+                   <p className="text-[14px] font-semibold opacity-90">कुल जमा राशि</p>
+                   <div className="w-9 h-7 bg-white/20 rounded-lg flex items-center justify-center backdrop-blur-sm">
+                     <WalletCards className="w-4 h-4 text-white" />
+                   </div>
                  </div>
-              </div>
+                 <h3 className="text-[32px] font-bold tracking-wider mb-1" style={{ fontFamily: 'monospace' }}>₹1,25,600</h3>
+                 
+                 <div className="flex items-center justify-between mt-2 mb-6">
+                    <p className="text-[12px] font-medium opacity-90">गणेश समिति</p>
+                    <div className="flex items-center gap-1 bg-white/20 px-2 py-0.5 rounded-full backdrop-blur-sm">
+                       <span className="text-[10px] font-semibold">इस महीने</span>
+                       <ArrowUpRight className="w-3 h-3" />
+                    </div>
+                 </div>
+               </div>
+
+               <div className="flex justify-between items-center gap-2 border-t border-white/20 pt-4">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center">
+                       <Users className="w-5 h-5 text-white" />
+                    </div>
+                    <div>
+                      <p className="text-[10px] opacity-80 font-medium">कुल सदस्य</p>
+                      <p className="text-[14px] font-bold">125</p>
+                    </div>
+                  </div>
+                  
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center">
+                       <BarChart3 className="w-5 h-5 text-white" />
+                    </div>
+                    <div>
+                      <p className="text-[10px] opacity-80 font-medium">औसत जमा</p>
+                      <p className="text-[14px] font-bold">₹45,300</p>
+                    </div>
+                  </div>
+               </div>
             </div>
 
-            <div className="flex justify-between items-center gap-2 border-t border-white/20 pt-3">
-               <div className="flex items-center gap-2">
-                 <div className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center">
-                    <Users className="w-4 h-4 text-white" />
-                 </div>
-                 <div>
-                   <p className="text-[9px] opacity-80 font-medium">कुल सदस्य</p>
-                   <p className="text-[13px] font-bold">125</p>
-                 </div>
-               </div>
+            {/* Card 2 (Pink) */}
+            <div className="min-w-[92vw] snap-center bg-gradient-to-br from-[#FF5FA2] to-[#FF7EB3] rounded-[30px] p-6 text-white shadow-md relative overflow-hidden flex flex-col justify-between">
+               <div className="absolute right-[-10px] top-[-10px] w-20 h-20 bg-white/10 rounded-full blur-xl pointer-events-none"></div>
                
-               <div className="flex items-center gap-2">
-                 <div className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center">
-                    <BarChart3 className="w-4 h-4 text-white" />
-                 </div>
-                 <div>
-                   <p className="text-[9px] opacity-80 font-medium">औसत जमा</p>
-                   <p className="text-[13px] font-bold">₹45,300</p>
-                 </div>
+               <div className="flex justify-between items-start mb-4 relative z-10">
+                  <div>
+                     <p className="text-[14px] font-semibold opacity-90">मासिक अपडेट</p>
+                     <p className="text-[12px] font-bold mt-1 opacity-80">जुलाई - 2025</p>
+                  </div>
+                  <div className="w-9 h-7 bg-white/20 rounded-lg flex items-center justify-center backdrop-blur-sm">
+                     <Calendar className="w-4 h-4 text-white" />
+                  </div>
+               </div>
+
+               <div className="mt-auto relative z-10 flex flex-col gap-4">
+                  <div className="flex justify-between items-center bg-white/10 rounded-2xl p-4 border border-white/20 backdrop-blur-sm">
+                    <div className="flex items-center gap-3">
+                       <div className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center"><ArrowDownCircle className="w-4 h-4 text-white" /></div>
+                       <p className="text-[12px] font-medium opacity-90">मासिक जमा</p>
+                    </div>
+                    <p className="text-[18px] font-bold">₹25,400</p>
+                  </div>
+                  
+                  <div className="flex justify-between items-center bg-white/10 rounded-2xl p-4 border border-white/20 backdrop-blur-sm">
+                    <div className="flex items-center gap-3">
+                       <div className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center"><ArrowUpCircle className="w-4 h-4 text-white" /></div>
+                       <p className="text-[12px] font-medium opacity-90">मासिक खर्च</p>
+                    </div>
+                    <p className="text-[18px] font-bold">₹8,750</p>
+                  </div>
                </div>
             </div>
+
+            {/* Card 3 (Green) */}
+            <div className="min-w-[92vw] snap-center bg-gradient-to-br from-[#2ECC71] to-[#27AE60] rounded-[30px] p-6 text-white shadow-md relative overflow-hidden flex flex-col justify-between">
+               <div className="absolute right-[-10px] top-[-10px] w-32 h-32 bg-white/10 rounded-full blur-2xl pointer-events-none"></div>
+               
+               <div>
+                 <div className="flex justify-between items-start mb-2">
+                   <p className="text-[14px] font-semibold opacity-90">बैंक बैलेंस</p>
+                   <div className="w-9 h-7 bg-white/20 rounded-lg flex items-center justify-center backdrop-blur-sm">
+                     <Building2 className="w-4 h-4 text-white" />
+                   </div>
+                 </div>
+                 <h3 className="text-[32px] font-bold tracking-wider mb-4" style={{ fontFamily: 'monospace' }}>₹45,300</h3>
+               </div>
+
+               <div className="mt-auto relative z-10 flex flex-col gap-4">
+                  <div className="flex justify-between items-center border-b border-white/20 pb-3">
+                    <p className="text-[12px] font-medium opacity-90">आज का जमा</p>
+                    <p className="text-[14px] font-bold">+₹1,200</p>
+                  </div>
+                  <div className="flex justify-between items-center">
+                    <p className="text-[12px] font-medium opacity-90">आज का खर्च</p>
+                    <p className="text-[14px] font-bold">-₹350</p>
+                  </div>
+               </div>
+            </div>
+
+            {/* Card 4 (Orange) */}
+            <div className="min-w-[92vw] snap-center bg-gradient-to-br from-[#FF7A00] to-[#E65100] rounded-[30px] p-6 text-white shadow-md relative overflow-hidden flex flex-col justify-between">
+               <div className="absolute right-[-10px] top-[-10px] w-20 h-20 bg-white/10 rounded-full blur-xl pointer-events-none"></div>
+               
+               <div className="flex justify-between items-start mb-4 relative z-10">
+                  <div>
+                     <p className="text-[14px] font-semibold opacity-90">ऋण जानकारी</p>
+                  </div>
+                  <div className="w-9 h-7 bg-white/20 rounded-lg flex items-center justify-center backdrop-blur-sm">
+                     <Banknote className="w-4 h-4 text-white" />
+                  </div>
+               </div>
+
+               <div className="mt-auto relative z-10 flex flex-col gap-4">
+                  <div className="flex justify-between items-center bg-white/10 rounded-2xl p-4 border border-white/20 backdrop-blur-sm">
+                    <p className="text-[12px] font-medium opacity-90">कुल ऋण (Total Loan)</p>
+                    <p className="text-[16px] font-bold">₹15,000</p>
+                  </div>
+                  
+                  <div className="flex justify-between items-center px-2">
+                    <p className="text-[12px] font-medium opacity-90">बाकी EMI</p>
+                    <p className="text-[14px] font-bold">3 Months</p>
+                  </div>
+                  
+                  <div className="flex justify-between items-center px-2">
+                    <p className="text-[12px] font-medium opacity-90">ब्याज (Interest)</p>
+                    <p className="text-[14px] font-bold">2.5%</p>
+                  </div>
+               </div>
+            </div>
+
          </div>
 
-         {/* Right Card (Pink) */}
-         <div className="w-[35%] bg-gradient-to-br from-[#FF5FA2] to-[#FF7EB3] rounded-[28px] p-4 text-white shadow-md relative overflow-hidden flex flex-col justify-between">
-            <div className="absolute right-[-10px] top-[-10px] w-20 h-20 bg-white/10 rounded-full blur-xl"></div>
-            
-            <div className="flex justify-between items-start mb-2 relative z-10">
-               <div>
-                  <p className="text-[11px] font-medium opacity-90">मासिक अपडेट</p>
-                  <p className="text-[10px] font-bold mt-1">जुलाई - 2025</p>
-               </div>
-               <Calendar className="w-4 h-4 text-white/80" />
-            </div>
-
-            <div className="mt-auto relative z-10 space-y-3">
-               <div>
-                 <p className="text-[9px] font-medium opacity-80">मासिक जमा</p>
-                 <p className="text-[16px] font-bold">₹25,400</p>
-               </div>
-               <div className="h-[1px] w-full bg-white/20"></div>
-               <div>
-                 <p className="text-[9px] font-medium opacity-80">मासिक खर्च</p>
-                 <p className="text-[16px] font-bold">₹8,750</p>
-               </div>
-            </div>
+         {/* Carousel Dots */}
+         <div className="flex justify-center gap-2 mt-4 mb-6">
+            {[0, 1, 2, 3].map((idx) => (
+              <div 
+                key={idx} 
+                className={`h-2 rounded-full transition-all duration-300 ${activeCard === idx ? 'w-6 bg-[#FF7A00]' : 'w-2 bg-slate-200'}`}
+              />
+            ))}
          </div>
       </div>
 
