@@ -35,9 +35,7 @@ export function Dashboard({ data }: { data: ReturnType<typeof useCommitteeData> 
   return (
     <div className="flex flex-col relative pb-[100px] min-h-screen bg-[#FFF8F3]">
       {/* TOP DASHBOARD CAROUSEL */}
-
-      {/* 2. TOP DASHBOARD CAROUSEL */}
-      <div className="mt-5 relative z-20">
+      <div className="pt-8 relative z-20">
          <div 
            ref={carouselRef}
            onScroll={handleScroll}

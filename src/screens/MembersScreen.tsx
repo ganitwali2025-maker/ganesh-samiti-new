@@ -71,7 +71,7 @@ export function MembersScreen() {
       </div>
 
       {/* Floating Add Button */}
-      <button className="absolute bottom-24 right-5 w-14 h-14 bg-[#FF7A00] rounded-[20px] flex items-center justify-center text-white shadow-[0_8px_20px_rgb(255,122,0,0.4)] active:scale-95 transition-transform z-10">
+      <button className="absolute bottom-32 right-5 w-14 h-14 bg-[#FF7A00] rounded-[20px] flex items-center justify-center text-white shadow-[0_8px_20px_rgb(255,122,0,0.4)] active:scale-95 transition-transform z-10">
         <Plus className="w-6 h-6" />
       </button>
     </div>

@@ -6,12 +6,16 @@ import { ChevronRight, Info, User, MapPin } from 'lucide-react';
 export function LoginScreen() {
   const { navigate } = useNavigation();
   const [isLoading, setIsLoading] = useState(false);
+  const [isShining, setIsShining] = useState(false);
 
   const handleStart = () => {
-    setIsLoading(true);
+    setIsShining(true);
     setTimeout(() => {
-      navigate('dashboard');
-    }, 2500);
+      setIsLoading(true);
+      setTimeout(() => {
+        navigate('dashboard');
+      }, 2500);
+    }, 600);
   };
 
   return (
@@ -104,20 +108,24 @@ export function LoginScreen() {
                 <div className="absolute top-0 right-0 w-64 h-64 bg-white/20 rounded-full blur-3xl -translate-y-1/2 translate-x-1/4 pointer-events-none"></div>
                 <div className="absolute bottom-0 left-0 w-40 h-40 bg-black/10 rounded-full blur-2xl translate-y-1/2 -translate-x-1/4 pointer-events-none"></div>
 
-                <div className="w-[100px] h-[100px] bg-white rounded-full p-1.5 shadow-[0_12px_30px_rgba(0,0,0,0.15)] mb-6 relative z-10 border-[3px] border-white">
+                <h2 className="text-[20px] font-extrabold text-white tracking-wide leading-tight drop-shadow-sm opacity-95 mb-4 text-center">
+                  जय बजरंग युवा गणेश उत्सव
+                </h2>
+                
+                <div className="w-[100px] h-[100px] bg-white rounded-full p-1.5 shadow-[0_12px_30px_rgba(0,0,0,0.15)] mb-4 relative z-10 border-[3px] border-white">
                    <img src="/logo.png" alt="Logo" className="w-full h-full rounded-full object-cover" />
                 </div>
                 
-                <h1 className="text-[38px] font-extrabold text-white tracking-wide drop-shadow-md mb-2 text-center" style={{ textShadow: '0 4px 12px rgba(0,0,0,0.1)' }}>
+                <h1 className="text-[34px] font-extrabold text-white tracking-wide drop-shadow-md mb-2 text-center" style={{ textShadow: '0 4px 12px rgba(0,0,0,0.1)' }}>
                   गणेश समिति
                 </h1>
                 
                 <div className="flex items-center gap-3 mt-1">
-                  <div className="h-[1px] w-10 bg-white/60"></div>
-                  <p className="text-[14px] font-bold text-white tracking-widest uppercase opacity-95">
-                    एकता • सेवा • विकास
+                  <div className="h-[1px] w-8 bg-white/60"></div>
+                  <p className="text-[12px] font-bold text-white tracking-widest uppercase opacity-95">
+                    एकता • सेवा • संस्कार • विकास
                   </p>
-                  <div className="h-[1px] w-10 bg-white/60"></div>
+                  <div className="h-[1px] w-8 bg-white/60"></div>
                 </div>
              </div>
 
@@ -125,17 +133,22 @@ export function LoginScreen() {
              <div className="flex flex-col items-center justify-center px-6 relative w-full mt-8 shrink-0">
                 <svg className="w-full max-w-[280px] h-[200px]" viewBox="0 0 300 250" fill="none" xmlns="http://www.w3.org/2000/svg">
                   {/* Sunburst */}
-                  <g opacity="0.12">
+                  <motion.g 
+                    opacity="0.18"
+                    animate={{ rotate: 360 }}
+                    transition={{ duration: 25, repeat: Infinity, ease: 'linear' }}
+                    style={{ transformOrigin: '150px 160px' }}
+                  >
                     {[...Array(16)].map((_, i) => (
-                      <line key={i} x1="150" y1="160" x2={150 + Math.cos((i * 22.5 * Math.PI) / 180) * 140} y2={160 + Math.sin((i * 22.5 * Math.PI) / 180) * 140} stroke="#FF7A00" strokeWidth="4" strokeLinecap="round" />
+                      <line key={i} x1="150" y1="160" x2={150 + Math.cos((i * 22.5 * Math.PI) / 180) * 150} y2={160 + Math.sin((i * 22.5 * Math.PI) / 180) * 150} stroke="#FF7A00" strokeWidth="4" strokeLinecap="round" />
                     ))}
-                  </g>
+                  </motion.g>
                   
                   {/* Soft Sun Glow */}
-                  <circle cx="150" cy="160" r="90" fill="url(#sunGlow)" opacity="0.8"/>
+                  <circle cx="150" cy="160" r="100" fill="url(#sunGlow)" opacity="0.9"/>
                   
                   {/* Om Symbol with 3D-like feel */}
-                  <text x="150" y="200" fontFamily="sans-serif" fontSize="110" fill="url(#omGradient)" fontWeight="bold" textAnchor="middle" style={{ filter: 'drop-shadow(0px 8px 15px rgba(255,106,0,0.4))' }}>ॐ</text>
+                  <text x="150" y="205" fontFamily="sans-serif" fontSize="130" fill="url(#omGradient)" fontWeight="bold" textAnchor="middle" style={{ filter: 'drop-shadow(0px 10px 25px rgba(255,106,0,0.6))' }}>ॐ</text>
 
                   {/* Flag on top of Om */}
                   <path d="M150 90 L150 50 L190 65 L150 80" fill="#FF8C00"/>
@@ -157,8 +170,8 @@ export function LoginScreen() {
 
              {/* Welcome Text & Button */}
              <div className="px-6 pb-6 pt-2 flex flex-col items-center relative z-20 shrink-0">
-                <h2 className="text-[26px] font-extrabold text-[#222222] mb-1.5 text-center drop-shadow-sm">
-                  एक साथ, एक उद्देश्य
+                <h2 className="text-[28px] font-extrabold text-[#222222] mb-1.5 text-center drop-shadow-sm tracking-wide">
+                  ॥ श्री गणेशाय नमः ॥
                 </h2>
                 <p className="text-[14px] font-semibold text-[#888888] mb-4 text-center">
                   समुदाय की प्रगति • समाज का विकास
@@ -174,43 +187,62 @@ export function LoginScreen() {
 
                 <button 
                   onClick={handleStart}
-                  className="w-full h-[64px] bg-gradient-to-r from-[#FF6A00] to-[#FF8C00] rounded-[20px] flex items-center justify-center gap-4 active:scale-[0.98] transition-transform shadow-[0_18px_45px_rgba(255,106,0,0.35)] relative overflow-hidden group border border-[#FF9F40]"
+                  className="w-full h-[60px] bg-gradient-to-r from-[#FF6A00] to-[#FF8A00] rounded-[18px] flex items-center justify-center gap-4 active:scale-[0.98] transition-transform shadow-[0_16px_40px_rgba(255,106,0,0.35)] relative overflow-hidden group"
                 >
-                   <div className="absolute top-0 left-0 w-full h-[40%] bg-gradient-to-b from-white/30 to-transparent pointer-events-none rounded-t-[20px]"></div>
-                   <span className="text-white text-[20px] font-bold tracking-wide">शुरू करें</span>
-                   <div className="w-9 h-9 bg-white rounded-full flex items-center justify-center shadow-md text-[#FF7A00] group-hover:scale-105 transition-transform">
+                   <motion.div 
+                     initial={{ left: '-100%' }}
+                     animate={isShining ? { left: '200%' } : { left: '-100%' }}
+                     transition={{ duration: 0.6, ease: 'easeInOut' }}
+                     className="absolute top-0 bottom-0 w-[50%] bg-gradient-to-r from-transparent via-white/50 to-transparent skew-x-[-20deg]"
+                   />
+                   <span className="text-white text-[20px] font-bold tracking-wide relative z-10">शुरू करें</span>
+                   <div className="w-9 h-9 bg-white rounded-full flex items-center justify-center shadow-md text-[#FF7A00] group-hover:scale-105 transition-transform relative z-10">
                       <ChevronRight className="w-5 h-5 ml-0.5" strokeWidth={3.5} />
                    </div>
                 </button>
              </div>
 
              {/* Info Cards Section */}
-             <div className="px-6 pb-12 flex flex-col gap-4 shrink-0">
+             <div className="px-6 pb-12 flex flex-col gap-4 shrink-0 mt-4">
 
 
                {/* Grid Cards */}
-               <div className="grid grid-cols-2 gap-3">
+               <div className="grid grid-cols-2 gap-3 mt-4">
                  {/* Developer Card */}
-                 <div className="bg-[#FFF5EC] border border-[#FDE0C9] rounded-[20px] p-4 flex gap-3 items-center">
-                   <div className="w-10 h-10 rounded-full bg-white flex items-center justify-center shadow-sm text-[#FF7A00] shrink-0">
-                     <User className="w-5 h-5" strokeWidth={2} />
+                 <div className="bg-[#FFF5EC] border border-[#FDE0C9] rounded-[24px] p-5 flex flex-col gap-2 items-center justify-center min-h-[140px] shadow-[0_4px_15px_rgba(0,0,0,0.02)] translate-y-4">
+                   <div className="w-12 h-12 rounded-full bg-white flex items-center justify-center shadow-sm text-[#FF7A00] shrink-0 mb-1">
+                     <User className="w-6 h-6" strokeWidth={2} />
                    </div>
-                   <div className="flex flex-col">
-                     <span className="text-[10px] text-[#888888] font-bold">Developer</span>
-                     <span className="text-[13px] text-[#FF7A00] font-bold leading-tight mt-0.5 mb-0.5">Lokesh Rajak</span>
-                     <span className="text-[10px] text-[#888888] font-bold">Developer</span>
+                   <div className="flex flex-col items-center">
+                     <span className="text-[11px] text-[#888888] font-bold mb-0.5">डेवलपर</span>
+                     <span className="text-[14px] text-[#FF7A00] font-bold leading-tight text-center">Lokesh Rajak</span>
+                     
+                     <div className="flex items-center gap-1 mt-3 opacity-40">
+                        <div className="w-4 h-[1px] bg-gradient-to-r from-transparent to-[#FF7A00]"></div>
+                        <div className="w-1 h-1 rounded-full bg-[#FF7A00]"></div>
+                        <div className="w-1 h-1 rounded-full bg-[#FF7A00]"></div>
+                        <div className="w-1 h-1 rounded-full bg-[#FF7A00]"></div>
+                        <div className="w-4 h-[1px] bg-gradient-to-l from-transparent to-[#FF7A00]"></div>
+                     </div>
                    </div>
                  </div>
 
                  {/* Address Card */}
-                 <div className="bg-[#FFF5EC] border border-[#FDE0C9] rounded-[20px] p-4 flex gap-3 items-center">
-                   <div className="w-10 h-10 rounded-full bg-white flex items-center justify-center shadow-sm text-[#FF7A00] shrink-0">
-                     <MapPin className="w-5 h-5" strokeWidth={2} />
+                 <div className="bg-[#FFF5EC] border border-[#FDE0C9] rounded-[24px] p-5 flex flex-col gap-2 items-center justify-center min-h-[140px] shadow-[0_4px_15px_rgba(0,0,0,0.02)] translate-y-4">
+                   <div className="w-12 h-12 rounded-full bg-white flex items-center justify-center shadow-sm text-[#FF7A00] shrink-0 mb-1">
+                     <MapPin className="w-6 h-6" strokeWidth={2} />
                    </div>
-                   <div className="flex flex-col">
-                     <span className="text-[10px] text-[#888888] font-bold">समिति पता</span>
-                     <span className="text-[13px] text-[#FF7A00] font-bold leading-tight mt-0.5 mb-0.5">Nagargoan, Raipur</span>
-                     <span className="text-[10px] text-[#FF7A00] font-bold">Dharsiwa (C.G.)</span>
+                   <div className="flex flex-col items-center">
+                     <span className="text-[11px] text-[#888888] font-bold mb-0.5">समिति का पता</span>
+                     <span className="text-[13px] text-[#FF7A00] font-bold leading-tight text-center">Nagargoan, Raipur<br/>Dharsiwa (C.G.)</span>
+                     
+                     <div className="flex items-center gap-1 mt-3 opacity-40">
+                        <div className="w-4 h-[1px] bg-gradient-to-r from-transparent to-[#FF7A00]"></div>
+                        <div className="w-1 h-1 rounded-full bg-[#FF7A00]"></div>
+                        <div className="w-1 h-1 rounded-full bg-[#FF7A00]"></div>
+                        <div className="w-1 h-1 rounded-full bg-[#FF7A00]"></div>
+                        <div className="w-4 h-[1px] bg-gradient-to-l from-transparent to-[#FF7A00]"></div>
+                     </div>
                    </div>
                  </div>
                </div>

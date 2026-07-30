@@ -62,8 +62,8 @@ export function ExpenseScreen() {
         </div>
       </div>
 
-      {/* Floating Add Expense Button */}
-      <button className="absolute bottom-24 right-5 w-14 h-14 bg-rose-500 rounded-[20px] flex items-center justify-center text-white shadow-[0_8px_20px_rgb(244,63,94,0.4)] active:scale-95 transition-transform z-10">
+      {/* Floating Add Button */}
+      <button className="absolute bottom-32 right-5 w-14 h-14 bg-rose-500 rounded-[20px] flex items-center justify-center text-white shadow-[0_8px_20px_rgb(244,63,94,0.4)] active:scale-95 transition-transform z-10">
         <Plus className="w-6 h-6" />
       </button>
     </div>
