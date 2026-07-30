@@ -1,7 +1,16 @@
 import { PageHeader } from '../components/PageHeader';
 import { BarChart3, Download, Share2, FileText, PieChart } from 'lucide-react';
+import { useCommitteeData } from '../hooks/useCommitteeData';
+import { formatCurrency } from '../utils/format';
 
 export function ReportsScreen() {
+  const data = useCommitteeData();
+  const stats = data.getStats();
+  
+  const expensePercentage = stats.totalCollection > 0 
+    ? Math.min(100, (stats.totalExpenses / stats.totalCollection) * 100) 
+    : 0;
+
   return (
     <div className="flex flex-col h-full bg-[#FFF8F1]">
       <PageHeader title="रिपोर्ट" subtitle="समिति की सभी रिपोर्ट" />
@@ -20,16 +29,16 @@ export function ReportsScreen() {
         <div className="grid grid-cols-2 gap-4 mb-6">
           <div className="bg-white p-4 rounded-[24px] shadow-sm border border-slate-50">
             <p className="text-[11px] font-bold text-slate-400 mb-1">कुल जमा</p>
-            <h3 className="text-lg font-bold text-emerald-500 mb-3">₹1,25,600</h3>
+            <h3 className="text-lg font-bold text-emerald-500 mb-3">{formatCurrency(stats.totalCollection)}</h3>
             <div className="h-1.5 bg-emerald-50 rounded-full overflow-hidden">
-              <div className="h-full bg-emerald-400 w-[100%] rounded-full"></div>
+              <div className="h-full bg-emerald-400 rounded-full" style={{ width: '100%' }}></div>
             </div>
           </div>
           <div className="bg-white p-4 rounded-[24px] shadow-sm border border-slate-50">
             <p className="text-[11px] font-bold text-slate-400 mb-1">कुल खर्च</p>
-            <h3 className="text-lg font-bold text-rose-500 mb-3">₹68,450</h3>
+            <h3 className="text-lg font-bold text-rose-500 mb-3">{formatCurrency(stats.totalExpenses)}</h3>
             <div className="h-1.5 bg-rose-50 rounded-full overflow-hidden">
-              <div className="h-full bg-rose-400 w-[55%] rounded-full"></div>
+              <div className="h-full bg-rose-400 rounded-full" style={{ width: `${expensePercentage}%` }}></div>
             </div>
           </div>
         </div>

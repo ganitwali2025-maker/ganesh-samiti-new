@@ -5,7 +5,8 @@ import { Landmark, ArrowDownCircle, Search, Filter } from 'lucide-react';
 import { formatCurrency } from '../utils/format';
 
 export function CollectionScreen() {
-  const { transactions, members } = useCommitteeData();
+  const { transactions, members, getStats } = useCommitteeData();
+  const stats = getStats();
   const [activeTab, setActiveTab] = useState<'paid' | 'pending'>('paid');
   
   const deposits = transactions.filter(t => t.type === 'DEPOSIT');
@@ -27,7 +28,7 @@ export function CollectionScreen() {
         <div className="bg-emerald-50 rounded-[28px] p-5 flex items-center justify-between mb-6 shadow-sm border border-emerald-100">
           <div>
              <p className="text-[12px] font-bold text-emerald-600 mb-1">कुल प्राप्त राशि (Total Collected)</p>
-             <h3 className="text-2xl font-extrabold text-emerald-500">₹1,25,600</h3>
+             <h3 className="text-2xl font-extrabold text-emerald-500">{formatCurrency(stats.totalCollection)}</h3>
           </div>
           <div className="w-14 h-14 bg-emerald-100 rounded-full flex items-center justify-center">
             <Landmark className="w-7 h-7 text-emerald-600" />

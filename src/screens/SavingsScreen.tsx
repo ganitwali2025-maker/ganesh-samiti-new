@@ -1,7 +1,11 @@
 import { PageHeader } from '../components/PageHeader';
 import { PiggyBank, Target, Plus, CheckCircle2 } from 'lucide-react';
+import { useCommitteeData } from '../hooks/useCommitteeData';
+import { formatCurrency } from '../utils/format';
 
 export function SavingsScreen() {
+  const { getStats } = useCommitteeData();
+  const stats = getStats();
   return (
     <div className="flex flex-col h-full bg-[#FFF8F1]">
       <PageHeader title="बचत" subtitle="समिति की कुल बचत" />
@@ -12,7 +16,7 @@ export function SavingsScreen() {
             <PiggyBank className="w-10 h-10 text-pink-500" />
           </div>
           <p className="text-pink-600 text-[12px] font-bold mb-1">कुल बचत (Total Savings)</p>
-          <h2 className="text-3xl font-extrabold text-pink-600 mb-2">₹45,000</h2>
+          <h2 className="text-3xl font-extrabold text-pink-600 mb-2">{formatCurrency(stats.availableBalance)}</h2>
           <p className="text-pink-400 text-xs font-medium">For next year's festival</p>
         </div>
 
@@ -39,11 +43,11 @@ export function SavingsScreen() {
             </div>
             
             <div className="flex justify-between text-xs font-bold mb-2">
-              <span className="text-emerald-500">₹20,000 (100%)</span>
-              <span className="text-slate-400">Target: ₹20,000</span>
+              <span className="text-emerald-500">{formatCurrency(0)} (0%)</span>
+              <span className="text-slate-400">Target: {formatCurrency(20000)}</span>
             </div>
             <div className="h-2.5 bg-slate-100 rounded-full overflow-hidden">
-              <div className="h-full bg-emerald-400 rounded-full w-full"></div>
+              <div className="h-full bg-emerald-400 rounded-full w-0"></div>
             </div>
           </div>
 
@@ -59,11 +63,11 @@ export function SavingsScreen() {
             </div>
             
             <div className="flex justify-between text-xs font-bold mb-2">
-              <span className="text-blue-500">₹25,000 (50%)</span>
-              <span className="text-slate-400">Target: ₹50,000</span>
+              <span className="text-blue-500">{formatCurrency(0)} (0%)</span>
+              <span className="text-slate-400">Target: {formatCurrency(50000)}</span>
             </div>
             <div className="h-2.5 bg-slate-100 rounded-full overflow-hidden">
-              <div className="h-full bg-blue-400 rounded-full w-[50%]"></div>
+              <div className="h-full bg-blue-400 rounded-full w-0"></div>
             </div>
           </div>
         </div>
