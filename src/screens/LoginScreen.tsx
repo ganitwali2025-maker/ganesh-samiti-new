@@ -40,7 +40,7 @@ export function LoginScreen() {
               onClick={() => setLoginMethod('admin')}
               className={`flex-1 py-3 text-[13px] font-bold rounded-xl transition-all ${loginMethod === 'admin' ? 'bg-white text-[#FF7A00] shadow-sm' : 'text-slate-500 hover:text-slate-700'}`}
             >
-              Admin Login
+              Manager Access
             </button>
           </div>
 
@@ -55,7 +55,7 @@ export function LoginScreen() {
               {loginMethod === 'otp' ? (
                 <div className="space-y-5">
                   <div>
-                    <label className="text-[12px] font-bold text-slate-700 mb-1.5 block">Mobile Number</label>
+                    <label className="text-[12px] font-bold text-slate-700 mb-1.5 block">Contact Number</label>
                     <div className="relative">
                       <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
                         <Phone className="w-5 h-5 text-slate-400" />
@@ -91,7 +91,7 @@ export function LoginScreen() {
               ) : (
                 <div className="space-y-5">
                   <div>
-                    <label className="text-[12px] font-bold text-slate-700 mb-1.5 block">Admin ID / Email</label>
+                    <label className="text-[12px] font-bold text-slate-700 mb-1.5 block">Manager ID</label>
                     <div className="relative">
                       <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
                         <UserIcon />
@@ -106,8 +106,8 @@ export function LoginScreen() {
                   
                   <div>
                     <div className="flex justify-between items-center mb-1.5">
-                      <label className="text-[12px] font-bold text-slate-700 block">Password</label>
-                      <a href="#" className="text-[11px] font-bold text-[#FF7A00]">Forgot Password?</a>
+                      <label className="text-[12px] font-bold text-slate-700 block">Passcode</label>
+                      <a href="#" className="text-[11px] font-bold text-[#FF7A00]">Forgot Passcode?</a>
                     </div>
                     <div className="relative">
                       <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
@@ -130,7 +130,7 @@ export function LoginScreen() {
                     onClick={() => navigate('dashboard')}
                     className="w-full h-14 bg-[#FF7A00] text-white rounded-2xl font-bold text-[15px] flex items-center justify-center gap-2 shadow-[0_8px_20px_rgb(255,122,0,0.3)] active:scale-[0.98] transition-transform mt-2"
                   >
-                    Secure Login <ShieldCheck className="w-5 h-5" />
+                    Continue <ShieldCheck className="w-5 h-5" />
                   </button>
                 </div>
               )}
