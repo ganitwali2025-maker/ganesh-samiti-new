@@ -1,153 +1,223 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigation } from '../context/NavigationContext';
 import { motion, AnimatePresence } from 'motion/react';
-import { Phone, ShieldCheck, Mail, Lock } from 'lucide-react';
+import { ChevronRight, Info, User, MapPin } from 'lucide-react';
 
 export function LoginScreen() {
   const { navigate } = useNavigation();
-  const [loginMethod, setLoginMethod] = useState<'otp' | 'admin'>('otp');
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handleStart = () => {
+    setIsLoading(true);
+    setTimeout(() => {
+      navigate('dashboard');
+    }, 2500);
+  };
 
   return (
-    <div className="flex flex-col h-[100dvh] w-full bg-[#FFF8F1] overflow-hidden relative">
-      {/* Top Background Design */}
-      <div className="absolute top-0 inset-x-0 h-[300px] bg-gradient-to-br from-[#FF7A00] to-[#E66D00] rounded-b-[40px] z-0 overflow-hidden shadow-lg">
-         <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/4"></div>
-         <div className="absolute bottom-0 left-0 w-40 h-40 bg-black/5 rounded-full blur-2xl translate-y-1/2 -translate-x-1/4"></div>
-         
-         <div className="relative z-10 flex flex-col items-center justify-center h-full pt-10">
-           <div className="w-20 h-20 bg-white rounded-[20px] p-1 shadow-xl mb-4">
-              <img src="/logo.png" 
-                   alt="Logo" className="w-full h-full rounded-[16px] object-cover" />
-           </div>
-           <h1 className="text-2xl font-extrabold text-white tracking-tight">गणेश समिति</h1>
-           <p className="text-orange-100 text-xs font-semibold mt-1">Welcome Back</p>
-         </div>
-      </div>
+    <div className="flex flex-col min-h-[100dvh] w-full bg-[#FFF8F2] overflow-x-hidden overflow-y-auto relative scrollbar-hide">
+      <AnimatePresence>
+        {isLoading ? (
+          <motion.div 
+            key="loading"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.4 }}
+            className="absolute inset-0 z-50 bg-gradient-to-br from-[#FF6A00] to-[#E65100] flex flex-col items-center justify-center overflow-hidden"
+          >
+             {/* Floating particles background */}
+             <div className="absolute inset-0 pointer-events-none overflow-hidden">
+               {[...Array(20)].map((_, i) => (
+                 <motion.div
+                   key={i}
+                   className="absolute w-1.5 h-1.5 bg-white/40 rounded-full"
+                   initial={{ 
+                     x: Math.random() * window.innerWidth, 
+                     y: window.innerHeight + 50 
+                   }}
+                   animate={{ 
+                     y: -50,
+                     x: `calc(${Math.random() * 100}vw - 20px)` 
+                   }}
+                   transition={{ 
+                     duration: 3 + Math.random() * 4, 
+                     repeat: Infinity,
+                     ease: "linear",
+                     delay: Math.random() * 2 
+                   }}
+                 />
+               ))}
+             </div>
 
-      {/* Login Card */}
-      <div className="flex-1 px-6 pt-[260px] pb-6 relative z-10 overflow-y-auto scrollbar-hide">
-        <div className="bg-white rounded-[32px] p-6 shadow-[0_8px_30px_rgb(0,0,0,0.06)] border border-slate-50">
-          
-          {/* Tabs */}
-          <div className="flex bg-slate-50 p-1 rounded-2xl mb-8">
-            <button 
-              onClick={() => setLoginMethod('otp')}
-              className={`flex-1 py-3 text-[13px] font-bold rounded-xl transition-all ${loginMethod === 'otp' ? 'bg-white text-[#FF7A00] shadow-sm' : 'text-slate-500 hover:text-slate-700'}`}
-            >
-              Member Login
-            </button>
-            <button 
-              onClick={() => setLoginMethod('admin')}
-              className={`flex-1 py-3 text-[13px] font-bold rounded-xl transition-all ${loginMethod === 'admin' ? 'bg-white text-[#FF7A00] shadow-sm' : 'text-slate-500 hover:text-slate-700'}`}
-            >
-              Manager Access
-            </button>
-          </div>
-
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={loginMethod}
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -10 }}
-              transition={{ duration: 0.2 }}
-            >
-              {loginMethod === 'otp' ? (
-                <div className="space-y-5">
-                  <div>
-                    <label className="text-[12px] font-bold text-slate-700 mb-1.5 block">Contact Number</label>
-                    <div className="relative">
-                      <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                        <Phone className="w-5 h-5 text-slate-400" />
-                      </div>
-                      <input 
-                        type="tel" 
-                        placeholder="Enter 10-digit number"
-                        className="w-full bg-slate-50 border border-slate-100 text-slate-800 text-sm rounded-2xl pl-11 pr-4 py-4 focus:outline-none focus:ring-2 focus:ring-[#FF7A00]/50 transition-all font-medium"
-                      />
-                    </div>
-                  </div>
+             <div className="relative z-10 flex flex-col items-center justify-center h-full w-full">
+                {/* Outer glowing ring */}
+                <div className="relative flex items-center justify-center">
+                  <motion.div 
+                    animate={{ rotate: 360 }} 
+                    transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
+                    className="w-36 h-36 rounded-full border-4 border-white/20 border-t-white shadow-[0_0_40px_rgba(255,255,255,0.3)] absolute"
+                  />
                   
-                  <button 
-                    onClick={() => navigate('dashboard')}
-                    className="w-full h-14 bg-[#FF7A00] text-white rounded-2xl font-bold text-[15px] flex items-center justify-center gap-2 shadow-[0_8px_20px_rgb(255,122,0,0.3)] active:scale-[0.98] transition-transform mt-2"
+                  <motion.div 
+                    animate={{ scale: [0.95, 1.05, 0.95] }}
+                    transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+                    className="w-28 h-28 bg-white rounded-full p-2 shadow-2xl z-20 flex items-center justify-center"
                   >
-                    Send OTP <ShieldCheck className="w-5 h-5" />
-                  </button>
-
-                  <div className="relative flex items-center py-4">
-                    <div className="flex-grow border-t border-slate-100"></div>
-                    <span className="flex-shrink-0 mx-4 text-slate-400 text-xs font-semibold uppercase">Or login with</span>
-                    <div className="flex-grow border-t border-slate-100"></div>
-                  </div>
-
-                  <button 
-                    onClick={() => navigate('dashboard')}
-                    className="w-full h-14 bg-white border-2 border-slate-100 text-slate-700 rounded-2xl font-bold text-[14px] flex items-center justify-center gap-3 active:scale-[0.98] transition-transform"
-                  >
-                    <Mail className="w-5 h-5 text-blue-500" /> Google Login
-                  </button>
+                     <img src="/logo.png" alt="Logo" className="w-full h-full rounded-full object-cover" />
+                  </motion.div>
                 </div>
-              ) : (
-                <div className="space-y-5">
-                  <div>
-                    <label className="text-[12px] font-bold text-slate-700 mb-1.5 block">Manager ID</label>
-                    <div className="relative">
-                      <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                        <UserIcon />
-                      </div>
-                      <input 
-                        type="text" 
-                        placeholder="Enter admin ID"
-                        className="w-full bg-slate-50 border border-slate-100 text-slate-800 text-sm rounded-2xl pl-11 pr-4 py-4 focus:outline-none focus:ring-2 focus:ring-[#FF7A00]/50 transition-all font-medium"
-                      />
-                    </div>
-                  </div>
-                  
-                  <div>
-                    <div className="flex justify-between items-center mb-1.5">
-                      <label className="text-[12px] font-bold text-slate-700 block">Passcode</label>
-                      <a href="#" className="text-[11px] font-bold text-[#FF7A00]">Forgot Passcode?</a>
-                    </div>
-                    <div className="relative">
-                      <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                        <Lock className="w-5 h-5 text-slate-400" />
-                      </div>
-                      <input 
-                        type="password" 
-                        placeholder="••••••••"
-                        className="w-full bg-slate-50 border border-slate-100 text-slate-800 text-sm rounded-2xl pl-11 pr-4 py-4 focus:outline-none focus:ring-2 focus:ring-[#FF7A00]/50 transition-all font-medium"
-                      />
-                    </div>
-                  </div>
 
-                  <div className="flex items-center gap-2">
-                    <input type="checkbox" id="remember" className="w-4 h-4 rounded text-[#FF7A00] focus:ring-[#FF7A00] border-slate-300" />
-                    <label htmlFor="remember" className="text-[12px] font-semibold text-slate-500">Remember me</label>
-                  </div>
-                  
-                  <button 
-                    onClick={() => navigate('dashboard')}
-                    className="w-full h-14 bg-[#FF7A00] text-white rounded-2xl font-bold text-[15px] flex items-center justify-center gap-2 shadow-[0_8px_20px_rgb(255,122,0,0.3)] active:scale-[0.98] transition-transform mt-2"
-                  >
-                    Continue <ShieldCheck className="w-5 h-5" />
-                  </button>
+               <motion.div 
+                 animate={{ opacity: [0.6, 1, 0.6] }}
+                 transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
+                 className="mt-12 flex flex-col items-center"
+               >
+                 <h2 className="text-white text-[20px] font-bold tracking-wider drop-shadow-md z-10 text-center">
+                   डेटा तैयार किया जा रहा है...
+                 </h2>
+                 <div className="flex gap-2 mt-4">
+                    {[0, 1, 2].map((i) => (
+                      <motion.div
+                        key={i}
+                        animate={{ y: [0, -8, 0] }}
+                        transition={{ duration: 0.6, repeat: Infinity, delay: i * 0.2 }}
+                        className="w-2.5 h-2.5 bg-white rounded-full shadow-sm"
+                      />
+                    ))}
+                 </div>
+               </motion.div>
+             </div>
+          </motion.div>
+        ) : (
+          <motion.div 
+            key="welcome"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.4 }}
+            className="flex flex-col h-full w-full relative z-10"
+          >
+             {/* Header */}
+             <div className="relative bg-gradient-to-b from-[#FF6A00] to-[#FF8C00] rounded-b-[48px] pt-16 pb-12 px-6 flex flex-col items-center shadow-[0_15px_40px_rgba(255,106,0,0.2)] shrink-0">
+                {/* Decorative glows */}
+                <div className="absolute top-0 right-0 w-64 h-64 bg-white/20 rounded-full blur-3xl -translate-y-1/2 translate-x-1/4 pointer-events-none"></div>
+                <div className="absolute bottom-0 left-0 w-40 h-40 bg-black/10 rounded-full blur-2xl translate-y-1/2 -translate-x-1/4 pointer-events-none"></div>
+
+                <div className="w-[100px] h-[100px] bg-white rounded-full p-1.5 shadow-[0_12px_30px_rgba(0,0,0,0.15)] mb-6 relative z-10 border-[3px] border-white">
+                   <img src="/logo.png" alt="Logo" className="w-full h-full rounded-full object-cover" />
                 </div>
-              )}
-            </motion.div>
-          </AnimatePresence>
-        </div>
-        
-        <p className="text-center text-[11px] font-semibold text-slate-400 mt-8 mb-4">
-          By logging in, you agree to our Terms & Privacy Policy
-        </p>
-      </div>
+                
+                <h1 className="text-[38px] font-extrabold text-white tracking-wide drop-shadow-md mb-2 text-center" style={{ textShadow: '0 4px 12px rgba(0,0,0,0.1)' }}>
+                  गणेश समिति
+                </h1>
+                
+                <div className="flex items-center gap-3 mt-1">
+                  <div className="h-[1px] w-10 bg-white/60"></div>
+                  <p className="text-[14px] font-bold text-white tracking-widest uppercase opacity-95">
+                    एकता • सेवा • विकास
+                  </p>
+                  <div className="h-[1px] w-10 bg-white/60"></div>
+                </div>
+             </div>
+
+             {/* Body Art */}
+             <div className="flex flex-col items-center justify-center px-6 relative w-full mt-8 shrink-0">
+                <svg className="w-full max-w-[280px] h-[200px]" viewBox="0 0 300 250" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  {/* Sunburst */}
+                  <g opacity="0.12">
+                    {[...Array(16)].map((_, i) => (
+                      <line key={i} x1="150" y1="160" x2={150 + Math.cos((i * 22.5 * Math.PI) / 180) * 140} y2={160 + Math.sin((i * 22.5 * Math.PI) / 180) * 140} stroke="#FF7A00" strokeWidth="4" strokeLinecap="round" />
+                    ))}
+                  </g>
+                  
+                  {/* Soft Sun Glow */}
+                  <circle cx="150" cy="160" r="90" fill="url(#sunGlow)" opacity="0.8"/>
+                  
+                  {/* Om Symbol with 3D-like feel */}
+                  <text x="150" y="200" fontFamily="sans-serif" fontSize="110" fill="url(#omGradient)" fontWeight="bold" textAnchor="middle" style={{ filter: 'drop-shadow(0px 8px 15px rgba(255,106,0,0.4))' }}>ॐ</text>
+
+                  {/* Flag on top of Om */}
+                  <path d="M150 90 L150 50 L190 65 L150 80" fill="#FF8C00"/>
+                  <path d="M150 110 L150 50" stroke="#FF8C00" strokeWidth="3" strokeLinecap="round"/>
+                  <circle cx="150" cy="50" r="4" fill="#FF6A00"/>
+
+                  <defs>
+                    <radialGradient id="sunGlow" cx="0.5" cy="0.5" r="0.5">
+                      <stop offset="0%" stopColor="#FFC899"/>
+                      <stop offset="100%" stopColor="#FFF8F2" stopOpacity="0"/>
+                    </radialGradient>
+                    <linearGradient id="omGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                      <stop offset="0%" stopColor="#FF8C00" />
+                      <stop offset="100%" stopColor="#E65100" />
+                    </linearGradient>
+                  </defs>
+                </svg>
+             </div>
+
+             {/* Welcome Text & Button */}
+             <div className="px-6 pb-6 pt-2 flex flex-col items-center relative z-20 shrink-0">
+                <h2 className="text-[26px] font-extrabold text-[#222222] mb-1.5 text-center drop-shadow-sm">
+                  एक साथ, एक उद्देश्य
+                </h2>
+                <p className="text-[14px] font-semibold text-[#888888] mb-4 text-center">
+                  समुदाय की प्रगति • समाज का विकास
+                </p>
+
+                <div className="flex items-center gap-1.5 mb-6 opacity-40">
+                   <div className="w-10 h-[2px] bg-gradient-to-r from-transparent to-[#FF7A00]"></div>
+                   <div className="w-1.5 h-1.5 rounded-full bg-[#FF7A00]"></div>
+                   <div className="w-2 h-2 rounded-full bg-[#FF7A00]"></div>
+                   <div className="w-1.5 h-1.5 rounded-full bg-[#FF7A00]"></div>
+                   <div className="w-10 h-[2px] bg-gradient-to-l from-transparent to-[#FF7A00]"></div>
+                </div>
+
+                <button 
+                  onClick={handleStart}
+                  className="w-full h-[64px] bg-gradient-to-r from-[#FF6A00] to-[#FF8C00] rounded-[20px] flex items-center justify-center gap-4 active:scale-[0.98] transition-transform shadow-[0_18px_45px_rgba(255,106,0,0.35)] relative overflow-hidden group border border-[#FF9F40]"
+                >
+                   <div className="absolute top-0 left-0 w-full h-[40%] bg-gradient-to-b from-white/30 to-transparent pointer-events-none rounded-t-[20px]"></div>
+                   <span className="text-white text-[20px] font-bold tracking-wide">शुरू करें</span>
+                   <div className="w-9 h-9 bg-white rounded-full flex items-center justify-center shadow-md text-[#FF7A00] group-hover:scale-105 transition-transform">
+                      <ChevronRight className="w-5 h-5 ml-0.5" strokeWidth={3.5} />
+                   </div>
+                </button>
+             </div>
+
+             {/* Info Cards Section */}
+             <div className="px-6 pb-12 flex flex-col gap-4 shrink-0">
+
+
+               {/* Grid Cards */}
+               <div className="grid grid-cols-2 gap-3">
+                 {/* Developer Card */}
+                 <div className="bg-[#FFF5EC] border border-[#FDE0C9] rounded-[20px] p-4 flex gap-3 items-center">
+                   <div className="w-10 h-10 rounded-full bg-white flex items-center justify-center shadow-sm text-[#FF7A00] shrink-0">
+                     <User className="w-5 h-5" strokeWidth={2} />
+                   </div>
+                   <div className="flex flex-col">
+                     <span className="text-[10px] text-[#888888] font-bold">Developer</span>
+                     <span className="text-[13px] text-[#FF7A00] font-bold leading-tight mt-0.5 mb-0.5">Lokesh Rajak</span>
+                     <span className="text-[10px] text-[#888888] font-bold">Developer</span>
+                   </div>
+                 </div>
+
+                 {/* Address Card */}
+                 <div className="bg-[#FFF5EC] border border-[#FDE0C9] rounded-[20px] p-4 flex gap-3 items-center">
+                   <div className="w-10 h-10 rounded-full bg-white flex items-center justify-center shadow-sm text-[#FF7A00] shrink-0">
+                     <MapPin className="w-5 h-5" strokeWidth={2} />
+                   </div>
+                   <div className="flex flex-col">
+                     <span className="text-[10px] text-[#888888] font-bold">समिति पता</span>
+                     <span className="text-[13px] text-[#FF7A00] font-bold leading-tight mt-0.5 mb-0.5">Nagargoan, Raipur</span>
+                     <span className="text-[10px] text-[#FF7A00] font-bold">Dharsiwa (C.G.)</span>
+                   </div>
+                 </div>
+               </div>
+             </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
-  );
-}
-
-function UserIcon() {
-  return (
-    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-slate-400"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
   );
 }

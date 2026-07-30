@@ -9,14 +9,14 @@ export * from './SavingsScreen';
 export * from './BankScreen';
 export * from './ReportsScreen';
 
-import { TopAppBar } from '../components/TopAppBar';
+import { PageHeader } from '../components/PageHeader';
 import { useNavigation } from '../context/NavigationContext';
 import { Calendar, Megaphone, User, Bell, Search as SearchIcon, Settings as SettingsIcon, LogOut, ChevronRight } from 'lucide-react';
 
 export function EventsScreen() {
   return (
     <div className="flex flex-col h-full bg-[#FFF8F1]">
-      <TopAppBar title="कार्यक्रम (Events)" />
+      <PageHeader title="कार्यक्रम" subtitle="समिति के कार्यक्रम" />
       <div className="p-5 flex-1 overflow-y-auto">
         <div className="bg-white p-5 rounded-3xl shadow-sm border border-slate-50 mb-4">
           <div className="w-12 h-12 rounded-2xl bg-[#FF7A00]/10 flex items-center justify-center text-[#FF7A00] mb-4">
@@ -37,7 +37,7 @@ export function EventsScreen() {
 export function NoticeScreen() {
   return (
     <div className="flex flex-col h-full bg-[#FFF8F1]">
-      <TopAppBar title="सूचनाएं (Notice)" />
+      <PageHeader title="सूचनाएं" subtitle="महत्वपूर्ण सूचनाएं" />
       <div className="p-5 flex-1 overflow-y-auto space-y-4">
         <div className="bg-white p-5 rounded-3xl shadow-sm border border-slate-50">
           <div className="flex items-start gap-4">
@@ -91,7 +91,7 @@ export function ProfileScreen() {
 export function NotificationsScreen() {
   return (
     <div className="flex flex-col h-full bg-[#FFF8F1]">
-      <TopAppBar title="Notifications" />
+      <PageHeader title="नोटिफिकेशन" subtitle="आपके सभी अलर्ट्स" />
       <div className="p-5 flex flex-col items-center justify-center flex-1 opacity-50">
         <Bell className="w-12 h-12 text-slate-300 mb-3" />
         <p className="text-sm font-semibold text-slate-500">No new notifications</p>
@@ -103,7 +103,7 @@ export function NotificationsScreen() {
 export function SearchScreen() {
   return (
     <div className="flex flex-col h-full bg-[#FFF8F1]">
-      <TopAppBar title="Search" />
+      <PageHeader title="खोजें" subtitle="कुछ भी खोजें" />
       <div className="p-5 flex-1">
         <div className="relative mb-6">
           <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
@@ -123,7 +123,7 @@ export function SearchScreen() {
 export function SettingsScreen() {
   return (
     <div className="flex flex-col h-full bg-[#FFF8F1]">
-      <TopAppBar title="Settings" />
+      <PageHeader title="सेटिंग्स" subtitle="ऐप प्राथमिकताएं" />
       <div className="p-5 flex-1 overflow-y-auto">
         <div className="space-y-4">
           <div className="bg-white p-5 rounded-3xl shadow-sm border border-slate-50">

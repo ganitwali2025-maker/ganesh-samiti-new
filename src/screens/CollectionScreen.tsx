@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { TopAppBar } from '../components/TopAppBar';
+import { PageHeader } from '../components/PageHeader';
 import { useCommitteeData } from '../hooks/useCommitteeData';
 import { Landmark, ArrowDownCircle, Search, Filter } from 'lucide-react';
 import { formatCurrency } from '../utils/format';
@@ -12,11 +12,12 @@ export function CollectionScreen() {
 
   return (
     <div className="flex flex-col h-full bg-[#FFF8F1]">
-      <TopAppBar 
-        title="मासिक जमा (Collection)" 
+      <PageHeader 
+        title="मासिक जमा" 
+        subtitle="सदस्यों की मासिक बचत"
         rightAction={
-          <button className="w-8 h-8 rounded-full bg-[#FF7A00]/10 flex items-center justify-center text-[#FF7A00]">
-            <Filter className="w-4 h-4" />
+          <button className="w-9 h-9 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center shadow-sm active:scale-95 transition-transform border border-white/10">
+            <Filter className="w-4 h-4 text-white" strokeWidth={2.5} />
           </button>
         }
       />

@@ -1,10 +1,10 @@
-import { TopAppBar } from '../components/TopAppBar';
+import { PageHeader } from '../components/PageHeader';
 import { Building2, Copy, Download, Share2 } from 'lucide-react';
 
 export function BankScreen() {
   return (
     <div className="flex flex-col h-full bg-[#FFF8F1]">
-      <TopAppBar title="बैंक विवरण (Bank Details)" />
+      <PageHeader title="बैंक विवरण" subtitle="समिति का बैंक खाता" />
 
       <div className="p-5 flex-1 overflow-y-auto">
         {/* ATM Card UI */}

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { TopAppBar } from '../components/TopAppBar';
+import { PageHeader } from '../components/PageHeader';
 import { Wallet, ChevronDown, CheckCircle2 } from 'lucide-react';
 import { useNavigation } from '../context/NavigationContext';
 
@@ -31,7 +31,7 @@ export function DepositScreen() {
 
   return (
     <div className="flex flex-col h-full bg-[#FFF8F1]">
-      <TopAppBar title="पैसा जमा (Deposit)" />
+      <PageHeader title="पैसा जमा" subtitle="नया जमा करें" />
 
       <div className="p-6 flex-1 overflow-y-auto">
         

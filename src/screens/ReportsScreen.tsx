@@ -1,10 +1,10 @@
-import { TopAppBar } from '../components/TopAppBar';
+import { PageHeader } from '../components/PageHeader';
 import { BarChart3, Download, Share2, FileText, PieChart } from 'lucide-react';
 
 export function ReportsScreen() {
   return (
     <div className="flex flex-col h-full bg-[#FFF8F1]">
-      <TopAppBar title="रिपोर्ट (Reports)" />
+      <PageHeader title="रिपोर्ट" subtitle="समिति की सभी रिपोर्ट" />
 
       <div className="p-5 flex-1 overflow-y-auto">
         <div className="flex justify-between items-end mb-6 px-1">

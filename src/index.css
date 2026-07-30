@@ -1,5 +1,9 @@
 @import "tailwindcss";
 
+@theme {
+  --font-sans: "Poppins", "Hind", sans-serif;
+}
+
 @utility scrollbar-hide {
   &::-webkit-scrollbar {
     display: none;

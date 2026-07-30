@@ -1,11 +1,13 @@
 import { useState } from 'react';
-import { TopAppBar } from '../components/TopAppBar';
 import { Search, Filter, Plus, UserCircle, Phone, MapPin } from 'lucide-react';
 import { useCommitteeData } from '../hooks/useCommitteeData';
+import { useNavigation } from '../context/NavigationContext';
+import { PageHeader } from '../components/PageHeader';
 
 export function MembersScreen() {
   const { members } = useCommitteeData();
   const [searchTerm, setSearchTerm] = useState('');
+  const { navigate } = useNavigation();
 
   const filteredMembers = members.filter(m => 
     m.name.toLowerCase().includes(searchTerm.toLowerCase()) || 
@@ -13,28 +15,29 @@ export function MembersScreen() {
   );
 
   return (
-    <div className="flex flex-col h-full bg-[#FFF8F1]">
-      <TopAppBar 
-        title="सदस्य सूची (Members)" 
+    <div className="flex flex-col h-full bg-[#FFF8F2]">
+      <PageHeader 
+        title="सदस्य सूची" 
+        subtitle="कुल सदस्य देखें एवं प्रबंधित करें" 
         rightAction={
-          <button className="w-8 h-8 rounded-full bg-[#FF7A00]/10 flex items-center justify-center text-[#FF7A00]">
-            <Filter className="w-4 h-4" />
+          <button className="w-9 h-9 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center shadow-sm active:scale-95 transition-transform border border-white/10">
+            <Filter className="w-4 h-4 text-white" strokeWidth={2.5} />
           </button>
         }
       />
 
       <div className="p-5 flex-1 overflow-y-auto">
         {/* Search Bar */}
-        <div className="relative mb-6">
+        <div className="relative mt-5 mb-6 shadow-[0_6px_18px_rgba(0,0,0,0.05)] rounded-[18px]">
           <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-            <Search className="w-5 h-5 text-slate-400" />
+            <Search className="w-5 h-5 text-[#FF7A00]" />
           </div>
           <input 
             type="text" 
-            placeholder="नाम या मोबाइल नंबर से खोजें..."
+            placeholder="सदस्य का नाम या मोबाइल नंबर खोजें..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full bg-white border-0 shadow-sm text-slate-800 text-[13px] rounded-2xl pl-11 pr-4 py-3.5 focus:outline-none focus:ring-2 focus:ring-[#FF7A00]/30 font-medium"
+            className="w-full h-[56px] bg-[#FFFFFF] border border-[#ECECEC] text-[#1F2937] text-[14px] rounded-[18px] pl-12 pr-4 focus:outline-none focus:ring-2 focus:ring-[#FF7A00]/50 font-medium transition-shadow placeholder:text-slate-400"
           />
         </div>
 

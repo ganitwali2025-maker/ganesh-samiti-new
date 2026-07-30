@@ -1,10 +1,10 @@
-import { TopAppBar } from '../components/TopAppBar';
+import { PageHeader } from '../components/PageHeader';
 import { PiggyBank, Target, Plus, CheckCircle2 } from 'lucide-react';
 
 export function SavingsScreen() {
   return (
     <div className="flex flex-col h-full bg-[#FFF8F1]">
-      <TopAppBar title="बचत (Savings)" />
+      <PageHeader title="बचत" subtitle="समिति की कुल बचत" />
 
       <div className="p-5 flex-1 overflow-y-auto">
         <div className="bg-pink-50 rounded-[32px] p-6 shadow-sm border border-pink-100 flex flex-col items-center justify-center text-center mb-8">

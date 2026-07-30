@@ -5,6 +5,7 @@ import { Dashboard } from './components/Dashboard';
 import { useCommitteeData } from './hooks/useCommitteeData';
 import { motion, AnimatePresence } from 'motion/react';
 import { AppRouter } from './router';
+import { GlobalAppHeader } from './components/GlobalAppHeader';
 
 import { LanguageProvider } from './context/LanguageContext';
 
@@ -14,10 +15,12 @@ function AppLayout({ data }: { data: any }) {
   // Screens that should NOT show the bottom nav
   const hideBottomNavScreens = ['splash', 'login'];
   const showBottomNav = !hideBottomNavScreens.includes(currentScreen);
+  const showGlobalHeader = currentScreen === 'dashboard';
 
   return (
     <>
-      <main className={`flex-1 overflow-y-auto scrollbar-hide bg-[#FFF8F1] relative ${showBottomNav ? 'pb-24' : ''}`}>
+      <main className={`flex-1 flex flex-col overflow-y-auto overflow-x-hidden scrollbar-hide bg-[#FFF8F1] relative ${showBottomNav ? 'pb-24' : ''}`}>
+        {showGlobalHeader && <GlobalAppHeader />}
         <AppRouter />
       </main>
       

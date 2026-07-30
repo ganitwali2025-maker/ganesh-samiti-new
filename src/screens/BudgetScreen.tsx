@@ -1,10 +1,10 @@
-import { TopAppBar } from '../components/TopAppBar';
+import { PageHeader } from '../components/PageHeader';
 import { Target, TrendingUp, TrendingDown } from 'lucide-react';
 
 export function BudgetScreen() {
   return (
     <div className="flex flex-col h-full bg-[#FFF8F1]">
-      <TopAppBar title="बजट (Budget)" />
+      <PageHeader title="बजट" subtitle="समिति का बजट" />
 
       <div className="p-5 flex-1 overflow-y-auto">
         {/* Main Budget Card */}
