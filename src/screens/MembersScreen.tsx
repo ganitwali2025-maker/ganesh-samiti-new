@@ -48,7 +48,9 @@ export function MembersScreen() {
         {/* Member List */}
         <div className="space-y-6 pb-20">
           {filteredMembers.map(member => (
-            <MemberCard key={member.id} member={member} />
+            <div key={member.id}>
+              <MemberCard member={member} />
+            </div>
           ))}
         </div>
       </div>
