@@ -57,7 +57,7 @@ export function SideDrawer() {
               </button>
               
               <div className="w-16 h-16 bg-white rounded-full flex items-center justify-center shadow-lg mb-4 mt-2 p-1">
-                 <img src="https://images.unsplash.com/photo-1579737920194-6725ea6198f7?q=80&w=256&auto=format&fit=crop" 
+                 <img src="/logo.png" 
                       alt="Logo" className="w-full h-full rounded-full object-cover" />
               </div>
               <h2 className="text-xl font-bold text-white">गणेश समिति</h2>

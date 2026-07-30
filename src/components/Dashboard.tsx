@@ -40,7 +40,7 @@ export function Dashboard({ data }: { data: ReturnType<typeof useCommitteeData> 
         <div className="flex flex-col items-center">
           {/* Ganesha Illustration Wrapper */}
           <div className="w-32 h-32 mb-1 relative flex justify-center items-center">
-             <img src="https://images.unsplash.com/photo-1579737920194-6725ea6198f7?q=80&w=256&auto=format&fit=crop" 
+             <img src="/logo.png" 
                   alt="Lord Ganesha" 
                   className="w-24 h-24 object-cover rounded-full shadow-lg border-[3px] border-white relative z-10" />
              <div className="absolute inset-0 bg-yellow-300 rounded-full blur-2xl opacity-30 animate-pulse"></div>

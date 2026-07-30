@@ -25,9 +25,9 @@ export function SplashScreen() {
         className="relative z-10 flex flex-col items-center"
       >
         <div className="w-40 h-40 relative flex justify-center items-center mb-6">
-           <img src="https://images.unsplash.com/photo-1579737920194-6725ea6198f7?q=80&w=256&auto=format&fit=crop" 
+           <img src="/logo.png" 
                 alt="Lord Ganesha" 
-                className="w-32 h-32 object-cover rounded-full shadow-2xl border-[4px] border-white relative z-10" />
+                className="w-32 h-32 object-cover rounded-full shadow-2xl border-[4px] border-white relative z-10 bg-white" />
            <motion.div 
              animate={{ scale: [1, 1.2, 1] }}
              transition={{ repeat: Infinity, duration: 2 }}

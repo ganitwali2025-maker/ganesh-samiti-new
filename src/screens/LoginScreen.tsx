@@ -16,7 +16,7 @@ export function LoginScreen() {
          
          <div className="relative z-10 flex flex-col items-center justify-center h-full pt-10">
            <div className="w-20 h-20 bg-white rounded-[20px] p-1 shadow-xl mb-4">
-              <img src="https://images.unsplash.com/photo-1579737920194-6725ea6198f7?q=80&w=256&auto=format&fit=crop" 
+              <img src="/logo.png" 
                    alt="Logo" className="w-full h-full rounded-[16px] object-cover" />
            </div>
            <h1 className="text-2xl font-extrabold text-white tracking-tight">गणेश समिति</h1>
