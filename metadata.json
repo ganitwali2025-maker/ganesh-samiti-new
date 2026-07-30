@@ -1,0 +1,8 @@
+{
+  "name": "Local Committee Manager",
+  "description": "A responsive app for managing local committee (समिति) members, deposits, and expenses using local storage.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
