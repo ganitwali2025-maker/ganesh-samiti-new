@@ -11,7 +11,6 @@ export function MembersScreen() {
   const { members, addMember } = useCommitteeData();
   const [searchTerm, setSearchTerm] = useState('');
   const { navigate } = useNavigation();
-  const [selectedMember, setSelectedMember] = useState<Member | null>(null);
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
 
   const filteredMembers = members.filter(m => 
@@ -47,34 +46,9 @@ export function MembersScreen() {
         </div>
 
         {/* Member List */}
-        <div className="space-y-3 pb-20">
+        <div className="space-y-6 pb-20">
           {filteredMembers.map(member => (
-            <div 
-              key={member.id} 
-              onClick={() => setSelectedMember(member)}
-              className="bg-white p-4 rounded-3xl shadow-[0_4px_15px_rgb(0,0,0,0.02)] border border-slate-50 flex items-center gap-4 active:scale-[0.98] transition-transform cursor-pointer"
-            >
-              <div className="w-12 h-12 rounded-full bg-gradient-to-br from-[#FF7A00]/20 to-[#FF7A00]/10 flex items-center justify-center text-[#FF7A00]">
-                <UserCircle className="w-7 h-7" />
-              </div>
-              <div className="flex-1">
-                <h4 className="font-bold text-slate-800 text-[14px]">{member.name}</h4>
-                <div className="flex items-center gap-3 mt-1">
-                  <div className="flex items-center gap-1 text-[11px] text-slate-500 font-medium">
-                    <Phone className="w-3 h-3" /> {member.phone}
-                  </div>
-                  <div className="flex items-center gap-1 text-[11px] text-slate-500 font-medium">
-                    <MapPin className="w-3 h-3" /> {member.address || 'N/A'}
-                  </div>
-                </div>
-              </div>
-              <div className="text-right">
-                <span className={`text-[10px] font-bold px-2 py-1 rounded-md ${member.status === 'ACTIVE' ? 'bg-emerald-50 text-emerald-500' : 'bg-rose-50 text-rose-500'}`}>
-                  {member.status === 'ACTIVE' ? 'सक्रिय' : 'निष्क्रिय'}
-                </span>
-                <p className="text-[10px] text-slate-400 font-medium mt-1">ID: GM-{1000 + member.id}</p>
-              </div>
-            </div>
+            <MemberCard key={member.id} member={member} />
           ))}
         </div>
       </div>
@@ -93,20 +67,6 @@ export function MembersScreen() {
         onAdd={addMember}
       />
 
-      {/* Member ID Card Modal */}
-      {selectedMember && (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm" onClick={() => setSelectedMember(null)}>
-          <div className="w-full max-w-md animate-in zoom-in duration-200" onClick={e => e.stopPropagation()}>
-            <MemberCard member={selectedMember} />
-            <button 
-              onClick={() => setSelectedMember(null)}
-              className="mt-4 w-full py-3 bg-white/20 text-white font-bold rounded-2xl border border-white/30 backdrop-blur-md active:scale-95 transition-transform"
-            >
-              बंद करें (Close)
-            </button>
-          </div>
-        </div>
-      )}
     </div>
   );
 }
