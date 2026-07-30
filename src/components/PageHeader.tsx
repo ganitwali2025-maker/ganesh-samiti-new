@@ -17,7 +17,7 @@ export function PageHeader({
   const { goBack, navigate } = useNavigation();
 
   return (
-    <div className="h-[72px] bg-gradient-to-r from-[#FF6A00] to-[#FF8A00] rounded-b-[20px] shadow-[0_8px_24px_rgba(255,106,0,0.2)] px-4 flex items-center justify-between z-30 relative shrink-0">
+    <div className="h-[72px] bg-theme-gradient rounded-b-[20px] shadow-[0_8px_24px_rgba(255,106,0,0.2)] px-4 flex items-center justify-between z-30 relative shrink-0">
        
        {/* LEFT: Back Button */}
        <div className="flex items-center gap-3 relative z-10 w-1/4">
@@ -51,7 +51,7 @@ export function PageHeader({
             className="w-9 h-9 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center text-white active:scale-95 transition-transform relative border border-white/10 shrink-0"
          >
            <Bell className="w-4 h-4" strokeWidth={2.5} />
-           <span className="absolute top-1.5 right-1.5 w-2.5 h-2.5 bg-red-500 rounded-full border-2 border-[#FF7A00]"></span>
+           <span className="absolute top-1.5 right-1.5 w-2.5 h-2.5 bg-red-500 rounded-full border-2 border-theme-primary"></span>
          </button>
        </div>
 

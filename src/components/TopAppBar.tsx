@@ -11,7 +11,7 @@ export function TopAppBar({ title, rightAction }: TopAppBarProps) {
   const { goBack } = useNavigation();
 
   return (
-    <div className="flex items-center justify-between px-4 h-16 bg-[#FFF8F1] border-b border-[#FF7A00]/10 sticky top-0 z-40">
+    <div className="flex items-center justify-between px-4 h-16 bg-[#FFF8F1] border-b border-theme-primary/10 sticky top-0 z-40">
       <div className="flex items-center gap-3">
         <button 
           onClick={goBack}

@@ -19,13 +19,13 @@ export function EventsScreen() {
       <PageHeader title="कार्यक्रम" subtitle="समिति के कार्यक्रम" />
       <div className="p-5 flex-1 overflow-y-auto">
         <div className="bg-white p-5 rounded-3xl shadow-sm border border-slate-50 mb-4">
-          <div className="w-12 h-12 rounded-2xl bg-[#FF7A00]/10 flex items-center justify-center text-[#FF7A00] mb-4">
+          <div className="w-12 h-12 rounded-2xl bg-theme-gradient/10 flex items-center justify-center text-theme-primary mb-4">
             <Calendar className="w-6 h-6" />
           </div>
           <h3 className="font-bold text-slate-800 text-lg">Ganesh Chaturthi 2025</h3>
           <p className="text-sm text-slate-500 font-medium mt-1">27 August - 5 September</p>
           <div className="mt-4 flex gap-2">
-            <span className="text-[10px] font-bold bg-[#FF7A00]/10 text-[#FF7A00] px-3 py-1.5 rounded-full">Upcoming</span>
+            <span className="text-[10px] font-bold bg-theme-gradient/10 text-theme-primary px-3 py-1.5 rounded-full">Upcoming</span>
             <span className="text-[10px] font-bold bg-slate-100 text-slate-500 px-3 py-1.5 rounded-full">10 Days</span>
           </div>
         </div>
@@ -61,7 +61,7 @@ export function ProfileScreen() {
   return (
     <div className="flex flex-col h-full bg-[#FFF8F1]">
       <div className="p-6 pb-2 pt-12 flex items-center gap-4">
-        <div className="w-16 h-16 rounded-full bg-[#FF7A00]/20 flex items-center justify-center text-[#FF7A00]">
+        <div className="w-16 h-16 rounded-full bg-theme-gradient/20 flex items-center justify-center text-theme-primary">
           <User className="w-8 h-8" />
         </div>
         <div>
@@ -134,7 +134,7 @@ export function SettingsScreen() {
             </div>
             <div className="flex items-center justify-between py-2">
               <span className="text-[13px] font-medium text-slate-600">Language</span>
-              <span className="text-[13px] font-bold text-[#FF7A00]">English / हिंदी</span>
+              <span className="text-[13px] font-bold text-theme-primary">English / हिंदी</span>
             </div>
           </div>
         </div>

@@ -42,7 +42,7 @@ export function BankScreen() {
           <button className="flex-1 bg-white h-14 rounded-2xl shadow-sm border border-slate-100 flex items-center justify-center gap-2 font-bold text-slate-700 text-sm active:scale-95 transition-transform">
             <Download className="w-4 h-4" /> Statement
           </button>
-          <button className="flex-1 bg-white h-14 rounded-2xl shadow-sm border border-slate-100 flex items-center justify-center gap-2 font-bold text-[#FF7A00] text-sm active:scale-95 transition-transform">
+          <button className="flex-1 bg-white h-14 rounded-2xl shadow-sm border border-slate-100 flex items-center justify-center gap-2 font-bold text-theme-primary text-sm active:scale-95 transition-transform">
             <Share2 className="w-4 h-4" /> Share Details
           </button>
         </div>

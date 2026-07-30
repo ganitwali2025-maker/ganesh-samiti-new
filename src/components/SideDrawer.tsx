@@ -76,11 +76,11 @@ export function SideDrawer() {
                     onClick={() => navigate(item.route)}
                     className={`w-full flex items-center gap-4 px-4 py-3.5 rounded-2xl transition-colors ${
                       isActive 
-                        ? 'bg-[#FF7A00]/10 text-[#FF7A00]' 
+                        ? 'bg-theme-gradient/10 text-theme-primary' 
                         : 'text-slate-600 hover:bg-slate-100'
                     }`}
                   >
-                    <item.icon className={`w-[22px] h-[22px] ${isActive ? 'text-[#FF7A00]' : 'text-slate-400'}`} />
+                    <item.icon className={`w-[22px] h-[22px] ${isActive ? 'text-theme-primary' : 'text-slate-400'}`} />
                     <span className="font-semibold text-[15px]">{item.label}</span>
                   </button>
                 );
@@ -88,7 +88,7 @@ export function SideDrawer() {
             </div>
 
             {/* Bottom Actions (Language + Logout) */}
-            <div className="p-4 border-t border-[#FF7A00]/10 space-y-2">
+            <div className="p-4 border-t border-theme-primary/10 space-y-2">
               <div className="flex items-center justify-between px-4 py-3 bg-slate-50 rounded-2xl">
                 <div className="flex items-center gap-3 text-slate-600">
                   <Globe className="w-5 h-5 text-slate-400" />
@@ -97,13 +97,13 @@ export function SideDrawer() {
                 <div className="flex bg-white rounded-lg p-1 shadow-sm border border-slate-200">
                   <button 
                     onClick={() => setLocale('hi')}
-                    className={`px-3 py-1 rounded-md text-[12px] font-bold transition-colors ${locale === 'hi' ? 'bg-[#FF7A00] text-white' : 'text-slate-500 hover:bg-slate-100'}`}
+                    className={`px-3 py-1 rounded-md text-[12px] font-bold transition-colors ${locale === 'hi' ? 'bg-theme-gradient text-white' : 'text-slate-500 hover:bg-slate-100'}`}
                   >
                     HI
                   </button>
                   <button 
                     onClick={() => setLocale('en')}
-                    className={`px-3 py-1 rounded-md text-[12px] font-bold transition-colors ${locale === 'en' ? 'bg-[#FF7A00] text-white' : 'text-slate-500 hover:bg-slate-100'}`}
+                    className={`px-3 py-1 rounded-md text-[12px] font-bold transition-colors ${locale === 'en' ? 'bg-theme-gradient text-white' : 'text-slate-500 hover:bg-slate-100'}`}
                   >
                     EN
                   </button>

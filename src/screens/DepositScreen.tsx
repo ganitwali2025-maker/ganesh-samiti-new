@@ -87,7 +87,7 @@ export function DepositScreen() {
         <button 
           onClick={handleDeposit}
           disabled={!amount || !member}
-          className="w-full h-14 bg-[#FF7A00] text-white rounded-2xl font-bold text-[16px] shadow-[0_8px_20px_rgb(255,122,0,0.3)] active:scale-[0.98] transition-transform disabled:opacity-50 disabled:active:scale-100"
+          className="w-full h-14 bg-theme-gradient text-white rounded-2xl font-bold text-[16px] shadow-[0_8px_20px_rgb(255,122,0,0.3)] active:scale-[0.98] transition-transform disabled:opacity-50 disabled:active:scale-100"
         >
           Confirm Deposit
         </button>

@@ -53,7 +53,7 @@ export function LoginScreen() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.4 }}
-            className="absolute inset-0 z-50 bg-gradient-to-br from-[#FF6A00] to-[#E65100] flex flex-col items-center justify-center overflow-hidden"
+            className="absolute inset-0 z-50 bg-theme-gradient flex flex-col items-center justify-center overflow-hidden"
           >
              {/* Floating particles background */}
              <div className="absolute inset-0 pointer-events-none overflow-hidden">
@@ -128,7 +128,7 @@ export function LoginScreen() {
             className="flex flex-col h-full w-full relative z-10"
           >
              {/* Header */}
-             <div className="relative bg-gradient-to-b from-[#FF6A00] to-[#FF8C00] rounded-b-[48px] pt-16 pb-12 px-6 flex flex-col items-center shadow-[0_15px_40px_rgba(255,106,0,0.2)] shrink-0 overflow-hidden">
+             <div className="relative bg-theme-gradient rounded-b-[48px] pt-16 pb-12 px-6 flex flex-col items-center shadow-[0_15px_40px_rgba(255,106,0,0.2)] shrink-0 overflow-hidden">
                 {/* Decorative glows */}
                 <div className="absolute top-0 right-0 w-64 h-64 bg-white/20 rounded-full blur-3xl -translate-y-1/2 translate-x-1/4 pointer-events-none"></div>
                 <div className="absolute bottom-0 left-0 w-40 h-40 bg-black/10 rounded-full blur-2xl translate-y-1/2 -translate-x-1/4 pointer-events-none"></div>
@@ -208,15 +208,15 @@ export function LoginScreen() {
 
                 <div className="flex items-center gap-1.5 mb-6 opacity-40">
                    <div className="w-10 h-[2px] bg-gradient-to-r from-transparent to-[#FF7A00]"></div>
-                   <div className="w-1.5 h-1.5 rounded-full bg-[#FF7A00]"></div>
-                   <div className="w-2 h-2 rounded-full bg-[#FF7A00]"></div>
-                   <div className="w-1.5 h-1.5 rounded-full bg-[#FF7A00]"></div>
+                   <div className="w-1.5 h-1.5 rounded-full bg-theme-gradient"></div>
+                   <div className="w-2 h-2 rounded-full bg-theme-gradient"></div>
+                   <div className="w-1.5 h-1.5 rounded-full bg-theme-gradient"></div>
                    <div className="w-10 h-[2px] bg-gradient-to-l from-transparent to-[#FF7A00]"></div>
                 </div>
 
                 <button 
                   onClick={handleStart}
-                  className="w-full h-[60px] bg-gradient-to-r from-[#FF6A00] to-[#FF8A00] rounded-[18px] flex items-center justify-center gap-4 active:scale-[0.98] transition-transform shadow-[0_16px_40px_rgba(255,106,0,0.35)] relative overflow-hidden group"
+                  className="w-full h-[60px] bg-theme-gradient rounded-[18px] flex items-center justify-center gap-4 active:scale-[0.98] transition-transform shadow-[0_16px_40px_rgba(255,106,0,0.35)] relative overflow-hidden group"
                 >
                    <motion.div 
                      initial={{ left: '-100%' }}
@@ -225,7 +225,7 @@ export function LoginScreen() {
                      className="absolute top-0 bottom-0 w-[50%] bg-gradient-to-r from-transparent via-white/50 to-transparent skew-x-[-20deg]"
                    />
                    <span className="text-white text-[20px] font-bold tracking-wide relative z-10">शुरू करें</span>
-                   <div className="w-9 h-9 bg-white rounded-full flex items-center justify-center shadow-md text-[#FF7A00] group-hover:scale-105 transition-transform relative z-10">
+                   <div className="w-9 h-9 bg-white rounded-full flex items-center justify-center shadow-md text-theme-primary group-hover:scale-105 transition-transform relative z-10">
                       <ChevronRight className="w-5 h-5 ml-0.5" strokeWidth={3.5} />
                    </div>
                 </button>
@@ -239,18 +239,18 @@ export function LoginScreen() {
                <div className="grid grid-cols-2 gap-3 mt-4">
                  {/* Developer Card */}
                  <div className="flex flex-col gap-2 items-center justify-center translate-y-4">
-                   <div className="w-12 h-12 rounded-full bg-white flex items-center justify-center shadow-sm text-[#FF7A00] shrink-0 mb-1">
+                   <div className="w-12 h-12 rounded-full bg-white flex items-center justify-center shadow-sm text-theme-primary shrink-0 mb-1">
                      <User className="w-6 h-6" strokeWidth={2} />
                    </div>
                    <div className="flex flex-col items-center">
                      <span className="text-[11px] text-[#888888] font-bold mb-0.5">डेवलपर</span>
-                     <span className="text-[14px] text-[#FF7A00] font-bold leading-tight text-center">Lokesh Rajak</span>
+                     <span className="text-[14px] text-theme-primary font-bold leading-tight text-center">Lokesh Rajak</span>
                      
                      <div className="flex items-center gap-1 mt-3 opacity-40">
                         <div className="w-4 h-[1px] bg-gradient-to-r from-transparent to-[#FF7A00]"></div>
-                        <div className="w-1 h-1 rounded-full bg-[#FF7A00]"></div>
-                        <div className="w-1 h-1 rounded-full bg-[#FF7A00]"></div>
-                        <div className="w-1 h-1 rounded-full bg-[#FF7A00]"></div>
+                        <div className="w-1 h-1 rounded-full bg-theme-gradient"></div>
+                        <div className="w-1 h-1 rounded-full bg-theme-gradient"></div>
+                        <div className="w-1 h-1 rounded-full bg-theme-gradient"></div>
                         <div className="w-4 h-[1px] bg-gradient-to-l from-transparent to-[#FF7A00]"></div>
                      </div>
                    </div>
@@ -258,18 +258,18 @@ export function LoginScreen() {
 
                  {/* Address Card */}
                  <div className="flex flex-col gap-2 items-center justify-center translate-y-4">
-                   <div className="w-12 h-12 rounded-full bg-white flex items-center justify-center shadow-sm text-[#FF7A00] shrink-0 mb-1">
+                   <div className="w-12 h-12 rounded-full bg-white flex items-center justify-center shadow-sm text-theme-primary shrink-0 mb-1">
                      <MapPin className="w-6 h-6" strokeWidth={2} />
                    </div>
                    <div className="flex flex-col items-center">
                      <span className="text-[11px] text-[#888888] font-bold mb-0.5">समिति का पता</span>
-                     <span className="text-[13px] text-[#FF7A00] font-bold leading-tight text-center">Nagargoan, Raipur<br/>Dharsiwa (C.G.)</span>
+                     <span className="text-[13px] text-theme-primary font-bold leading-tight text-center">Nagargoan, Raipur<br/>Dharsiwa (C.G.)</span>
                      
                      <div className="flex items-center gap-1 mt-3 opacity-40">
                         <div className="w-4 h-[1px] bg-gradient-to-r from-transparent to-[#FF7A00]"></div>
-                        <div className="w-1 h-1 rounded-full bg-[#FF7A00]"></div>
-                        <div className="w-1 h-1 rounded-full bg-[#FF7A00]"></div>
-                        <div className="w-1 h-1 rounded-full bg-[#FF7A00]"></div>
+                        <div className="w-1 h-1 rounded-full bg-theme-gradient"></div>
+                        <div className="w-1 h-1 rounded-full bg-theme-gradient"></div>
+                        <div className="w-1 h-1 rounded-full bg-theme-gradient"></div>
                         <div className="w-4 h-[1px] bg-gradient-to-l from-transparent to-[#FF7A00]"></div>
                      </div>
                    </div>

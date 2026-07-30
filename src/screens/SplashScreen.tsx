@@ -9,10 +9,10 @@ export function SplashScreen() {
   // but we can add an extra effect here just in case or leave it to context.
   
   return (
-    <div className="flex flex-col items-center justify-center bg-gradient-to-b from-[#FFF8F1] to-[#FF7A00]/10 h-[100dvh] w-full text-center relative overflow-hidden">
+    <div className="flex flex-col items-center justify-center bg-theme-gradient/10 h-[100dvh] w-full text-center relative overflow-hidden">
       {/* Decorative background */}
       <div className="absolute inset-0 flex justify-center items-center opacity-[0.03] pointer-events-none">
-        <svg viewBox="0 0 100 100" className="w-[150%] h-[150%] text-[#FF7A00]">
+        <svg viewBox="0 0 100 100" className="w-[150%] h-[150%] text-theme-primary">
           <circle cx="50" cy="50" r="40" stroke="currentColor" strokeWidth="0.5" fill="none" strokeDasharray="2 2" />
           <circle cx="50" cy="50" r="30" stroke="currentColor" strokeWidth="0.5" fill="none" strokeDasharray="1 3" />
         </svg>
@@ -38,13 +38,13 @@ export function SplashScreen() {
         <h1 className="text-4xl font-extrabold text-[#4A3B32] tracking-tight mb-2">गणेश समिति</h1>
         <div className="flex items-center gap-3 mb-12">
           <div className="h-[2px] w-12 bg-gradient-to-r from-transparent to-[#FF7A00]"></div>
-          <p className="text-sm font-bold text-[#FF7A00] tracking-widest uppercase">एकता • सेवा • विकास</p>
+          <p className="text-sm font-bold text-theme-primary tracking-widest uppercase">एकता • सेवा • विकास</p>
           <div className="h-[2px] w-12 bg-gradient-to-l from-transparent to-[#FF7A00]"></div>
         </div>
 
         {/* Loading Spinner */}
         <div className="flex flex-col items-center gap-3">
-          <div className="w-10 h-10 border-4 border-[#FF7A00]/20 border-t-[#FF7A00] rounded-full animate-spin"></div>
+          <div className="w-10 h-10 border-4 border-theme-primary/20 border-t-[#FF7A00] rounded-full animate-spin"></div>
           <p className="text-xs font-semibold text-slate-500">लोड हो रहा है...</p>
         </div>
       </motion.div>

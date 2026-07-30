@@ -21,7 +21,7 @@ export function ReportsScreen() {
             <h2 className="text-2xl font-extrabold text-slate-800">Financial<br/>Summary</h2>
             <p className="text-slate-500 text-sm font-medium mt-1">Ganesh Utsav 2025</p>
           </div>
-          <div className="w-12 h-12 bg-[#FF7A00]/10 rounded-2xl flex items-center justify-center text-[#FF7A00]">
+          <div className="w-12 h-12 bg-theme-gradient/10 rounded-2xl flex items-center justify-center text-theme-primary">
             <BarChart3 className="w-6 h-6" />
           </div>
         </div>

@@ -36,7 +36,7 @@ export function ExpenseScreen() {
         {/* Categories Horizontal */}
         <div className="flex gap-3 overflow-x-auto pb-4 scrollbar-hide snap-x mb-2">
           {['सभी (All)', 'मूर्ति (Idol)', 'सजावट (Decor)', 'प्रसाद (Food)', 'अन्य (Other)'].map((cat, i) => (
-            <button key={i} className={`whitespace-nowrap px-5 py-2.5 rounded-full text-[12px] font-bold snap-center transition-colors ${i === 0 ? 'bg-[#FF7A00] text-white shadow-md' : 'bg-white text-slate-500 border border-slate-100'}`}>
+            <button key={i} className={`whitespace-nowrap px-5 py-2.5 rounded-full text-[12px] font-bold snap-center transition-colors ${i === 0 ? 'bg-theme-gradient text-white shadow-md' : 'bg-white text-slate-500 border border-slate-100'}`}>
               {cat}
             </button>
           ))}

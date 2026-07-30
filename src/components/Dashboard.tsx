@@ -153,7 +153,7 @@ export function Dashboard({ data }: { data: ReturnType<typeof useCommitteeData> 
             </div>
 
             {/* Card 4 (Orange) */}
-            <div className="min-w-[92vw] snap-center bg-[linear-gradient(135deg,#FF6A00_0%,#FF8500_50%,#FFA726_100%)] rounded-[30px] p-6 text-white shadow-[0_8px_32px_rgba(255,106,0,0.3),inset_0_1px_1px_rgba(255,255,255,0.5)] border border-white/20 relative overflow-hidden flex flex-col justify-between">
+            <div className="min-w-[92vw] snap-center bg-theme-gradient rounded-[30px] p-6 text-white shadow-[0_8px_32px_rgba(255,106,0,0.3),inset_0_1px_1px_rgba(255,255,255,0.5)] border border-white/20 relative overflow-hidden flex flex-col justify-between">
                <div className="absolute top-0 left-0 w-full h-1/3 bg-gradient-to-b from-white/20 to-transparent pointer-events-none"></div>
                <div className="absolute left-[-10%] top-[-10%] w-1/2 h-1/2 bg-white/20 rounded-full blur-3xl pointer-events-none"></div>
                <div className="absolute right-[-10px] bottom-[-10px] w-20 h-20 bg-[#E65100]/50 rounded-full blur-2xl pointer-events-none"></div>
@@ -192,7 +192,7 @@ export function Dashboard({ data }: { data: ReturnType<typeof useCommitteeData> 
             {[0, 1, 2, 3].map((idx) => (
               <div 
                 key={idx} 
-                className={`h-2 rounded-full transition-all duration-300 ${activeCard === idx ? 'w-6 bg-[#FF7A00]' : 'w-2 bg-slate-200'}`}
+                className={`h-2 rounded-full transition-all duration-300 ${activeCard === idx ? 'w-6 bg-theme-gradient' : 'w-2 bg-slate-200'}`}
               />
             ))}
          </div>
@@ -202,7 +202,7 @@ export function Dashboard({ data }: { data: ReturnType<typeof useCommitteeData> 
       <div className="px-5 mt-8">
          <div className="grid grid-cols-5 gap-y-7 gap-x-2">
            {[
-             { icon: Users, label: t('menuMembers'), color: 'text-[#FF7A00]', bg: 'bg-orange-50', route: 'members' as const },
+             { icon: Users, label: t('menuMembers'), color: 'text-theme-primary', bg: 'bg-orange-50', route: 'members' as const },
              { icon: Landmark, label: t('menuCollection'), color: 'text-[#2ECC71]', bg: 'bg-green-50', route: 'collection' as const },
              { icon: WalletCards, label: t('menuBank'), color: 'text-[#3B82F6]', bg: 'bg-blue-50', route: 'bank' as const },
              { icon: Receipt, label: t('menuExpense'), color: 'text-[#FF5FA2]', bg: 'bg-pink-50', route: 'expense' as const },

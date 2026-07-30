@@ -22,7 +22,7 @@ export function SavingsScreen() {
 
         <div className="flex justify-between items-center mb-4 px-1">
           <h3 className="font-bold text-slate-800 text-[15px]">बचत लक्ष्य (Savings Goals)</h3>
-          <button className="text-[12px] font-bold text-[#FF7A00] flex items-center gap-1">
+          <button className="text-[12px] font-bold text-theme-primary flex items-center gap-1">
             <Plus className="w-4 h-4" /> नया लक्ष्य
           </button>
         </div>
@@ -33,7 +33,7 @@ export function SavingsScreen() {
               <CheckCircle2 className="w-6 h-6 text-emerald-400" />
             </div>
             <div className="flex items-center gap-3 mb-4">
-              <div className="w-10 h-10 rounded-[14px] bg-[#FF7A00]/10 flex items-center justify-center text-[#FF7A00]">
+              <div className="w-10 h-10 rounded-[14px] bg-theme-gradient/10 flex items-center justify-center text-theme-primary">
                 <Target className="w-5 h-5" />
               </div>
               <div>

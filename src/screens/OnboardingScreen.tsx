@@ -64,8 +64,8 @@ export function OnboardingScreen() {
             transition={{ duration: 0.3 }}
             className="flex flex-col items-center text-center px-8"
           >
-            <div className="w-64 h-64 rounded-full bg-[#FF7A00]/5 flex items-center justify-center p-6 mb-8 relative">
-              <div className="absolute inset-0 bg-[#FF7A00]/10 rounded-full blur-2xl"></div>
+            <div className="w-64 h-64 rounded-full bg-theme-gradient/5 flex items-center justify-center p-6 mb-8 relative">
+              <div className="absolute inset-0 bg-theme-gradient/10 rounded-full blur-2xl"></div>
               <img 
                 src={onboardingData[currentIndex].image} 
                 alt="Onboarding" 
@@ -91,7 +91,7 @@ export function OnboardingScreen() {
           {onboardingData.map((_, idx) => (
             <div 
               key={idx} 
-              className={`h-2 rounded-full transition-all duration-300 ${idx === currentIndex ? 'w-8 bg-[#FF7A00]' : 'w-2 bg-[#FF7A00]/20'}`}
+              className={`h-2 rounded-full transition-all duration-300 ${idx === currentIndex ? 'w-8 bg-theme-gradient' : 'w-2 bg-theme-gradient/20'}`}
             />
           ))}
         </div>
@@ -99,7 +99,7 @@ export function OnboardingScreen() {
         {/* Next / Get Started Button */}
         <button 
           onClick={handleNext}
-          className="h-14 px-8 rounded-full bg-[#FF7A00] text-white font-bold flex items-center gap-2 shadow-[0_8px_20px_rgb(255,122,0,0.3)] active:scale-95 transition-all"
+          className="h-14 px-8 rounded-full bg-theme-gradient text-white font-bold flex items-center gap-2 shadow-[0_8px_20px_rgb(255,122,0,0.3)] active:scale-95 transition-all"
         >
           {currentIndex === onboardingData.length - 1 ? (
             <>Get Started <ArrowRight className="w-5 h-5" /></>

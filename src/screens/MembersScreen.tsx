@@ -34,7 +34,7 @@ export function MembersScreen() {
         {/* Search Bar */}
         <div className="relative mt-5 mb-6 shadow-[0_6px_18px_rgba(0,0,0,0.05)] rounded-[18px]">
           <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-            <Search className="w-5 h-5 text-[#FF7A00]" />
+            <Search className="w-5 h-5 text-theme-primary" />
           </div>
           <input 
             type="text" 
@@ -56,7 +56,7 @@ export function MembersScreen() {
       {/* Floating Add Button */}
       <button 
         onClick={() => setIsAddModalOpen(true)}
-        className="fixed bottom-[100px] right-5 w-14 h-14 bg-[#FF7A00] rounded-[20px] flex items-center justify-center text-white shadow-[0_8px_20px_rgb(255,122,0,0.4)] active:scale-95 transition-transform z-[40]"
+        className="fixed bottom-[100px] right-5 w-14 h-14 bg-theme-gradient rounded-[20px] flex items-center justify-center text-white shadow-[0_8px_20px_rgb(255,122,0,0.4)] active:scale-95 transition-transform z-[40]"
       >
         <Plus className="w-6 h-6" />
       </button>

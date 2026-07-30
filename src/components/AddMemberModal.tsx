@@ -62,7 +62,7 @@ export function AddMemberModal({ isOpen, onClose, onAdd }: AddMemberModalProps) 
       <div className="w-full sm:max-w-md bg-white rounded-t-[32px] sm:rounded-[32px] overflow-hidden flex flex-col max-h-[90vh] shadow-2xl animate-in slide-in-from-bottom-full sm:slide-in-from-bottom-10 duration-300">
         
         {/* Header */}
-        <div className="bg-gradient-to-r from-[#FF6A00] to-[#FF8C00] px-6 py-4 flex items-center justify-between shrink-0">
+        <div className="bg-theme-gradient px-6 py-4 flex items-center justify-between shrink-0">
           <h2 className="text-white text-[18px] font-bold tracking-wide">नया सदस्य जोड़ें</h2>
           <button onClick={onClose} className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center text-white active:scale-95 transition-transform">
             <X className="w-5 h-5" />
@@ -75,15 +75,15 @@ export function AddMemberModal({ isOpen, onClose, onAdd }: AddMemberModalProps) 
             
             {/* Photo Upload */}
             <div className="flex flex-col items-center mb-2">
-              <div className="w-[90px] h-[90px] rounded-full border-[3px] border-[#FF7A00] p-1 bg-white relative">
+              <div className="w-[90px] h-[90px] rounded-full border-[3px] border-theme-primary p-1 bg-white relative">
                 {photo ? (
                   <img src={photo} alt="Preview" className="w-full h-full object-cover rounded-full" />
                 ) : (
-                  <div className="w-full h-full bg-orange-50 rounded-full flex flex-col items-center justify-center text-[#FF7A00]/50">
+                  <div className="w-full h-full bg-orange-50 rounded-full flex flex-col items-center justify-center text-theme-primary/50">
                     <User className="w-8 h-8 mb-1" />
                   </div>
                 )}
-                <label className="absolute bottom-0 right-0 w-8 h-8 bg-[#FF7A00] rounded-full border-2 border-white flex items-center justify-center text-white shadow-md active:scale-95 transition-transform cursor-pointer">
+                <label className="absolute bottom-0 right-0 w-8 h-8 bg-theme-gradient rounded-full border-2 border-white flex items-center justify-center text-white shadow-md active:scale-95 transition-transform cursor-pointer">
                   <Camera className="w-4 h-4" />
                   <input type="file" accept="image/*" onChange={handlePhotoUpload} className="hidden" />
                 </label>
@@ -184,7 +184,7 @@ export function AddMemberModal({ isOpen, onClose, onAdd }: AddMemberModalProps) 
         <div className="p-4 bg-white border-t border-slate-100 shrink-0 pb-8 sm:pb-4">
           <button 
             type="submit" form="add-member-form"
-            className="w-full h-[56px] bg-gradient-to-r from-[#FF6A00] to-[#FF8C00] text-white text-[16px] font-bold rounded-[16px] shadow-[0_8px_20px_rgba(255,106,0,0.3)] active:scale-[0.98] transition-transform"
+            className="w-full h-[56px] bg-theme-gradient text-white text-[16px] font-bold rounded-[16px] shadow-[0_8px_20px_rgba(255,106,0,0.3)] active:scale-[0.98] transition-transform"
           >
             सदस्य जोड़ें
           </button>

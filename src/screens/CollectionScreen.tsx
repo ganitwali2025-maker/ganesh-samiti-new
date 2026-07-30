@@ -39,13 +39,13 @@ export function CollectionScreen() {
         <div className="flex bg-white p-1 rounded-2xl mb-6 shadow-sm">
           <button 
             onClick={() => setActiveTab('paid')}
-            className={`flex-1 py-3 text-[13px] font-bold rounded-xl transition-all ${activeTab === 'paid' ? 'bg-[#FF7A00] text-white shadow-md' : 'text-slate-500 hover:text-slate-700'}`}
+            className={`flex-1 py-3 text-[13px] font-bold rounded-xl transition-all ${activeTab === 'paid' ? 'bg-theme-gradient text-white shadow-md' : 'text-slate-500 hover:text-slate-700'}`}
           >
             प्राप्त (Paid)
           </button>
           <button 
             onClick={() => setActiveTab('pending')}
-            className={`flex-1 py-3 text-[13px] font-bold rounded-xl transition-all ${activeTab === 'pending' ? 'bg-[#FF7A00] text-white shadow-md' : 'text-slate-500 hover:text-slate-700'}`}
+            className={`flex-1 py-3 text-[13px] font-bold rounded-xl transition-all ${activeTab === 'pending' ? 'bg-theme-gradient text-white shadow-md' : 'text-slate-500 hover:text-slate-700'}`}
           >
             बकाया (Pending)
           </button>
