@@ -61,59 +61,57 @@ export function Dashboard({ data }: { data: ReturnType<typeof useCommitteeData> 
       <div className="pt-[220px]"></div>
 
       {/* Dashboard Cards (Horizontal Scroll) */}
-      <div className="px-5 mt-2 flex gap-4 overflow-x-auto pb-8 pt-2 scrollbar-hide snap-x">
+      <div className="px-5 mt-6 flex gap-4 overflow-x-auto pb-6 scrollbar-hide snap-x">
         {/* Total Collection */}
         <div 
           onClick={() => navigate('collection')}
-          className="min-w-[160px] flex-1 bg-white/70 backdrop-blur-xl rounded-[32px] p-5 shadow-[0_12px_30px_rgba(0,0,0,0.04)] border border-white snap-center relative overflow-hidden active:scale-[0.98] transition-all"
+          className="min-w-[155px] flex-1 bg-white rounded-[24px] p-5 shadow-[0_8px_20px_rgb(0,0,0,0.03)] border border-slate-100 snap-center relative overflow-hidden active:scale-[0.98] transition-transform"
         >
-          <div className="absolute -right-4 -top-4 w-24 h-24 bg-emerald-400/10 rounded-full blur-xl"></div>
-          <div className="flex items-center gap-3 mb-5 relative z-10">
-            <div className="w-11 h-11 rounded-[18px] bg-gradient-to-br from-emerald-400 to-emerald-600 flex items-center justify-center text-white shadow-md">
+          <div className="flex items-center gap-3 mb-4 relative z-10">
+            <div className="w-10 h-10 rounded-2xl bg-emerald-50 flex items-center justify-center text-emerald-500">
               <Users className="w-5 h-5" />
             </div>
             <div>
-              <p className="text-[12px] text-slate-500 font-extrabold tracking-wide">कुल जमा</p>
-              <p className="text-[10px] text-slate-400 font-semibold">इस महीने</p>
+              <p className="text-[11px] text-slate-500 font-semibold">कुल जमा</p>
+              <p className="text-[10px] text-slate-400">इस महीने</p>
             </div>
           </div>
-          <h3 className="text-[26px] font-extrabold text-slate-800 relative z-10 tracking-tight">₹1,25,600</h3>
+          <h3 className="text-[22px] font-bold text-emerald-500 relative z-10">₹1,25,600</h3>
         </div>
 
         {/* Total Expenses */}
         <div 
           onClick={() => navigate('expense')}
-          className="min-w-[160px] flex-1 bg-white/70 backdrop-blur-xl rounded-[32px] p-5 shadow-[0_12px_30px_rgba(0,0,0,0.04)] border border-white snap-center relative overflow-hidden active:scale-[0.98] transition-all"
+          className="min-w-[155px] flex-1 bg-white rounded-[24px] p-5 shadow-[0_8px_20px_rgb(0,0,0,0.03)] border border-slate-100 snap-center relative overflow-hidden active:scale-[0.98] transition-transform"
         >
-          <div className="absolute -right-4 -top-4 w-24 h-24 bg-rose-400/10 rounded-full blur-xl"></div>
-          <div className="flex items-center gap-3 mb-5 relative z-10">
-            <div className="w-11 h-11 rounded-[18px] bg-gradient-to-br from-rose-400 to-rose-600 flex items-center justify-center text-white shadow-md">
+          <div className="flex items-center gap-3 mb-4 relative z-10">
+            <div className="w-10 h-10 rounded-2xl bg-rose-50 flex items-center justify-center text-rose-500">
               <ArrowDownCircle className="w-5 h-5" />
             </div>
             <div>
-              <p className="text-[12px] text-slate-500 font-extrabold tracking-wide">कुल खर्च</p>
-              <p className="text-[10px] text-slate-400 font-semibold">इस महीने</p>
+              <p className="text-[11px] text-slate-500 font-semibold">कुल खर्च</p>
+              <p className="text-[10px] text-slate-400">इस महीने</p>
             </div>
           </div>
-          <h3 className="text-[26px] font-extrabold text-slate-800 relative z-10 tracking-tight">₹68,450</h3>
+          <h3 className="text-[22px] font-bold text-rose-500 relative z-10">₹68,450</h3>
         </div>
 
         {/* Balance */}
         <div 
           onClick={() => navigate('bank')}
-          className="min-w-[160px] flex-1 bg-gradient-to-br from-[#8066FF] to-[#5C3CE6] rounded-[32px] p-5 shadow-[0_16px_32px_rgba(92,60,230,0.3)] snap-center relative overflow-hidden active:scale-[0.98] transition-all"
+          className="min-w-[155px] flex-1 bg-gradient-to-br from-[#8066FF] to-[#5C3CE6] rounded-[24px] p-5 shadow-[0_12px_24px_rgb(108,76,241,0.25)] snap-center relative overflow-hidden active:scale-[0.98] transition-transform"
         >
-          <div className="absolute -right-4 -top-4 w-32 h-32 bg-white/20 rounded-full blur-2xl"></div>
-          <div className="flex items-center gap-3 mb-5 relative z-10">
-            <div className="w-11 h-11 rounded-[18px] bg-white/20 flex items-center justify-center text-white backdrop-blur-md shadow-inner border border-white/20">
+          <div className="absolute -right-4 -bottom-4 w-24 h-24 bg-white/10 rounded-full blur-xl"></div>
+          <div className="flex items-center gap-3 mb-4 relative z-10">
+            <div className="w-10 h-10 rounded-2xl bg-white/20 flex items-center justify-center text-white backdrop-blur-sm">
               <Wallet className="w-5 h-5" />
             </div>
             <div>
-              <p className="text-[12px] text-indigo-100 font-extrabold tracking-wide">शेष राशि</p>
-              <p className="text-[10px] text-indigo-200 font-semibold">आज तक</p>
+              <p className="text-[11px] text-indigo-100 font-semibold">शेष राशि</p>
+              <p className="text-[10px] text-indigo-200">आज तक</p>
             </div>
           </div>
-          <h3 className="text-[26px] font-extrabold text-white relative z-10 tracking-tight">₹57,150</h3>
+          <h3 className="text-[22px] font-bold text-white relative z-10">₹57,150</h3>
         </div>
       </div>
 
