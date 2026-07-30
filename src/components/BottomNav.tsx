@@ -46,9 +46,6 @@ export function BottomNav() {
         <User className={`w-6 h-6 ${currentScreen === 'profile' ? 'fill-[#FF7A00]/20' : ''}`} />
         <span className="text-[10px] font-bold">प्रोफाइल</span>
       </button>
-      
-      {/* Bottom Home Indicator area for iOS style padding */}
-      <div className="absolute bottom-1 left-1/2 -translate-x-1/2 w-32 h-1 bg-slate-800 rounded-full md:hidden"></div>
     </div>
   );
 }
