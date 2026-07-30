@@ -1,3 +1,4 @@
+import React from 'react';
 import { ChevronLeft } from 'lucide-react';
 import { useNavigation } from '../context/NavigationContext';
 

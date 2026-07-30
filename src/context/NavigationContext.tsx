@@ -1,4 +1,5 @@
 import { createContext, useContext, useState, ReactNode, useEffect } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 export type ScreenName = 
   | 'splash'
@@ -21,8 +22,8 @@ export type ScreenName =
   | 'settings';
 
 interface NavigationContextType {
-  currentScreen: ScreenName;
-  navigate: (screen: ScreenName) => void;
+  currentScreen: string;
+  navigate: (screen: ScreenName | string) => void;
   goBack: () => void;
   isDrawerOpen: boolean;
   openDrawer: () => void;
@@ -32,30 +33,28 @@ interface NavigationContextType {
 const NavigationContext = createContext<NavigationContextType | undefined>(undefined);
 
 export function NavigationProvider({ children }: { children: ReactNode }) {
-  const [history, setHistory] = useState<ScreenName[]>(['splash']);
+  const routerNavigate = useNavigate();
+  const location = useLocation();
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 
-  const currentScreen = history[history.length - 1];
+  // currentScreen is derived from pathname, e.g., '/dashboard' -> 'dashboard'
+  // default to 'splash' if at root '/'
+  const currentScreen = location.pathname === '/' ? 'splash' : location.pathname.substring(1);
 
-  const navigate = (screen: ScreenName) => {
+  const navigate = (screen: ScreenName | string) => {
     if (screen === currentScreen) return;
-    setHistory((prev) => [...prev, screen]);
+    routerNavigate(screen === 'splash' ? '/' : `/${screen}`);
     setIsDrawerOpen(false); // Auto close drawer on navigate
   };
 
   const goBack = () => {
-    setHistory((prev) => {
-      if (prev.length > 1) {
-        return prev.slice(0, -1);
-      }
-      return prev;
-    });
+    routerNavigate(-1);
   };
 
   const openDrawer = () => setIsDrawerOpen(true);
   const closeDrawer = () => setIsDrawerOpen(false);
 
-  // Auto transition from Splash -> Login after 2 seconds
+  // Auto transition from Splash -> Login after 2.5 seconds
   useEffect(() => {
     if (currentScreen === 'splash') {
       const timer = setTimeout(() => {

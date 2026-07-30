@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { useCommitteeData } from '../hooks/useCommitteeData';
 import { Plus, User, Phone, Trash2, Shield } from 'lucide-react';
 import { formatCurrency } from '../utils/format';
