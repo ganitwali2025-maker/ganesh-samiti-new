@@ -2,223 +2,248 @@ import { useCommitteeData } from '../hooks/useCommitteeData';
 import { useNavigation } from '../context/NavigationContext';
 import { 
   Menu, Bell, Users, Landmark, Wallet, Receipt, Target, 
-  PiggyBank, Building2, BarChart3, Calendar, Megaphone,
-  ArrowDownCircle, ArrowUpCircle, ChevronRight, UserPlus, FileText,
-  Zap, ChevronDown
+  Building2, BarChart3, Calendar, Megaphone,
+  ArrowDownCircle, ArrowUpCircle, UserPlus, FileText,
+  HandCoins, WalletCards, ArrowUpRight, ArrowDownRight, RefreshCw
 } from 'lucide-react';
 import { formatCurrency } from '../utils/format';
 
 export function Dashboard({ data }: { data: ReturnType<typeof useCommitteeData> }) {
   const { navigate, openDrawer } = useNavigation();
   const stats = data.getStats();
-  const recentTransactions = data.transactions
-    .slice()
-    .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
-    .slice(0, 4);
 
   return (
-    <div className="flex flex-col relative pb-8 min-h-screen bg-[#FFF8F1]">
-      {/* Fixed Sticky Header */}
-      <div className="fixed top-0 inset-x-0 z-40 bg-gradient-to-r from-[#FF7A00] via-[#FFA726] to-[#FFD54F] rounded-b-[40px] shadow-[0_12px_40px_rgba(255,122,0,0.25)] overflow-hidden pt-12 pb-6 px-5 border-b border-white/20">
-         {/* Subtle glowing watermark */}
-         <div className="absolute top-0 right-0 w-64 h-64 bg-white/20 rounded-full blur-3xl -translate-y-1/2 translate-x-1/4 pointer-events-none"></div>
-         <div className="absolute bottom-0 left-0 w-40 h-40 bg-white/20 rounded-full blur-2xl translate-y-1/2 -translate-x-1/4 pointer-events-none"></div>
+    <div className="flex flex-col relative pb-[100px] min-h-screen bg-[#FFF8F3]">
+      {/* 1. HEADER (Orange Gradient) */}
+      <div className="relative bg-gradient-to-b from-[#FF6B00] to-[#FF9F1A] rounded-b-[40px] pt-12 pb-8 px-5 overflow-hidden shadow-sm">
+         {/* Subtle watermark */}
+         <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/4 pointer-events-none"></div>
          
          <div className="flex justify-between items-center relative z-10">
             <button 
               onClick={openDrawer}
-              className="w-11 h-11 bg-white/20 backdrop-blur-md rounded-[18px] flex items-center justify-center text-white active:scale-95 transition-all border border-white/30 shadow-sm hover:bg-white/30"
+              className="w-11 h-11 bg-white/20 backdrop-blur-md rounded-[16px] flex items-center justify-center text-white active:scale-95 transition-all"
             >
-              <Menu className="w-5 h-5" />
+              <Menu className="w-6 h-6" strokeWidth={2} />
             </button>
             
             <div className="flex flex-col items-center">
-              <div className="w-16 h-16 relative flex justify-center items-center mb-1.5">
-                 <img src="/logo.png" 
-                      alt="Logo" 
-                      className="w-14 h-14 object-cover rounded-full shadow-lg border-[2px] border-white relative z-10" />
-                 <div className="absolute inset-0 bg-yellow-300 rounded-full blur-xl opacity-40 animate-pulse"></div>
+              <div className="w-[72px] h-[72px] rounded-full bg-white p-1 shadow-lg mb-2 relative">
+                 <img src="/logo.png" alt="Logo" className="w-full h-full object-cover rounded-full" />
               </div>
-              <h1 className="text-[22px] font-extrabold text-white tracking-wide leading-tight shadow-black/10 drop-shadow-md" style={{ fontFamily: 'sans-serif' }}>गणेश समिति</h1>
-              <div className="flex items-center gap-1.5 mt-0.5">
-                <div className="h-[1px] w-4 bg-white/40"></div>
-                <p className="text-[9px] font-extrabold text-white/95 tracking-widest uppercase">एकता • सेवा • विकास</p>
-                <div className="h-[1px] w-4 bg-white/40"></div>
+              <h1 className="text-[22px] font-extrabold text-white tracking-wide shadow-black/10 drop-shadow-sm">गणेश समिति</h1>
+              <div className="flex items-center gap-2 mt-1">
+                <div className="h-[1px] w-5 bg-white/40"></div>
+                <p className="text-[10px] font-bold text-white/95 tracking-widest uppercase">एकता • सेवा • विकास</p>
+                <div className="h-[1px] w-5 bg-white/40"></div>
               </div>
             </div>
 
             <button 
               onClick={() => navigate('notifications')}
-              className="w-11 h-11 bg-white/20 backdrop-blur-md rounded-[18px] flex items-center justify-center text-white relative active:scale-95 transition-all border border-white/30 shadow-sm hover:bg-white/30"
+              className="w-11 h-11 bg-white/20 backdrop-blur-md rounded-[16px] flex items-center justify-center text-white relative active:scale-95 transition-all"
             >
-              <Bell className="w-5 h-5" />
-              <span className="absolute top-3 right-3 w-2.5 h-2.5 bg-red-500 rounded-full border-2 border-orange-400"></span>
+              <Bell className="w-6 h-6" strokeWidth={2} />
+              <span className="absolute top-2.5 right-2.5 w-3 h-3 bg-[#FF5A5F] rounded-full border-2 border-[#FF8A00]"></span>
             </button>
          </div>
       </div>
 
-      {/* Main Content Padding - To push content below fixed header */}
-      <div className="pt-[220px]"></div>
-
-      {/* Dashboard Cards (Horizontal Scroll) */}
-      <div className="px-5 mt-6 flex gap-4 overflow-x-auto pb-6 scrollbar-hide snap-x">
-        {/* Total Collection */}
-        <div 
-          onClick={() => navigate('collection')}
-          className="min-w-[85vw] md:min-w-[280px] h-[170px] bg-[#A78BFA] rounded-[24px] p-6 snap-center relative overflow-hidden active:scale-[0.98] transition-transform flex flex-col justify-between text-white"
-        >
-          <div className="flex justify-between items-start relative z-10">
-            <p className="font-medium tracking-wide text-[13px] opacity-90">कुल जमा</p>
-            <div className="w-10 h-7 bg-white/20 rounded-md flex items-center justify-center">
-               <Users className="w-4 h-4 text-white" />
-            </div>
-          </div>
-          
-          <h3 className="text-[34px] font-bold relative z-10 tracking-widest mt-auto mb-3" style={{ fontFamily: 'monospace' }}>₹1,25,600</h3>
-          
-          <div className="flex justify-between items-end relative z-10">
-            <p className="text-[12px] opacity-90 font-medium tracking-wide">गणेश समिति</p>
-            <p className="text-[11px] opacity-80 font-medium">इस महीने</p>
-          </div>
-        </div>
-
-        {/* Total Expenses */}
-        <div 
-          onClick={() => navigate('expense')}
-          className="min-w-[85vw] md:min-w-[280px] h-[170px] bg-[#F472B6] rounded-[24px] p-6 snap-center relative overflow-hidden active:scale-[0.98] transition-transform flex flex-col justify-between text-white"
-        >
-          <div className="flex justify-between items-start relative z-10">
-            <p className="font-medium tracking-wide text-[13px] opacity-90">कुल खर्च</p>
-            <div className="w-10 h-7 bg-white/20 rounded-md flex items-center justify-center">
-               <ArrowDownCircle className="w-4 h-4 text-white" />
-            </div>
-          </div>
-          
-          <h3 className="text-[34px] font-bold relative z-10 tracking-widest mt-auto mb-3" style={{ fontFamily: 'monospace' }}>₹68,450</h3>
-          
-          <div className="flex justify-between items-end relative z-10">
-            <p className="text-[12px] opacity-90 font-medium tracking-wide">गणेश समिति</p>
-            <p className="text-[11px] opacity-80 font-medium">इस महीने</p>
-          </div>
-        </div>
-
-        {/* Balance */}
-        <div 
-          onClick={() => navigate('bank')}
-          className="min-w-[85vw] md:min-w-[280px] h-[170px] bg-[#6366F1] rounded-[24px] p-6 snap-center relative overflow-hidden active:scale-[0.98] transition-transform flex flex-col justify-between text-white"
-        >
-          <div className="flex justify-between items-start relative z-10">
-            <p className="font-medium tracking-wide text-[13px] opacity-90">शेष राशि</p>
-            <div className="w-10 h-7 bg-white/20 rounded-md flex items-center justify-center">
-               <Wallet className="w-4 h-4 text-white" />
-            </div>
-          </div>
-          
-          <h3 className="text-[34px] font-bold relative z-10 tracking-widest mt-auto mb-3" style={{ fontFamily: 'monospace' }}>₹57,150</h3>
-          
-          <div className="flex justify-between items-end relative z-10">
-            <p className="text-[12px] opacity-90 font-medium tracking-wide">गणेश समिति</p>
-            <p className="text-[11px] opacity-80 font-medium">आज तक</p>
-          </div>
-        </div>
-      </div>
-
-      {/* Quick Menu Grid (2 Rows x 5 Columns) */}
-      <div className="px-5 mt-2">
-        <div className="bg-white/80 backdrop-blur-md rounded-[32px] p-6 shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-white">
-          <div className="grid grid-cols-5 gap-y-6 gap-x-3">
-            {[
-              { icon: Users, label: 'सदस्य', color: 'text-orange-500', bg: 'bg-orange-50', route: 'members' as const },
-              { icon: Landmark, label: 'मासिक', color: 'text-emerald-500', bg: 'bg-emerald-50', route: 'collection' as const },
-              { icon: Wallet, label: 'जमा', color: 'text-blue-500', bg: 'bg-blue-50', route: 'deposit' as const },
-              { icon: Receipt, label: 'खर्च', color: 'text-rose-500', bg: 'bg-rose-50', route: 'expense' as const },
-              { icon: Target, label: 'बजट', color: 'text-indigo-500', bg: 'bg-indigo-50', route: 'budget' as const },
-              { icon: PiggyBank, label: 'बचत', color: 'text-pink-500', bg: 'bg-pink-50', route: 'savings' as const },
-              { icon: Building2, label: 'बैंक', color: 'text-cyan-500', bg: 'bg-cyan-50', route: 'bank' as const },
-              { icon: BarChart3, label: 'रिपोर्ट', color: 'text-teal-600', bg: 'bg-teal-50', route: 'reports' as const },
-              { icon: Calendar, label: 'प्रोग्राम', color: 'text-amber-500', bg: 'bg-amber-50', route: 'events' as const },
-              { icon: Megaphone, label: 'सूचनाएं', color: 'text-violet-500', bg: 'bg-violet-50', route: 'notice' as const },
-            ].map((item, i) => (
-              <div 
-                key={i} 
-                onClick={() => navigate(item.route)}
-                className="flex flex-col items-center gap-2.5 cursor-pointer active:scale-90 transition-transform group"
-              >
-                <div className={`w-[46px] h-[46px] rounded-[18px] ${item.bg} flex items-center justify-center shadow-sm border border-white/50 group-hover:shadow-md transition-all`}>
-                  <item.icon className={`w-5 h-5 ${item.color}`} strokeWidth={2.5} />
+      {/* 2. TOP DASHBOARD (Purple 70% / Pink 30%) */}
+      <div className="px-5 mt-[-16px] relative z-20 flex gap-3">
+         {/* Left Card (Purple) */}
+         <div className="w-[65%] bg-gradient-to-br from-[#7357FF] to-[#9A7DFF] rounded-[28px] p-5 text-white shadow-md relative overflow-hidden flex flex-col justify-between">
+            <div className="absolute right-[-20px] top-[-20px] w-32 h-32 bg-white/10 rounded-full blur-2xl"></div>
+            
+            <div>
+              <div className="flex justify-between items-start mb-1">
+                <p className="text-[13px] font-semibold opacity-90">कुल जमा राशि</p>
+                <div className="w-8 h-6 bg-white/20 rounded-lg flex items-center justify-center backdrop-blur-sm">
+                  <WalletCards className="w-4 h-4 text-white" />
                 </div>
-                <span className="text-[10px] font-extrabold text-slate-600 whitespace-nowrap tracking-wide">{item.label}</span>
               </div>
-            ))}
-          </div>
-        </div>
+              <h3 className="text-[28px] font-bold tracking-wider mb-1" style={{ fontFamily: 'monospace' }}>₹1,25,600</h3>
+              
+              <div className="flex items-center justify-between mt-1 mb-4">
+                 <p className="text-[11px] font-medium opacity-90">गणेश समिति</p>
+                 <div className="flex items-center gap-1 bg-white/20 px-2 py-0.5 rounded-full backdrop-blur-sm cursor-pointer">
+                    <span className="text-[9px] font-semibold">इस महीने</span>
+                    <ArrowUpRight className="w-3 h-3" />
+                 </div>
+              </div>
+            </div>
+
+            <div className="flex justify-between items-center gap-2 border-t border-white/20 pt-3">
+               <div className="flex items-center gap-2">
+                 <div className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center">
+                    <Users className="w-4 h-4 text-white" />
+                 </div>
+                 <div>
+                   <p className="text-[9px] opacity-80 font-medium">कुल सदस्य</p>
+                   <p className="text-[13px] font-bold">125</p>
+                 </div>
+               </div>
+               
+               <div className="flex items-center gap-2">
+                 <div className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center">
+                    <BarChart3 className="w-4 h-4 text-white" />
+                 </div>
+                 <div>
+                   <p className="text-[9px] opacity-80 font-medium">औसत जमा</p>
+                   <p className="text-[13px] font-bold">₹45,300</p>
+                 </div>
+               </div>
+            </div>
+         </div>
+
+         {/* Right Card (Pink) */}
+         <div className="w-[35%] bg-gradient-to-br from-[#FF5FA2] to-[#FF7EB3] rounded-[28px] p-4 text-white shadow-md relative overflow-hidden flex flex-col justify-between">
+            <div className="absolute right-[-10px] top-[-10px] w-20 h-20 bg-white/10 rounded-full blur-xl"></div>
+            
+            <div className="flex justify-between items-start mb-2 relative z-10">
+               <div>
+                  <p className="text-[11px] font-medium opacity-90">मासिक अपडेट</p>
+                  <p className="text-[10px] font-bold mt-1">जुलाई - 2025</p>
+               </div>
+               <Calendar className="w-4 h-4 text-white/80" />
+            </div>
+
+            <div className="mt-auto relative z-10 space-y-3">
+               <div>
+                 <p className="text-[9px] font-medium opacity-80">मासिक जमा</p>
+                 <p className="text-[16px] font-bold">₹25,400</p>
+               </div>
+               <div className="h-[1px] w-full bg-white/20"></div>
+               <div>
+                 <p className="text-[9px] font-medium opacity-80">मासिक खर्च</p>
+                 <p className="text-[16px] font-bold">₹8,750</p>
+               </div>
+            </div>
+         </div>
       </div>
 
-
-
-      {/* Savings Goal & Quick Actions Grid */}
-      <div className="px-5 mt-5 grid grid-cols-2 gap-4 pb-[100px]">
-        {/* Savings Goal Card */}
-        <div className="bg-white/80 backdrop-blur-md rounded-[32px] p-5 shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-white relative overflow-hidden flex flex-col justify-center items-center">
-          <div className="flex w-full justify-between items-center mb-2 absolute top-4 left-0 px-5">
-            <h4 className="font-extrabold text-slate-800 text-[12px] flex items-center gap-1.5"><Target className="w-4 h-4 text-[#FF7A00]" /> बचत लक्ष्य</h4>
-          </div>
-          
-          <div className="relative w-28 h-28 mt-6">
-            <svg viewBox="0 0 36 36" className="w-full h-full transform -rotate-90">
-              <path
-                className="text-orange-100"
-                d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="4"
-              />
-              <path
-                className="text-[#FF7A00]"
-                strokeDasharray="62, 100"
-                d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="4"
-                strokeLinecap="round"
-              />
-            </svg>
-            <div className="absolute inset-0 flex flex-col items-center justify-center">
-              <span className="text-xl font-extrabold text-slate-800">62%</span>
-              <span className="text-[8px] font-bold text-slate-500 uppercase tracking-widest mt-0.5">पूर्ण</span>
+      {/* 3. MENU GRID */}
+      <div className="px-5 mt-5">
+         <div className="bg-white rounded-[32px] p-6 shadow-sm border border-slate-50">
+            <div className="grid grid-cols-5 gap-y-6 gap-x-2">
+              {[
+                { icon: Users, label: 'सदस्य', color: 'text-[#FF7A00]', bg: 'bg-orange-50', route: 'members' as const },
+                { icon: Landmark, label: 'जमा', color: 'text-[#2ECC71]', bg: 'bg-green-50', route: 'collection' as const },
+                { icon: WalletCards, label: 'निकासी', color: 'text-[#3B82F6]', bg: 'bg-blue-50', route: 'bank' as const },
+                { icon: Receipt, label: 'खर्च', color: 'text-[#FF5FA2]', bg: 'bg-pink-50', route: 'expense' as const },
+                { icon: Target, label: 'बजट', color: 'text-[#7357FF]', bg: 'bg-purple-50', route: 'budget' as const },
+                { icon: HandCoins, label: 'ऋण', color: 'text-[#FF5A5F]', bg: 'bg-red-50', route: 'savings' as const },
+                { icon: Building2, label: 'सेविंग', color: 'text-[#20B2AA]', bg: 'bg-teal-50', route: 'savings' as const },
+                { icon: BarChart3, label: 'रिपोर्ट', color: 'text-[#2ECC71]', bg: 'bg-emerald-50', route: 'reports' as const },
+                { icon: Calendar, label: 'प्रोग्राम', color: 'text-[#F59E0B]', bg: 'bg-amber-50', route: 'events' as const },
+                { icon: Megaphone, label: 'सूचनाएं', color: 'text-[#8B5CF6]', bg: 'bg-violet-50', route: 'notice' as const },
+              ].map((item, i) => (
+                <div key={i} onClick={() => navigate(item.route)} className="flex flex-col items-center gap-2 cursor-pointer active:scale-90 transition-transform">
+                  <div className={`w-12 h-12 rounded-[16px] ${item.bg} flex items-center justify-center`}>
+                    <item.icon className={`w-6 h-6 ${item.color}`} strokeWidth={2} />
+                  </div>
+                  <span className="text-[10px] font-bold text-[#666666] tracking-wide">{item.label}</span>
+                </div>
+              ))}
             </div>
-          </div>
-          <div className="text-center mt-3">
-             <p className="text-[10px] font-bold text-slate-500">लक्ष्य: ₹2,00,000</p>
-             <p className="text-[11px] font-extrabold text-emerald-500 mt-0.5">₹1,25,600 प्राप्त</p>
-          </div>
-        </div>
+         </div>
+      </div>
 
-        {/* Quick Actions Card */}
-        <div className="bg-white/80 backdrop-blur-md rounded-[32px] p-5 shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-white">
-          <div className="flex items-center gap-1.5 mb-4">
-            <Zap className="w-4 h-4 text-yellow-500 fill-yellow-500" />
-            <h4 className="font-extrabold text-slate-800 text-[12px]">त्वरित कार्य</h4>
-          </div>
-          <div className="grid grid-cols-2 gap-3">
-            <button onClick={() => navigate('members')} className="flex flex-col items-center justify-center gap-2 bg-slate-50 hover:bg-slate-100 rounded-[20px] p-3 border border-slate-100 active:scale-95 transition-all">
-              <div className="w-8 h-8 rounded-full bg-emerald-100 flex items-center justify-center shadow-inner"><UserPlus className="w-4 h-4 text-emerald-600" /></div>
-              <span className="text-[9px] font-extrabold text-slate-600">सदस्य</span>
-            </button>
-            <button onClick={() => navigate('deposit')} className="flex flex-col items-center justify-center gap-2 bg-slate-50 hover:bg-slate-100 rounded-[20px] p-3 border border-slate-100 active:scale-95 transition-all">
-              <div className="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center shadow-inner"><ArrowDownCircle className="w-4 h-4 text-blue-600" /></div>
-              <span className="text-[9px] font-extrabold text-slate-600">जमा</span>
-            </button>
-            <button onClick={() => navigate('expense')} className="flex flex-col items-center justify-center gap-2 bg-slate-50 hover:bg-slate-100 rounded-[20px] p-3 border border-slate-100 active:scale-95 transition-all">
-              <div className="w-8 h-8 rounded-full bg-rose-100 flex items-center justify-center shadow-inner"><ArrowUpCircle className="w-4 h-4 text-rose-600" /></div>
-              <span className="text-[9px] font-extrabold text-slate-600">खर्च</span>
-            </button>
-            <button onClick={() => navigate('reports')} className="flex flex-col items-center justify-center gap-2 bg-slate-50 hover:bg-slate-100 rounded-[20px] p-3 border border-slate-100 active:scale-95 transition-all">
-              <div className="w-8 h-8 rounded-full bg-purple-100 flex items-center justify-center shadow-inner"><FileText className="w-4 h-4 text-purple-600" /></div>
-              <span className="text-[9px] font-extrabold text-slate-600">रिपोर्ट</span>
-            </button>
-          </div>
-        </div>
+      {/* 4. QUICK SUMMARY (त्वरित जानकारी) */}
+      <div className="px-5 mt-5">
+         <div className="flex justify-between items-center mb-3 px-1">
+            <h3 className="text-[15px] font-bold text-[#222222]">त्वरित जानकारी</h3>
+            <div className="flex items-center gap-1 text-[#999999]">
+               <RefreshCw className="w-3 h-3" />
+               <span className="text-[10px] font-medium">अपडेट: आज, 9:30 AM</span>
+            </div>
+         </div>
+         
+         <div className="grid grid-cols-3 gap-3">
+            {/* Green */}
+            <div className="bg-white rounded-[20px] p-3 shadow-sm border border-emerald-50">
+               <div className="flex justify-center mb-2">
+                  <p className="text-[10px] font-semibold text-[#666666]">कुल जमा (माह)</p>
+               </div>
+               <div className="flex flex-col items-center justify-center gap-1">
+                  <div className="flex items-center gap-2">
+                     <div className="w-6 h-6 rounded-full bg-[#2ECC71] flex items-center justify-center shadow-sm">
+                        <ArrowUpRight className="w-4 h-4 text-white" />
+                     </div>
+                     <span className="text-[15px] font-bold text-[#2ECC71]">₹25,400</span>
+                  </div>
+                  <p className="text-[9px] font-bold text-[#2ECC71]">↑ 12% इस माह</p>
+               </div>
+            </div>
+
+            {/* Pink */}
+            <div className="bg-white rounded-[20px] p-3 shadow-sm border border-pink-50">
+               <div className="flex justify-center mb-2">
+                  <p className="text-[10px] font-semibold text-[#666666]">कुल खर्च (माह)</p>
+               </div>
+               <div className="flex flex-col items-center justify-center gap-1">
+                  <div className="flex items-center gap-2">
+                     <div className="w-6 h-6 rounded-full bg-[#FF5FA2] flex items-center justify-center shadow-sm">
+                        <ArrowDownRight className="w-4 h-4 text-white" />
+                     </div>
+                     <span className="text-[15px] font-bold text-[#FF5FA2]">₹8,750</span>
+                  </div>
+                  <p className="text-[9px] font-bold text-[#FF5FA2]">↓ 8% इस माह</p>
+               </div>
+            </div>
+
+            {/* Blue */}
+            <div className="bg-white rounded-[20px] p-3 shadow-sm border border-blue-50">
+               <div className="flex justify-center mb-2">
+                  <p className="text-[10px] font-semibold text-[#666666]">शेष राशि</p>
+               </div>
+               <div className="flex flex-col items-center justify-center gap-1">
+                  <div className="flex items-center gap-2">
+                     <div className="w-6 h-6 rounded-full bg-[#3B82F6] flex items-center justify-center shadow-sm">
+                        <Wallet className="w-3.5 h-3.5 text-white" />
+                     </div>
+                     <span className="text-[15px] font-bold text-[#3B82F6]">₹45,300</span>
+                  </div>
+                  <p className="text-[9px] font-medium text-[#999999]">कुल शेष</p>
+               </div>
+            </div>
+         </div>
+      </div>
+
+      {/* 5. MAIN ACTIONS (मुख्य गतिविधियाँ) */}
+      <div className="px-5 mt-5 mb-6">
+         <div className="flex justify-between items-center mb-3 px-1">
+            <h3 className="text-[15px] font-bold text-[#222222]">मुख्य गतिविधियाँ</h3>
+         </div>
+         <div className="bg-white rounded-[24px] p-4 shadow-sm grid grid-cols-4 gap-3">
+            <div onClick={() => navigate('members')} className="flex flex-col items-center justify-center gap-2 cursor-pointer active:scale-95 transition-all">
+               <div className="w-[52px] h-[52px] rounded-[16px] bg-green-50 border border-green-100 flex items-center justify-center">
+                  <UserPlus className="w-6 h-6 text-[#2ECC71]" strokeWidth={2} />
+               </div>
+               <span className="text-[10px] font-bold text-[#666666]">सदस्य जोड़ें</span>
+            </div>
+            
+            <div onClick={() => navigate('deposit')} className="flex flex-col items-center justify-center gap-2 cursor-pointer active:scale-95 transition-all">
+               <div className="w-[52px] h-[52px] rounded-[16px] bg-blue-50 border border-blue-100 flex items-center justify-center">
+                  <ArrowDownCircle className="w-6 h-6 text-[#3B82F6]" strokeWidth={2} />
+               </div>
+               <span className="text-[10px] font-bold text-[#666666]">जमा जोड़ें</span>
+            </div>
+
+            <div onClick={() => navigate('expense')} className="flex flex-col items-center justify-center gap-2 cursor-pointer active:scale-95 transition-all">
+               <div className="w-[52px] h-[52px] rounded-[16px] bg-red-50 border border-red-100 flex items-center justify-center">
+                  <ArrowUpCircle className="w-6 h-6 text-[#FF5A5F]" strokeWidth={2} />
+               </div>
+               <span className="text-[10px] font-bold text-[#666666]">खर्च जोड़ें</span>
+            </div>
+
+            <div onClick={() => navigate('reports')} className="flex flex-col items-center justify-center gap-2 cursor-pointer active:scale-95 transition-all">
+               <div className="w-[52px] h-[52px] rounded-[16px] bg-indigo-50 border border-indigo-100 flex items-center justify-center">
+                  <FileText className="w-6 h-6 text-[#7357FF]" strokeWidth={2} />
+               </div>
+               <span className="text-[10px] font-bold text-[#666666]">रिपोर्ट देखें</span>
+            </div>
+         </div>
       </div>
       
     </div>
