@@ -148,51 +148,7 @@ export function Dashboard({ data }: { data: ReturnType<typeof useCommitteeData> 
         </div>
       </div>
 
-      {/* Recent Transactions Section */}
-      <div className="px-5 mt-6">
-        <div className="flex justify-between items-center mb-3">
-          <div className="flex items-center gap-2">
-            <div className="w-1 h-5 bg-[#FF7A00] rounded-full"></div>
-            <h3 className="text-base font-bold text-slate-800">हालिया लेन-देन</h3>
-          </div>
-          <button className="text-[12px] font-semibold text-blue-600 flex items-center bg-blue-50 px-3 py-1 rounded-full">
-            सभी देखें <ChevronRight className="w-3.5 h-3.5 ml-0.5" />
-          </button>
-        </div>
 
-        <div className="bg-white rounded-[28px] p-2 shadow-[0_8px_20px_rgb(0,0,0,0.02)] border border-slate-50 space-y-1">
-          {recentTransactions.map((t, i) => {
-            const member = data.members.find(m => m.id === t.memberId);
-            const isDeposit = t.type === 'DEPOSIT';
-            return (
-              <div key={t.id} className="flex items-center justify-between p-3.5 bg-transparent hover:bg-slate-50 rounded-[20px] transition-colors">
-                <div className="flex items-center gap-3.5">
-                  <div className={`w-11 h-11 rounded-[16px] flex items-center justify-center ${isDeposit ? 'bg-emerald-50 text-emerald-500' : 'bg-rose-50 text-rose-500'}`}>
-                    {isDeposit ? <ArrowDownCircle className="w-5 h-5" /> : <ArrowUpCircle className="w-5 h-5" />}
-                  </div>
-                  <div>
-                    <p className="font-bold text-slate-800 text-[13px]">{member ? member.name : t.category}</p>
-                    <p className="text-[11px] text-slate-500 font-medium mt-0.5">
-                      {isDeposit ? `सदस्य आईडी: GM-${1000 + (member?.id || 1)}` : `खर्च श्रेणी: ${t.category}`}
-                    </p>
-                  </div>
-                </div>
-                <div className="text-right">
-                  <p className={`font-bold text-[14px] ${isDeposit ? 'text-emerald-500' : 'text-rose-500'}`}>
-                    {formatCurrency(t.amount)}
-                  </p>
-                  <p className="text-[10px] text-slate-400 font-medium mt-0.5">
-                    {new Date(t.date).toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit' })}
-                  </p>
-                </div>
-              </div>
-            );
-          })}
-          <button className="w-full py-3 flex items-center justify-center text-[12px] font-semibold text-[#FF7A00] gap-1">
-            और देखें <ChevronDown className="w-4 h-4" />
-          </button>
-        </div>
-      </div>
 
       {/* Savings Goal & Quick Actions Grid */}
       <div className="px-5 mt-5 grid grid-cols-2 gap-4 pb-12">
