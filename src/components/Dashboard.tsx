@@ -251,66 +251,6 @@ export function Dashboard({ data }: { data: ReturnType<typeof useCommitteeData> 
          </div>
       </div>
 
-      {/* 4. QUICK SUMMARY */}
-      <div className="px-5 mt-5">
-         <div className="flex justify-between items-center mb-3 px-1">
-            <h3 className="text-[15px] font-bold text-[#222222]">{t('quickInfo')}</h3>
-            <div className="flex items-center gap-1 text-[#999999]">
-               <RefreshCw className="w-3 h-3" />
-               <span className="text-[10px] font-medium">{t('updatedToday')}</span>
-            </div>
-         </div>
-         
-         <div className="grid grid-cols-3 gap-3">
-            {/* Green */}
-            <div className="bg-white rounded-[20px] p-3 shadow-sm border border-emerald-50">
-               <div className="flex justify-center mb-2">
-                  <p className="text-[10px] font-semibold text-[#666666]">{t('totalDepositMonth')}</p>
-               </div>
-               <div className="flex flex-col items-center justify-center gap-1">
-                  <div className="flex items-center gap-2">
-                     <div className="w-6 h-6 rounded-full bg-[#2ECC71] flex items-center justify-center shadow-sm">
-                        <ArrowUpRight className="w-4 h-4 text-white" />
-                     </div>
-                     <span className="text-[15px] font-bold text-[#2ECC71]">₹25,400</span>
-                  </div>
-                  <p className="text-[9px] font-bold text-[#2ECC71]">{t('upThisMonth')}</p>
-               </div>
-            </div>
-
-            {/* Pink */}
-            <div className="bg-white rounded-[20px] p-3 shadow-sm border border-pink-50">
-               <div className="flex justify-center mb-2">
-                  <p className="text-[10px] font-semibold text-[#666666]">{t('totalExpenseMonth')}</p>
-               </div>
-               <div className="flex flex-col items-center justify-center gap-1">
-                  <div className="flex items-center gap-2">
-                     <div className="w-6 h-6 rounded-full bg-[#FF5FA2] flex items-center justify-center shadow-sm">
-                        <ArrowDownRight className="w-4 h-4 text-white" />
-                     </div>
-                     <span className="text-[15px] font-bold text-[#FF5FA2]">₹8,750</span>
-                  </div>
-                  <p className="text-[9px] font-bold text-[#FF5FA2]">{t('downThisMonth')}</p>
-               </div>
-            </div>
-
-            {/* Blue */}
-            <div className="bg-white rounded-[20px] p-3 shadow-sm border border-blue-50">
-               <div className="flex justify-center mb-2">
-                  <p className="text-[10px] font-semibold text-[#666666]">{t('remainingBalance')}</p>
-               </div>
-               <div className="flex flex-col items-center justify-center gap-1">
-                  <div className="flex items-center gap-2">
-                     <div className="w-6 h-6 rounded-full bg-[#3B82F6] flex items-center justify-center shadow-sm">
-                        <Wallet className="w-3.5 h-3.5 text-white" />
-                     </div>
-                     <span className="text-[15px] font-bold text-[#3B82F6]">₹45,300</span>
-                  </div>
-                  <p className="text-[9px] font-medium text-[#999999]">{t('totalBalance')}</p>
-               </div>
-            </div>
-         </div>
-      </div>
 
       {/* 5. MAIN ACTIONS */}
       <div className="px-5 mt-5 mb-6">
