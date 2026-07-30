@@ -6,6 +6,8 @@ import { useCommitteeData } from './hooks/useCommitteeData';
 import { motion, AnimatePresence } from 'motion/react';
 import { AppRouter } from './router';
 
+import { LanguageProvider } from './context/LanguageContext';
+
 function AppLayout({ data }: { data: any }) {
   const { currentScreen } = useNavigation();
 
@@ -29,10 +31,12 @@ export default function App() {
   const data = useCommitteeData();
 
   return (
-    <div className="bg-[#FFF8F1] font-sans w-full h-[100dvh] flex flex-col relative overflow-hidden text-slate-800">
-      <NavigationProvider>
-        <AppLayout data={data} />
-      </NavigationProvider>
-    </div>
+    <LanguageProvider>
+      <div className="bg-[#FFF8F1] font-sans w-full h-[100dvh] flex flex-col relative overflow-hidden text-slate-800">
+        <NavigationProvider>
+          <AppLayout data={data} />
+        </NavigationProvider>
+      </div>
+    </LanguageProvider>
   );
 }

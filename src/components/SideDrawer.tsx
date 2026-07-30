@@ -1,26 +1,28 @@
 import { useNavigation, ScreenName } from '../context/NavigationContext';
+import { useLanguage } from '../context/LanguageContext';
 import { 
   X, Home, Users, Landmark, Wallet, Receipt, Target, 
-  PiggyBank, Building2, BarChart3, Calendar, Megaphone, Settings, LogOut
+  PiggyBank, Building2, BarChart3, Calendar, Megaphone, Settings, LogOut, Globe
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 
 export function SideDrawer() {
   const { isDrawerOpen, closeDrawer, navigate, currentScreen } = useNavigation();
+  const { t, locale, setLocale } = useLanguage();
 
   const menuItems: { icon: any; label: string; route: ScreenName }[] = [
-    { icon: Home, label: 'Dashboard', route: 'dashboard' },
-    { icon: Users, label: 'Members', route: 'members' },
-    { icon: Landmark, label: 'Monthly Collection', route: 'collection' },
-    { icon: Wallet, label: 'Deposit', route: 'deposit' },
-    { icon: Receipt, label: 'Expense', route: 'expense' },
-    { icon: Target, label: 'Budget', route: 'budget' },
-    { icon: PiggyBank, label: 'Savings', route: 'savings' },
-    { icon: BarChart3, label: 'Reports', route: 'reports' },
-    { icon: Building2, label: 'Bank Details', route: 'bank' },
-    { icon: Calendar, label: 'Events', route: 'events' },
-    { icon: Megaphone, label: 'Notice', route: 'notice' },
-    { icon: Settings, label: 'Settings', route: 'settings' },
+    { icon: Home, label: t('drawerHome'), route: 'dashboard' },
+    { icon: Users, label: t('drawerMembers'), route: 'members' },
+    { icon: Landmark, label: t('drawerCollection'), route: 'collection' },
+    { icon: Wallet, label: t('drawerDeposit'), route: 'deposit' },
+    { icon: Receipt, label: t('drawerExpense'), route: 'expense' },
+    { icon: Target, label: t('drawerBudget'), route: 'budget' },
+    { icon: PiggyBank, label: t('drawerSavings'), route: 'savings' },
+    { icon: BarChart3, label: t('drawerReports'), route: 'reports' },
+    { icon: Building2, label: t('drawerBank'), route: 'bank' },
+    { icon: Calendar, label: t('drawerEvents'), route: 'events' },
+    { icon: Megaphone, label: t('drawerNotice'), route: 'notice' },
+    { icon: Settings, label: t('drawerSettings'), route: 'settings' },
   ];
 
   return (
@@ -60,8 +62,8 @@ export function SideDrawer() {
                  <img src="/logo.png" 
                       alt="Logo" className="w-full h-full rounded-full object-cover" />
               </div>
-              <h2 className="text-xl font-bold text-white">गणेश समिति</h2>
-              <p className="text-orange-100 text-sm font-medium">एकता • सेवा • विकास</p>
+              <h2 className="text-xl font-bold text-white">{t('appName')}</h2>
+              <p className="text-orange-100 text-sm font-medium">{t('appMotto')}</p>
             </div>
 
             {/* Drawer Items */}
@@ -85,14 +87,35 @@ export function SideDrawer() {
               })}
             </div>
 
-            {/* Logout */}
-            <div className="p-4 border-t border-[#FF7A00]/10">
+            {/* Bottom Actions (Language + Logout) */}
+            <div className="p-4 border-t border-[#FF7A00]/10 space-y-2">
+              <div className="flex items-center justify-between px-4 py-3 bg-slate-50 rounded-2xl">
+                <div className="flex items-center gap-3 text-slate-600">
+                  <Globe className="w-5 h-5 text-slate-400" />
+                  <span className="font-semibold text-[14px]">{t('language')}</span>
+                </div>
+                <div className="flex bg-white rounded-lg p-1 shadow-sm border border-slate-200">
+                  <button 
+                    onClick={() => setLocale('hi')}
+                    className={`px-3 py-1 rounded-md text-[12px] font-bold transition-colors ${locale === 'hi' ? 'bg-[#FF7A00] text-white' : 'text-slate-500 hover:bg-slate-100'}`}
+                  >
+                    HI
+                  </button>
+                  <button 
+                    onClick={() => setLocale('en')}
+                    className={`px-3 py-1 rounded-md text-[12px] font-bold transition-colors ${locale === 'en' ? 'bg-[#FF7A00] text-white' : 'text-slate-500 hover:bg-slate-100'}`}
+                  >
+                    EN
+                  </button>
+                </div>
+              </div>
+
               <button 
                 onClick={() => navigate('login')}
                 className="w-full flex items-center gap-4 px-4 py-3 rounded-2xl text-rose-500 hover:bg-rose-50 transition-colors"
               >
                 <LogOut className="w-[22px] h-[22px]" />
-                <span className="font-semibold text-[15px]">Logout</span>
+                <span className="font-semibold text-[15px]">{t('drawerLogout')}</span>
               </button>
             </div>
           </motion.div>
