@@ -1,4 +1,5 @@
 import { useCommitteeData } from '../hooks/useCommitteeData';
+import { useNavigation } from '../context/NavigationContext';
 import { 
   Menu, Bell, Users, Landmark, Wallet, Receipt, Target, 
   PiggyBank, Building2, BarChart3, Calendar, Megaphone,
@@ -8,6 +9,7 @@ import {
 import { formatCurrency } from '../utils/format';
 
 export function Dashboard({ data }: { data: ReturnType<typeof useCommitteeData> }) {
+  const { navigate, openDrawer } = useNavigation();
   const stats = data.getStats();
   const recentTransactions = data.transactions
     .slice()
@@ -28,7 +30,10 @@ export function Dashboard({ data }: { data: ReturnType<typeof useCommitteeData> 
       
       {/* Header */}
       <div className="px-5 pt-12 pb-4 flex justify-between items-start relative z-10">
-        <button className="w-11 h-11 bg-white rounded-[16px] flex items-center justify-center shadow-[0_2px_10px_rgba(0,0,0,0.05)] text-slate-700">
+        <button 
+          onClick={openDrawer}
+          className="w-11 h-11 bg-white rounded-[16px] flex items-center justify-center shadow-[0_2px_10px_rgba(0,0,0,0.05)] text-slate-700 active:scale-95 transition-transform"
+        >
           <Menu className="w-5 h-5" />
         </button>
         
@@ -48,7 +53,10 @@ export function Dashboard({ data }: { data: ReturnType<typeof useCommitteeData> 
           </div>
         </div>
 
-        <button className="w-11 h-11 bg-white rounded-[16px] flex items-center justify-center shadow-[0_2px_10px_rgba(0,0,0,0.05)] text-slate-700 relative">
+        <button 
+          onClick={() => navigate('notifications')}
+          className="w-11 h-11 bg-white rounded-[16px] flex items-center justify-center shadow-[0_2px_10px_rgba(0,0,0,0.05)] text-slate-700 relative active:scale-95 transition-transform"
+        >
           <Bell className="w-5 h-5" />
           <span className="absolute top-3 right-3 w-2.5 h-2.5 bg-red-500 rounded-full border-2 border-white"></span>
         </button>
@@ -57,7 +65,10 @@ export function Dashboard({ data }: { data: ReturnType<typeof useCommitteeData> 
       {/* Dashboard Cards (Horizontal Scroll) */}
       <div className="px-5 mt-6 flex gap-4 overflow-x-auto pb-6 scrollbar-hide snap-x">
         {/* Total Collection */}
-        <div className="min-w-[155px] flex-1 bg-white rounded-[24px] p-5 shadow-[0_8px_20px_rgb(0,0,0,0.03)] border border-slate-100 snap-center relative overflow-hidden">
+        <div 
+          onClick={() => navigate('collection')}
+          className="min-w-[155px] flex-1 bg-white rounded-[24px] p-5 shadow-[0_8px_20px_rgb(0,0,0,0.03)] border border-slate-100 snap-center relative overflow-hidden active:scale-[0.98] transition-transform"
+        >
           <div className="flex items-center gap-3 mb-4 relative z-10">
             <div className="w-10 h-10 rounded-2xl bg-emerald-50 flex items-center justify-center text-emerald-500">
               <Users className="w-5 h-5" />
@@ -71,7 +82,10 @@ export function Dashboard({ data }: { data: ReturnType<typeof useCommitteeData> 
         </div>
 
         {/* Total Expenses */}
-        <div className="min-w-[155px] flex-1 bg-white rounded-[24px] p-5 shadow-[0_8px_20px_rgb(0,0,0,0.03)] border border-slate-100 snap-center relative overflow-hidden">
+        <div 
+          onClick={() => navigate('expense')}
+          className="min-w-[155px] flex-1 bg-white rounded-[24px] p-5 shadow-[0_8px_20px_rgb(0,0,0,0.03)] border border-slate-100 snap-center relative overflow-hidden active:scale-[0.98] transition-transform"
+        >
           <div className="flex items-center gap-3 mb-4 relative z-10">
             <div className="w-10 h-10 rounded-2xl bg-rose-50 flex items-center justify-center text-rose-500">
               <ArrowDownCircle className="w-5 h-5" />
@@ -85,7 +99,10 @@ export function Dashboard({ data }: { data: ReturnType<typeof useCommitteeData> 
         </div>
 
         {/* Balance */}
-        <div className="min-w-[155px] flex-1 bg-gradient-to-br from-[#8066FF] to-[#5C3CE6] rounded-[24px] p-5 shadow-[0_12px_24px_rgb(108,76,241,0.25)] snap-center relative overflow-hidden">
+        <div 
+          onClick={() => navigate('bank')}
+          className="min-w-[155px] flex-1 bg-gradient-to-br from-[#8066FF] to-[#5C3CE6] rounded-[24px] p-5 shadow-[0_12px_24px_rgb(108,76,241,0.25)] snap-center relative overflow-hidden active:scale-[0.98] transition-transform"
+        >
           <div className="absolute -right-4 -bottom-4 w-24 h-24 bg-white/10 rounded-full blur-xl"></div>
           <div className="flex items-center gap-3 mb-4 relative z-10">
             <div className="w-10 h-10 rounded-2xl bg-white/20 flex items-center justify-center text-white backdrop-blur-sm">
@@ -105,18 +122,22 @@ export function Dashboard({ data }: { data: ReturnType<typeof useCommitteeData> 
         <div className="bg-white rounded-[32px] p-5 shadow-[0_8px_20px_rgb(0,0,0,0.02)] border border-slate-50">
           <div className="grid grid-cols-5 gap-y-5 gap-x-2">
             {[
-              { icon: Users, label: 'सदस्य', color: 'text-[#FF7A00]', bg: 'bg-[#FF7A00]/10' },
-              { icon: Landmark, label: 'मासिक जमा', color: 'text-emerald-500', bg: 'bg-emerald-50' },
-              { icon: Wallet, label: 'पैसा जमा', color: 'text-blue-500', bg: 'bg-blue-50' },
-              { icon: Receipt, label: 'खर्च', color: 'text-rose-500', bg: 'bg-rose-50' },
-              { icon: Target, label: 'बजट', color: 'text-[#6C4CF1]', bg: 'bg-[#6C4CF1]/10' },
-              { icon: PiggyBank, label: 'बचत', color: 'text-pink-500', bg: 'bg-pink-50' },
-              { icon: Building2, label: 'बैंक विवरण', color: 'text-indigo-500', bg: 'bg-indigo-50' },
-              { icon: BarChart3, label: 'रिपोर्ट', color: 'text-emerald-600', bg: 'bg-emerald-50' },
-              { icon: Calendar, label: 'कार्यक्रम', color: 'text-[#FF7A00]', bg: 'bg-[#FF7A00]/10' },
-              { icon: Megaphone, label: 'सूचनाएं', color: 'text-violet-500', bg: 'bg-violet-50' },
+              { icon: Users, label: 'सदस्य', color: 'text-[#FF7A00]', bg: 'bg-[#FF7A00]/10', route: 'members' as const },
+              { icon: Landmark, label: 'मासिक जमा', color: 'text-emerald-500', bg: 'bg-emerald-50', route: 'collection' as const },
+              { icon: Wallet, label: 'पैसा जमा', color: 'text-blue-500', bg: 'bg-blue-50', route: 'deposit' as const },
+              { icon: Receipt, label: 'खर्च', color: 'text-rose-500', bg: 'bg-rose-50', route: 'expense' as const },
+              { icon: Target, label: 'बजट', color: 'text-[#6C4CF1]', bg: 'bg-[#6C4CF1]/10', route: 'budget' as const },
+              { icon: PiggyBank, label: 'बचत', color: 'text-pink-500', bg: 'bg-pink-50', route: 'savings' as const },
+              { icon: Building2, label: 'बैंक विवरण', color: 'text-indigo-500', bg: 'bg-indigo-50', route: 'bank' as const },
+              { icon: BarChart3, label: 'रिपोर्ट', color: 'text-emerald-600', bg: 'bg-emerald-50', route: 'reports' as const },
+              { icon: Calendar, label: 'कार्यक्रम', color: 'text-[#FF7A00]', bg: 'bg-[#FF7A00]/10', route: 'events' as const },
+              { icon: Megaphone, label: 'सूचनाएं', color: 'text-violet-500', bg: 'bg-violet-50', route: 'notice' as const },
             ].map((item, i) => (
-              <div key={i} className="flex flex-col items-center gap-2 cursor-pointer active:scale-95 transition-transform">
+              <div 
+                key={i} 
+                onClick={() => navigate(item.route)}
+                className="flex flex-col items-center gap-2 cursor-pointer active:scale-95 transition-transform"
+              >
                 <div className={`w-12 h-12 rounded-[18px] ${item.bg} flex items-center justify-center`}>
                   <item.icon className={`w-[22px] h-[22px] ${item.color}`} />
                 </div>
@@ -215,25 +236,37 @@ export function Dashboard({ data }: { data: ReturnType<typeof useCommitteeData> 
             <h4 className="font-bold text-slate-800 text-[13px]">त्वरित कार्य</h4>
           </div>
           <div className="grid grid-cols-2 gap-2 h-full pb-2">
-            <button className="flex flex-col items-center justify-center gap-1.5 bg-slate-50/80 hover:bg-slate-100 rounded-2xl p-2 active:scale-95 transition-all">
+            <button 
+              onClick={() => navigate('members')}
+              className="flex flex-col items-center justify-center gap-1.5 bg-slate-50/80 hover:bg-slate-100 rounded-2xl p-2 active:scale-95 transition-all"
+            >
               <div className="w-8 h-8 rounded-full bg-emerald-50 flex items-center justify-center">
                  <UserPlus className="w-4 h-4 text-emerald-500" />
               </div>
               <span className="text-[9px] font-medium text-slate-600">सदस्य जोड़ें</span>
             </button>
-            <button className="flex flex-col items-center justify-center gap-1.5 bg-slate-50/80 hover:bg-slate-100 rounded-2xl p-2 active:scale-95 transition-all">
+            <button 
+              onClick={() => navigate('deposit')}
+              className="flex flex-col items-center justify-center gap-1.5 bg-slate-50/80 hover:bg-slate-100 rounded-2xl p-2 active:scale-95 transition-all"
+            >
               <div className="w-8 h-8 rounded-full bg-blue-50 flex items-center justify-center">
                  <ArrowDownCircle className="w-4 h-4 text-blue-500" />
               </div>
               <span className="text-[9px] font-medium text-slate-600">जमा करें</span>
             </button>
-            <button className="flex flex-col items-center justify-center gap-1.5 bg-slate-50/80 hover:bg-slate-100 rounded-2xl p-2 active:scale-95 transition-all">
+            <button 
+              onClick={() => navigate('expense')}
+              className="flex flex-col items-center justify-center gap-1.5 bg-slate-50/80 hover:bg-slate-100 rounded-2xl p-2 active:scale-95 transition-all"
+            >
               <div className="w-8 h-8 rounded-full bg-rose-50 flex items-center justify-center">
                  <ArrowUpCircle className="w-4 h-4 text-rose-500" />
               </div>
               <span className="text-[9px] font-medium text-slate-600">खर्च जोड़ें</span>
             </button>
-            <button className="flex flex-col items-center justify-center gap-1.5 bg-slate-50/80 hover:bg-slate-100 rounded-2xl p-2 active:scale-95 transition-all">
+            <button 
+              onClick={() => navigate('reports')}
+              className="flex flex-col items-center justify-center gap-1.5 bg-slate-50/80 hover:bg-slate-100 rounded-2xl p-2 active:scale-95 transition-all"
+            >
               <div className="w-8 h-8 rounded-full bg-purple-50 flex items-center justify-center">
                  <FileText className="w-4 h-4 text-purple-500" />
               </div>
