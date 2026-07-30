@@ -5,7 +5,7 @@ import { Dashboard } from './components/Dashboard';
 import { useCommitteeData } from './hooks/useCommitteeData';
 import { motion, AnimatePresence } from 'motion/react';
 import { 
-  SplashScreen, OnboardingScreen, LoginScreen, MembersScreen, 
+  SplashScreen, LoginScreen, MembersScreen, 
   CollectionScreen, DepositScreen, ExpenseScreen, BudgetScreen, 
   SavingsScreen, BankScreen, ReportsScreen, EventsScreen, 
   NoticeScreen, ProfileScreen, NotificationsScreen, SearchScreen, 
@@ -16,13 +16,12 @@ function ScreenRenderer({ data }: { data: any }) {
   const { currentScreen } = useNavigation();
 
   // Screens that should NOT show the bottom nav
-  const hideBottomNavScreens = ['splash', 'onboarding', 'login'];
+  const hideBottomNavScreens = ['splash', 'login'];
   const showBottomNav = !hideBottomNavScreens.includes(currentScreen);
 
   const getScreenComponent = () => {
     switch (currentScreen) {
       case 'splash': return <SplashScreen />;
-      case 'onboarding': return <OnboardingScreen />;
       case 'login': return <LoginScreen />;
       case 'dashboard': return <Dashboard data={data} />;
       case 'members': return <MembersScreen />;

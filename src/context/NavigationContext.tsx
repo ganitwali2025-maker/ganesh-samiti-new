@@ -55,11 +55,11 @@ export function NavigationProvider({ children }: { children: ReactNode }) {
   const openDrawer = () => setIsDrawerOpen(true);
   const closeDrawer = () => setIsDrawerOpen(false);
 
-  // Auto transition from Splash -> Onboarding after 2 seconds
+  // Auto transition from Splash -> Login after 2 seconds
   useEffect(() => {
     if (currentScreen === 'splash') {
       const timer = setTimeout(() => {
-        navigate('onboarding');
+        navigate('login');
       }, 2500);
       return () => clearTimeout(timer);
     }
