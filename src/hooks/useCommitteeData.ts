@@ -76,7 +76,22 @@ export function useCommitteeData() {
 
   const deleteMember = (id: string) => {
      setMembers((prev) => prev.filter(m => m.id !== id));
+     setTransactions((prev) => prev.filter(t => t.memberId !== id));
   };
+
+  // Auto-cleanup orphaned deposits (if a member was deleted in the past but their deposit remained)
+  useEffect(() => {
+    setTransactions((prev) => {
+      const validMemberIds = new Set(members.map(m => m.id));
+      const filtered = prev.filter(t => {
+        if (t.type === 'DEPOSIT' && t.memberId) {
+          return validMemberIds.has(t.memberId);
+        }
+        return true;
+      });
+      return filtered.length !== prev.length ? filtered : prev;
+    });
+  }, [members]);
 
   const getStats = () => {
     const totalCollection = transactions
