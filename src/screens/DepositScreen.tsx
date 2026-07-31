@@ -2,15 +2,28 @@ import { useState } from 'react';
 import { PageHeader } from '../components/PageHeader';
 import { Wallet, ChevronDown, CheckCircle2 } from 'lucide-react';
 import { useNavigation } from '../context/NavigationContext';
+import { useCommitteeData } from '../hooks/useCommitteeData';
 
 export function DepositScreen() {
   const { goBack } = useNavigation();
+  const { members, addTransaction } = useCommitteeData();
   const [amount, setAmount] = useState('');
   const [member, setMember] = useState('');
+  const [category, setCategory] = useState('मासिक जमा');
+  const [notes, setNotes] = useState('');
   const [isSuccess, setIsSuccess] = useState(false);
 
   const handleDeposit = () => {
     if (amount && member) {
+      addTransaction({
+        memberId: member,
+        amount: Number(amount),
+        type: 'DEPOSIT',
+        category: category,
+        date: new Date().toISOString().split('T')[0],
+        description: notes || `${category} (App)`,
+      });
+
       setIsSuccess(true);
       setTimeout(() => {
         setIsSuccess(false);
@@ -23,8 +36,8 @@ export function DepositScreen() {
     return (
       <div className="flex flex-col items-center justify-center h-[100dvh] bg-emerald-500 text-white">
         <CheckCircle2 className="w-24 h-24 mb-6 animate-bounce" />
-        <h2 className="text-3xl font-extrabold mb-2">Success!</h2>
-        <p className="text-emerald-100 font-medium text-lg">₹{amount} deposited successfully.</p>
+        <h2 className="text-3xl font-extrabold mb-2">सफल! (Success)</h2>
+        <p className="text-emerald-100 font-medium text-lg">₹{amount} जमा हो गए।</p>
       </div>
     );
   }
@@ -44,17 +57,17 @@ export function DepositScreen() {
 
           <div className="space-y-5">
             <div>
-              <label className="text-[12px] font-bold text-slate-700 mb-1.5 block">Select Member</label>
+              <label className="text-[12px] font-bold text-slate-700 mb-1.5 block">सदस्य चुनें (Select Member)</label>
               <div className="relative">
                 <select 
                   value={member}
                   onChange={(e) => setMember(e.target.value)}
                   className="w-full bg-slate-50 border border-slate-100 text-slate-800 text-sm rounded-2xl pl-4 pr-11 py-4 focus:outline-none focus:ring-2 focus:ring-[#FF7A00]/50 transition-all font-medium appearance-none"
                 >
-                  <option value="" disabled>Choose member...</option>
-                  <option value="1">राम कुमार (Ram Kumar)</option>
-                  <option value="2">मोहन लाल (Mohan Lal)</option>
-                  <option value="3">श्याम सिंह (Shyam Singh)</option>
+                  <option value="" disabled>सदस्य चुनें...</option>
+                  {members.map(m => (
+                    <option key={m.id} value={m.id}>{m.name}</option>
+                  ))}
                 </select>
                 <div className="absolute inset-y-0 right-0 pr-4 flex items-center pointer-events-none">
                   <ChevronDown className="w-5 h-5 text-slate-400" />
@@ -63,7 +76,26 @@ export function DepositScreen() {
             </div>
 
             <div>
-              <label className="text-[12px] font-bold text-slate-700 mb-1.5 block">Amount (₹)</label>
+              <label className="text-[12px] font-bold text-slate-700 mb-1.5 block">जमा का प्रकार (Category)</label>
+              <div className="relative">
+                <select 
+                  value={category}
+                  onChange={(e) => setCategory(e.target.value)}
+                  className="w-full bg-slate-50 border border-slate-100 text-slate-800 text-sm rounded-2xl pl-4 pr-11 py-4 focus:outline-none focus:ring-2 focus:ring-[#FF7A00]/50 transition-all font-medium appearance-none"
+                >
+                  <option value="मासिक जमा">मासिक जमा (Monthly)</option>
+                  <option value="वार्षिक जमा">वार्षिक जमा (Yearly)</option>
+                  <option value="कार्यक्रम">कार्यक्रम (Event)</option>
+                  <option value="अन्य">अन्य (Other)</option>
+                </select>
+                <div className="absolute inset-y-0 right-0 pr-4 flex items-center pointer-events-none">
+                  <ChevronDown className="w-5 h-5 text-slate-400" />
+                </div>
+              </div>
+            </div>
+
+            <div>
+              <label className="text-[12px] font-bold text-slate-700 mb-1.5 block">रकम (Amount ₹)</label>
               <input 
                 type="number" 
                 placeholder="0.00"
@@ -74,10 +106,12 @@ export function DepositScreen() {
             </div>
 
             <div>
-              <label className="text-[12px] font-bold text-slate-700 mb-1.5 block">Notes (Optional)</label>
+              <label className="text-[12px] font-bold text-slate-700 mb-1.5 block">नोट (Notes)</label>
               <input 
                 type="text" 
-                placeholder="e.g. Monthly subscription"
+                value={notes}
+                onChange={(e) => setNotes(e.target.value)}
+                placeholder="उदा. चंदा"
                 className="w-full bg-slate-50 border border-slate-100 text-slate-800 text-sm rounded-2xl px-4 py-4 focus:outline-none focus:ring-2 focus:ring-[#FF7A00]/50 transition-all font-medium"
               />
             </div>

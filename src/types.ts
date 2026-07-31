@@ -17,6 +17,7 @@ export type TransactionType = 'DEPOSIT' | 'EXPENSE';
 export type TransactionCategory =
   | 'सजावट'
   | 'मासिक जमा'
+  | 'वार्षिक जमा'
   | 'कार्यक्रम'
   | 'ध्वनि / लाइट'
   | 'प्रचार'

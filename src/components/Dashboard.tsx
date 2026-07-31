@@ -17,6 +17,14 @@ export function Dashboard({ data }: { data: ReturnType<typeof useCommitteeData> 
   const { t } = useLanguage();
   const stats = data.getStats();
 
+  const monthlyCollection = data.transactions
+    .filter(t => t.type === 'DEPOSIT' && t.category === 'मासिक जमा')
+    .reduce((sum, t) => sum + t.amount, 0);
+
+  const yearlyCollection = data.transactions
+    .filter(t => t.type === 'DEPOSIT' && t.category === 'वार्षिक जमा')
+    .reduce((sum, t) => sum + t.amount, 0);
+
   const [activeCard, setActiveCard] = useState(0);
   const carouselRef = useRef<HTMLDivElement>(null);
 
@@ -26,7 +34,7 @@ export function Dashboard({ data }: { data: ReturnType<typeof useCommitteeData> 
       const cardWidth = carouselRef.current.offsetWidth;
       // Calculate which card is currently most visible
       const newIndex = Math.round(scrollPosition / cardWidth);
-      if (newIndex !== activeCard && newIndex >= 0 && newIndex < 4) {
+      if (newIndex !== activeCard && newIndex >= 0 && newIndex < 5) {
         setActiveCard(newIndex);
       }
     }
@@ -86,10 +94,38 @@ export function Dashboard({ data }: { data: ReturnType<typeof useCommitteeData> 
                       <p className="text-[14px] font-bold">{formatCurrency(data.members.length > 0 ? stats.totalCollection / data.members.length : 0)}</p>
                     </div>
                   </div>
+              </div>
+
+            {/* Card 2 (Collection Breakdown - Blue) */}
+            <div className="min-w-[92vw] snap-center bg-[linear-gradient(135deg,#1E3A8A_0%,#3B82F6_50%,#60A5FA_100%)] rounded-[30px] p-6 text-white shadow-[0_8px_32px_rgba(59,130,246,0.3),inset_0_1px_1px_rgba(255,255,255,0.5)] border border-white/20 relative overflow-hidden flex flex-col justify-between">
+               <div className="absolute top-0 left-0 w-full h-1/3 bg-gradient-to-b from-white/20 to-transparent pointer-events-none"></div>
+               <div className="absolute right-[-10px] bottom-[-10px] w-24 h-24 bg-[#1E3A8A]/50 rounded-full blur-2xl pointer-events-none"></div>
+               
+               <div className="flex justify-between items-start mb-4 relative z-10">
+                  <p className="text-[14px] font-semibold opacity-90">जमा विवरण (Collection Info)</p>
+                  <div className="w-9 h-7 bg-white/20 rounded-lg flex items-center justify-center backdrop-blur-sm">
+                     <WalletCards className="w-4 h-4 text-white" />
+                  </div>
+               </div>
+
+               <div className="flex flex-col gap-3 relative z-10">
+                  <div className="flex justify-between items-center bg-white/10 rounded-2xl p-4 border border-white/20 backdrop-blur-sm">
+                    <p className="text-[13px] font-medium opacity-90">मासिक जमा (Monthly)</p>
+                    <p className="text-[18px] font-bold">{formatCurrency(monthlyCollection)}</p>
+                  </div>
+                  <div className="flex justify-between items-center bg-white/10 rounded-2xl p-4 border border-white/20 backdrop-blur-sm">
+                    <p className="text-[13px] font-medium opacity-90">वार्षिक जमा (Yearly)</p>
+                    <p className="text-[18px] font-bold">{formatCurrency(yearlyCollection)}</p>
+                  </div>
+               </div>
+
+               <div className="mt-4 pt-4 border-t border-white/20 relative z-10">
+                  <p className="text-[12px] opacity-80 font-medium mb-1">कुल जमा (Total Collection)</p>
+                  <h3 className="text-[28px] font-bold tracking-wider">{formatCurrency(monthlyCollection + yearlyCollection)}</h3>
                </div>
             </div>
 
-            {/* Card 2 (Pink/Red) */}
+            {/* Card 3 (Pink/Red) */}
             <div className="min-w-[92vw] snap-center bg-[linear-gradient(135deg,#D32F2F_0%,#E53935_50%,#FF6B6B_100%)] rounded-[30px] p-6 text-white shadow-[0_8px_32px_rgba(211,47,47,0.3),inset_0_1px_1px_rgba(255,255,255,0.5)] border border-white/20 relative overflow-hidden flex flex-col justify-between">
                <div className="absolute top-0 left-0 w-full h-1/3 bg-gradient-to-b from-white/20 to-transparent pointer-events-none"></div>
                <div className="absolute left-[-10%] top-[-10%] w-1/2 h-1/2 bg-white/20 rounded-full blur-3xl pointer-events-none"></div>
@@ -124,7 +160,7 @@ export function Dashboard({ data }: { data: ReturnType<typeof useCommitteeData> 
                </div>
             </div>
 
-            {/* Card 3 (Green) */}
+            {/* Card 4 (Green) */}
             <div className="min-w-[92vw] snap-center bg-[linear-gradient(135deg,#0F9D58_0%,#18B96B_50%,#2ECC71_100%)] rounded-[30px] p-6 text-white shadow-[0_8px_32px_rgba(15,157,88,0.3),inset_0_1px_1px_rgba(255,255,255,0.5)] border border-white/20 relative overflow-hidden flex flex-col justify-between">
                <div className="absolute top-0 left-0 w-full h-1/3 bg-gradient-to-b from-white/20 to-transparent pointer-events-none"></div>
                <div className="absolute left-[-10%] top-[-10%] w-1/2 h-1/2 bg-white/20 rounded-full blur-3xl pointer-events-none"></div>
@@ -152,7 +188,7 @@ export function Dashboard({ data }: { data: ReturnType<typeof useCommitteeData> 
                </div>
             </div>
 
-            {/* Card 4 (Orange) */}
+            {/* Card 5 (Orange) */}
             <div className="min-w-[92vw] snap-center bg-theme-gradient rounded-[30px] p-6 text-white shadow-[0_8px_32px_rgba(255,106,0,0.3),inset_0_1px_1px_rgba(255,255,255,0.5)] border border-white/20 relative overflow-hidden flex flex-col justify-between">
                <div className="absolute top-0 left-0 w-full h-1/3 bg-gradient-to-b from-white/20 to-transparent pointer-events-none"></div>
                <div className="absolute left-[-10%] top-[-10%] w-1/2 h-1/2 bg-white/20 rounded-full blur-3xl pointer-events-none"></div>
@@ -187,9 +223,9 @@ export function Dashboard({ data }: { data: ReturnType<typeof useCommitteeData> 
 
          </div>
 
-         {/* Carousel Dots */}
+          {/* Carousel Dots */}
          <div className="flex justify-center gap-2 mt-4 mb-6">
-            {[0, 1, 2, 3].map((idx) => (
+            {[0, 1, 2, 3, 4].map((idx) => (
               <div 
                 key={idx} 
                 className={`h-2 rounded-full transition-all duration-300 ${activeCard === idx ? 'w-6 bg-theme-gradient' : 'w-2 bg-slate-200'}`}
