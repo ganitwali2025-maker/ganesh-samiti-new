@@ -127,12 +127,20 @@ export function useCommitteeData() {
   const payDepositCredit = (transactionId: string, paymentAmount: number, paymentMethod: 'CASH' | 'UPI' | 'BANK', remark: string) => {
     setTransactions((prev) => {
       let memberName = '';
-      let memberId = '';
+      let memberId: string | null = '';
+      let donorName = '';
+      
       const updated = prev.map(t => {
         if (t.id === transactionId && t.type === 'DEPOSIT' && t.paymentMethod === 'CREDIT') {
-          const member = members.find(m => m.id === t.memberId);
-          memberName = member ? member.name : 'Member';
-          memberId = t.memberId || '';
+          if (t.memberId) {
+            const member = members.find(m => m.id === t.memberId);
+            memberName = member ? member.name : 'Member';
+            memberId = t.memberId;
+          } else if (t.donorName) {
+            memberName = t.donorName;
+            donorName = t.donorName;
+            memberId = null;
+          }
           return {
             ...t,
             paidAmount: (t.paidAmount || 0) + paymentAmount,
@@ -146,6 +154,7 @@ export function useCommitteeData() {
         updated.push({
           id: generateId(),
           memberId: memberId,
+          donorName: donorName || undefined,
           amount: paymentAmount,
           type: 'DEPOSIT_PAYMENT',
           category: 'जमा भुगतान (Deposit Paid)',

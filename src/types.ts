@@ -45,6 +45,7 @@ export interface Transaction {
   // New fields for Expense & Credit
   paymentMethod?: 'CASH' | 'CREDIT' | 'UPI' | 'BANK';
   vendorName?: string;
+  donorName?: string; // For external depositors (non-members)
   dueDate?: string;
   paidAmount?: number; // For tracking partial payments on CREDIT transactions
 }

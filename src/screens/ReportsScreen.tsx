@@ -274,10 +274,11 @@ export function ReportsScreen() {
                    <tbody className="divide-y divide-slate-100 font-medium">
                      {depositTransactions.map(t => {
                        const member = members.find(m => m.id === t.memberId);
+                       const memberName = member ? member.name : t.donorName || 'Unknown';
                        return (
                          <tr key={t.id} className="hover:bg-slate-50 transition-colors">
                            <td className="px-4 py-3 whitespace-nowrap text-slate-600">{new Date(t.date).toLocaleDateString('en-IN')}</td>
-                           <td className="px-4 py-3 whitespace-nowrap font-bold text-slate-800">{member?.name || 'Unknown'}</td>
+                           <td className="px-4 py-3 whitespace-nowrap font-bold text-slate-800">{memberName}</td>
                            <td className="px-4 py-3 whitespace-nowrap text-emerald-600 bg-emerald-50/50 rounded-md inline-block mt-2 mb-2 ml-4 px-2 py-0.5">{t.category}</td>
                            <td className="px-4 py-3 whitespace-nowrap text-right font-bold text-slate-800">{formatCurrency(t.amount)}</td>
                            <td className="px-4 py-3 whitespace-nowrap text-slate-500">{t.description.split('via ')[1] || 'Cash'}</td>
@@ -330,7 +331,7 @@ export function ReportsScreen() {
                              <span className="bg-emerald-100 text-emerald-700 px-2 py-0.5 rounded text-[10px] font-bold">{t.paymentMethod || 'CASH'}</span>
                            )}
                          </td>
-                         <td className="px-4 py-3 whitespace-nowrap text-slate-500 max-w-[120px] truncate" title={remarkText}>{remarkText}</td>
+                         <td className="px-4 py-3 text-slate-500 whitespace-normal min-w-[150px] leading-snug">{remarkText}</td>
                        </tr>
                      )})}
                      {expenseTransactions.length === 0 && (

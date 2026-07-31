@@ -12,6 +12,7 @@ export function DepositScreen() {
   const [activeTab, setActiveTab] = useState<'NEW' | 'CREDIT_LIST'>('NEW');
 
   const [member, setMember] = useState('');
+  const [customName, setCustomName] = useState('');
   const [category, setCategory] = useState('मासिक जमा');
   const [notes, setNotes] = useState('');
   
@@ -45,7 +46,7 @@ export function DepositScreen() {
       else if ((t.paidAmount || 0) > 0) status = 'PARTIAL';
       
       const memberObj = members.find(m => m.id === t.memberId);
-      const memberName = memberObj ? memberObj.name : 'Unknown';
+      const memberName = memberObj ? memberObj.name : t.donorName || 'Unknown';
 
       return { ...t, remaining, status, memberName };
     });
@@ -54,13 +55,17 @@ export function DepositScreen() {
   const selectedCreditTx = outstandingDeposits.find(t => t.id === selectedCreditId);
 
   const handleDeposit = () => {
-    if (totalAmount > 0 && member) {
+    if (totalAmount > 0 && (member !== 'OTHER' ? member : customName.trim())) {
       const date = new Date().toISOString().split('T')[0];
       const baseDesc = notes ? `${notes} via ${paymentMethod}` : `Deposit via ${paymentMethod}`;
 
+      const memberIdToSave = member === 'OTHER' ? null : member;
+      const donorNameToSave = member === 'OTHER' ? customName.trim() : undefined;
+
       if (Number(ganeshAmount) > 0) {
         addTransaction({
-          memberId: member,
+          memberId: memberIdToSave,
+          donorName: donorNameToSave,
           amount: Number(ganeshAmount),
           type: 'DEPOSIT',
           category: 'गणेश चतुर्थी जमा',
@@ -72,7 +77,8 @@ export function DepositScreen() {
       }
       if (Number(chandaAmount) > 0) {
         addTransaction({
-          memberId: member,
+          memberId: memberIdToSave,
+          donorName: donorNameToSave,
           amount: Number(chandaAmount),
           type: 'DEPOSIT',
           category: 'चंदा राशि',
@@ -84,7 +90,8 @@ export function DepositScreen() {
       }
       if (Number(monthlyAmount) > 0) {
         addTransaction({
-          memberId: member,
+          memberId: memberIdToSave,
+          donorName: donorNameToSave,
           amount: Number(monthlyAmount),
           type: 'DEPOSIT',
           category: 'मासिक जमा',
@@ -96,7 +103,8 @@ export function DepositScreen() {
       }
       if (Number(otherAmount) > 0) {
         addTransaction({
-          memberId: member,
+          memberId: memberIdToSave,
+          donorName: donorNameToSave,
           amount: Number(otherAmount),
           type: 'DEPOSIT',
           category: category,
@@ -175,7 +183,7 @@ export function DepositScreen() {
               {/* Member Select */}
               <div className="bg-white/70 backdrop-blur-xl p-5 rounded-[24px] shadow-[0_4px_24px_rgba(0,0,0,0.03)] border border-white">
                 <label className="text-[13px] font-bold text-slate-700 mb-2 block">सदस्य चुनें (Select Member)</label>
-                <div className="relative">
+                <div className="relative mb-3">
                   <select 
                     value={member}
                     onChange={(e) => setMember(e.target.value)}
@@ -185,11 +193,25 @@ export function DepositScreen() {
                     {members.map(m => (
                       <option key={m.id} value={m.id}>{m.name}</option>
                     ))}
+                    <option value="OTHER">अन्य / बाहरी व्यक्ति (Other)</option>
                   </select>
                   <div className="absolute inset-y-0 right-0 pr-4 flex items-center pointer-events-none">
                     <ChevronDown className="w-5 h-5 text-slate-400" />
                   </div>
                 </div>
+
+                {member === 'OTHER' && (
+                  <div className="animate-in fade-in slide-in-from-top-2 duration-300">
+                    <label className="text-[12px] font-bold text-slate-600 mb-2 block">नाम दर्ज करें (Enter Name)</label>
+                    <input 
+                      type="text" 
+                      value={customName}
+                      onChange={(e) => setCustomName(e.target.value)}
+                      placeholder="व्यक्ति का नाम..."
+                      className="w-full bg-slate-50 border border-slate-200 text-slate-800 text-[15px] rounded-2xl px-4 py-3.5 focus:outline-none focus:border-orange-400 focus:ring-4 focus:ring-orange-100 transition-all font-medium shadow-sm"
+                    />
+                  </div>
+                )}
               </div>
 
               {/* Category Dropdown (For Other Amount) */}
@@ -448,7 +470,7 @@ export function DepositScreen() {
         <div className="fixed bottom-0 left-0 right-0 p-4 bg-white/80 backdrop-blur-md border-t border-slate-100 z-40">
           <button 
             onClick={handleDeposit}
-            disabled={totalAmount <= 0 || !member}
+            disabled={totalAmount <= 0 || !member || (member === 'OTHER' && !customName.trim())}
             className="w-full h-14 bg-gradient-to-r from-[#FF8A3D] to-[#FFB86C] text-white rounded-[20px] font-bold text-[16px] shadow-[0_8px_20px_rgb(255,138,61,0.3)] active:scale-[0.98] transition-all disabled:opacity-50 disabled:active:scale-100 flex items-center justify-center gap-2"
           >
             <Wallet className="w-5 h-5" />
