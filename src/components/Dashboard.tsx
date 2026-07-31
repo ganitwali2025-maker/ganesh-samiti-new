@@ -94,7 +94,8 @@ export function Dashboard({ data }: { data: ReturnType<typeof useCommitteeData> 
                       <p className="text-[14px] font-bold">{formatCurrency(data.members.length > 0 ? stats.totalCollection / data.members.length : 0)}</p>
                     </div>
                   </div>
-              </div>
+               </div>
+            </div>
 
             {/* Card 2 (Collection Breakdown - Blue) */}
             <div className="min-w-[92vw] snap-center bg-[linear-gradient(135deg,#1E3A8A_0%,#3B82F6_50%,#60A5FA_100%)] rounded-[30px] p-6 text-white shadow-[0_8px_32px_rgba(59,130,246,0.3),inset_0_1px_1px_rgba(255,255,255,0.5)] border border-white/20 relative overflow-hidden flex flex-col justify-between">
