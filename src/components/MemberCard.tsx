@@ -4,13 +4,19 @@ import { Member } from '../types';
 
 interface MemberCardProps {
   member: Member;
+  selectableMode?: 'edit' | 'delete' | null;
+  isSelected?: boolean;
+  onSelect?: (member: Member) => void;
 }
 
-export function MemberCard({ member }: MemberCardProps) {
+export function MemberCard({ member, selectableMode, isSelected, onSelect }: MemberCardProps) {
   const photo = member.photo || null;
 
   return (
-    <div className="w-full bg-white rounded-[24px] shadow-[0_16px_40px_rgba(0,0,0,0.12)] overflow-hidden flex flex-col relative border border-slate-100">
+    <div 
+      onClick={() => { if (selectableMode && onSelect) onSelect(member); }}
+      className={`w-full bg-white rounded-[24px] shadow-[0_16px_40px_rgba(0,0,0,0.12)] overflow-hidden flex flex-col relative border ${isSelected ? 'border-theme-primary ring-2 ring-theme-primary/50' : 'border-slate-100'} ${selectableMode ? 'cursor-pointer active:scale-[0.98] transition-transform' : ''}`}
+    >
       {/* HEADER */}
       <div className="relative bg-theme-gradient py-4 px-4 flex items-center shrink-0">
         <div className="w-[70px] h-[70px] bg-white rounded-full p-1 shadow-md relative z-10 shrink-0 border-2 border-white">
@@ -29,6 +35,17 @@ export function MemberCard({ member }: MemberCardProps) {
             <div className="h-[1px] flex-1 bg-white/50"></div>
           </div>
         </div>
+
+        {/* Selection Circle */}
+        {selectableMode && (
+          <div className="absolute top-4 right-4 z-20">
+            <div className={`w-8 h-8 rounded-full border-2 flex items-center justify-center transition-colors ${isSelected ? (selectableMode === 'delete' ? 'bg-red-500 border-red-500' : 'bg-blue-500 border-blue-500') : 'bg-white/30 border-white/80'}`}>
+              {isSelected && (
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+              )}
+            </div>
+          </div>
+        )}
 
       </div>
 
