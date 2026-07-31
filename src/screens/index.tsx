@@ -8,6 +8,7 @@ export * from './BudgetScreen';
 export * from './SavingsScreen';
 export * from './BankScreen';
 export * from './ReportsScreen';
+export * from './MemberProfileScreen';
 
 import { PageHeader } from '../components/PageHeader';
 import { useNavigation } from '../context/NavigationContext';

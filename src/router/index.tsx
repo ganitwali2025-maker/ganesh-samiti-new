@@ -7,7 +7,7 @@ import {
   CollectionScreen, DepositScreen, ExpenseScreen, BudgetScreen, 
   SavingsScreen, BankScreen, ReportsScreen, EventsScreen, 
   NoticeScreen, ProfileScreen, NotificationsScreen, SearchScreen, 
-  SettingsScreen 
+  SettingsScreen, MemberProfileScreen
 } from '../screens';
 import { Dashboard } from '../components/Dashboard';
 
@@ -109,6 +109,11 @@ export function AppRouter() {
         <Route path="/settings" element={
           <motion.div variants={variants} initial="initial" animate="animate" exit="exit" transition={{ duration: 0.2, ease: "easeInOut" }} className="w-full min-h-full">
             <SettingsScreen />
+          </motion.div>
+        } />
+        <Route path="/member-profile/:id" element={
+          <motion.div variants={variants} initial="initial" animate="animate" exit="exit" transition={{ duration: 0.2, ease: "easeInOut" }} className="w-full min-h-full">
+            <MemberProfileScreen />
           </motion.div>
         } />
         <Route path="*" element={

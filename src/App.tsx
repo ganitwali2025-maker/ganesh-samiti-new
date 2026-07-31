@@ -14,7 +14,7 @@ function AppLayout({ data }: { data: any }) {
 
   // Screens that should NOT show the bottom nav
   const hideBottomNavScreens = ['splash', 'login'];
-  const showBottomNav = !hideBottomNavScreens.includes(currentScreen);
+  const showBottomNav = !hideBottomNavScreens.includes(currentScreen) && !currentScreen.startsWith('member-profile');
   const showGlobalHeader = currentScreen === 'dashboard';
 
   return (

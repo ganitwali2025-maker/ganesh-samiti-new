@@ -1,6 +1,7 @@
 import React, { useRef, useState } from 'react';
 import { Camera, User, Medal, Calendar, Phone, MapPin } from 'lucide-react';
 import { Member } from '../types';
+import { useNavigation } from '../context/NavigationContext';
 
 interface MemberCardProps {
   member: Member;
@@ -10,12 +11,21 @@ interface MemberCardProps {
 }
 
 export function MemberCard({ member, selectableMode, isSelected, onSelect }: MemberCardProps) {
+  const { navigate } = useNavigation();
   const photo = member.photo || null;
+
+  const handleClick = () => {
+    if (selectableMode && onSelect) {
+      onSelect(member);
+    } else if (!selectableMode) {
+      navigate(`member-profile/${member.id}`);
+    }
+  };
 
   return (
     <div 
-      onClick={() => { if (selectableMode && onSelect) onSelect(member); }}
-      className={`w-full bg-white rounded-[24px] shadow-[0_16px_40px_rgba(0,0,0,0.12)] overflow-hidden flex flex-col relative border ${isSelected ? 'border-theme-primary ring-2 ring-theme-primary/50' : 'border-slate-100'} ${selectableMode ? 'cursor-pointer active:scale-[0.98] transition-transform' : ''}`}
+      onClick={handleClick}
+      className={`w-full bg-white rounded-[24px] shadow-[0_16px_40px_rgba(0,0,0,0.12)] overflow-hidden flex flex-col relative border ${isSelected ? 'border-theme-primary ring-2 ring-theme-primary/50' : 'border-slate-100'} cursor-pointer active:scale-[0.98] transition-transform`}
     >
       {/* HEADER */}
       <div className="relative bg-theme-gradient py-4 px-4 flex items-center shrink-0">
