@@ -63,8 +63,8 @@ export function Dashboard({ data }: { data: ReturnType<typeof useCommitteeData> 
                      <WalletCards className="w-4 h-4 text-white" />
                    </div>
                  </div>
-                 <h3 className="text-[32px] font-bold tracking-wider mb-1">{formatCurrency(stats.totalCollection)}</h3>
-                 
+                 <h3 className="text-[32px] font-bold tracking-wider mb-1">{formatCurrency(stats.totalDeposit)}</h3>
+
                  <div className="flex items-center justify-between mt-2 mb-6">
                     <p className="text-[12px] font-medium opacity-90">{t('appName')}</p>
                     <div className="flex items-center gap-1 bg-white/20 px-2 py-0.5 rounded-full backdrop-blur-sm">
@@ -91,7 +91,7 @@ export function Dashboard({ data }: { data: ReturnType<typeof useCommitteeData> 
                     </div>
                     <div>
                       <p className="text-[10px] opacity-80 font-medium">{t('avgDeposit')}</p>
-                      <p className="text-[14px] font-bold">{formatCurrency(data.members.length > 0 ? stats.totalCollection / data.members.length : 0)}</p>
+                      <p className="text-[14px] font-bold">{formatCurrency(data.members.length > 0 ? stats.totalDeposit / data.members.length : 0)}</p>
                     </div>
                   </div>
                </div>
@@ -148,7 +148,7 @@ export function Dashboard({ data }: { data: ReturnType<typeof useCommitteeData> 
                        <div className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center"><ArrowDownCircle className="w-4 h-4 text-white" /></div>
                        <p className="text-[12px] font-medium opacity-90">{t('monthlyDeposit')}</p>
                     </div>
-                    <p className="text-[18px] font-bold">{formatCurrency(stats.totalCollection)}</p>
+                    <p className="text-[18px] font-bold">{formatCurrency(stats.totalDeposit)}</p>
                   </div>
                   
                   <div className="flex justify-between items-center px-1">
@@ -174,7 +174,7 @@ export function Dashboard({ data }: { data: ReturnType<typeof useCommitteeData> 
                      <Building2 className="w-4 h-4 text-white" />
                    </div>
                  </div>
-                 <h3 className="text-[32px] font-bold tracking-wider mb-4">{formatCurrency(stats.availableBalance)}</h3>
+                 <h3 className="text-[32px] font-bold tracking-wider mb-4">{formatCurrency(stats.currentBalance)}</h3>
                </div>
 
                <div className="mt-auto relative z-10 flex flex-col gap-4">

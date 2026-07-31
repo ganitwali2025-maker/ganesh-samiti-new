@@ -127,7 +127,7 @@ export function useCommitteeData() {
   const getStats = () => {
     const totalCollection = transactions
       .filter((t) => t.type === 'DEPOSIT')
-      .reduce((sum, t) => sum + t.amount, 0);
+      .reduce((sum, t) => sum + (Number(t.amount) || 0), 0);
       
     const totalExpensesPaid = transactions
       .filter((t) => {
@@ -139,19 +139,19 @@ export function useCommitteeData() {
          }
          return false;
       })
-      .reduce((sum, t) => sum + t.amount, 0);
+      .reduce((sum, t) => sum + (Number(t.amount) || 0), 0);
 
     const totalExpensesIncurred = transactions
       .filter((t) => t.type === 'EXPENSE')
-      .reduce((sum, t) => sum + t.amount, 0);
+      .reduce((sum, t) => sum + (Number(t.amount) || 0), 0);
 
     const totalCreditOutstanding = transactions
       .filter(t => t.type === 'EXPENSE' && t.paymentMethod === 'CREDIT')
-      .reduce((sum, t) => sum + (t.amount - (t.paidAmount || 0)), 0);
+      .reduce((sum, t) => sum + ((Number(t.amount) || 0) - (Number(t.paidAmount) || 0)), 0);
 
     const totalCreditPaid = transactions
       .filter(t => t.type === 'CREDIT_PAYMENT')
-      .reduce((sum, t) => sum + t.amount, 0);
+      .reduce((sum, t) => sum + (Number(t.amount) || 0), 0);
 
     return {
       totalDeposit: totalCollection,
