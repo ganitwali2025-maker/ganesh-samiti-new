@@ -124,9 +124,51 @@ export function useCommitteeData() {
     });
   };
 
+  const payDepositCredit = (transactionId: string, paymentAmount: number, paymentMethod: 'CASH' | 'UPI' | 'BANK', remark: string) => {
+    setTransactions((prev) => {
+      let memberName = '';
+      let memberId = '';
+      const updated = prev.map(t => {
+        if (t.id === transactionId && t.type === 'DEPOSIT' && t.paymentMethod === 'CREDIT') {
+          const member = members.find(m => m.id === t.memberId);
+          memberName = member ? member.name : 'Member';
+          memberId = t.memberId || '';
+          return {
+            ...t,
+            paidAmount: (t.paidAmount || 0) + paymentAmount,
+          };
+        }
+        return t;
+      });
+
+      if (memberName) {
+        // Add a new DEPOSIT_PAYMENT transaction
+        updated.push({
+          id: generateId(),
+          memberId: memberId,
+          amount: paymentAmount,
+          type: 'DEPOSIT_PAYMENT',
+          category: 'जमा भुगतान (Deposit Paid)',
+          date: new Date().toISOString().split('T')[0],
+          description: `Received from ${memberName} - ${remark}`,
+          paymentMethod: paymentMethod,
+        });
+      }
+      return updated;
+    });
+  };
+
   const getStats = () => {
     const totalCollection = transactions
-      .filter((t) => t.type === 'DEPOSIT')
+      .filter((t) => {
+         if (t.type === 'DEPOSIT') {
+            return t.paymentMethod !== 'CREDIT';
+         }
+         if (t.type === 'DEPOSIT_PAYMENT') {
+            return true;
+         }
+         return false;
+      })
       .reduce((sum, t) => sum + (Number(t.amount) || 0), 0);
       
     const totalExpensesPaid = transactions
@@ -153,6 +195,10 @@ export function useCommitteeData() {
       .filter(t => t.type === 'CREDIT_PAYMENT')
       .reduce((sum, t) => sum + (Number(t.amount) || 0), 0);
 
+    const totalDepositOutstanding = transactions
+      .filter(t => t.type === 'DEPOSIT' && t.paymentMethod === 'CREDIT')
+      .reduce((sum, t) => sum + ((Number(t.amount) || 0) - (Number(t.paidAmount) || 0)), 0);
+
     return {
       totalDeposit: totalCollection,
       totalExpenses: totalExpensesIncurred,
@@ -160,6 +206,7 @@ export function useCommitteeData() {
       currentBalance: totalCollection - totalExpensesPaid,
       outstandingCredit: totalCreditOutstanding,
       creditPaid: totalCreditPaid,
+      outstandingDeposit: totalDepositOutstanding,
       totalMembers: members.length
     };
   };
@@ -169,10 +216,11 @@ export function useCommitteeData() {
     transactions,
     addMember,
     updateMember,
+    deleteMember,
     addTransaction,
     deleteTransaction,
-    deleteMember,
     getStats,
     payCredit,
+    payDepositCredit
   };
 }

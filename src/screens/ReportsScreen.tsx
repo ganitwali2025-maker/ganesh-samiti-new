@@ -63,7 +63,7 @@ export function ReportsScreen() {
 
   // --- DATA PROCESSING FOR CHARTS & TABLES ---
   
-  const depositTransactions = useMemo(() => transactions.filter(t => t.type === 'DEPOSIT'), [transactions]);
+  const depositTransactions = useMemo(() => transactions.filter(t => t.type === 'DEPOSIT' || t.type === 'DEPOSIT_PAYMENT'), [transactions]);
   const expenseTransactions = useMemo(() => transactions.filter(t => t.type === 'EXPENSE'), [transactions]);
   
   const outstandingCredits = useMemo(() => {
@@ -89,7 +89,8 @@ export function ReportsScreen() {
       if (!dataMap[monthStr]) {
         dataMap[monthStr] = { name: monthStr, deposit: 0, expense: 0 };
       }
-      if (t.type === 'DEPOSIT') dataMap[monthStr].deposit += t.amount;
+      if (t.type === 'DEPOSIT' && t.paymentMethod !== 'CREDIT') dataMap[monthStr].deposit += t.amount;
+      if (t.type === 'DEPOSIT_PAYMENT') dataMap[monthStr].deposit += t.amount;
       if (t.type === 'EXPENSE' && t.paymentMethod !== 'CREDIT') dataMap[monthStr].expense += t.amount;
       if (t.type === 'CREDIT_PAYMENT') dataMap[monthStr].expense += t.amount;
     });
@@ -307,14 +308,20 @@ export function ReportsScreen() {
                        <th className="px-4 py-3 whitespace-nowrap">Detail</th>
                        <th className="px-4 py-3 whitespace-nowrap text-right">Amount</th>
                        <th className="px-4 py-3 whitespace-nowrap text-center">Type</th>
+                       <th className="px-4 py-3 whitespace-nowrap">Remark</th>
                      </tr>
                    </thead>
                    <tbody className="divide-y divide-slate-100 font-medium">
-                     {expenseTransactions.map(t => (
+                     {expenseTransactions.map(t => {
+                       const descParts = t.description.split(' - ');
+                       const mainDetail = t.vendorName ? `[${t.vendorName}] ${descParts[0]}` : descParts[0];
+                       const remarkText = descParts.length > 1 ? descParts.slice(1).join(' - ') : '-';
+                       
+                       return (
                        <tr key={t.id} className="hover:bg-slate-50 transition-colors">
                          <td className="px-4 py-3 whitespace-nowrap text-slate-600">{new Date(t.date).toLocaleDateString('en-IN')}</td>
                          <td className="px-4 py-3 whitespace-nowrap text-slate-800 font-bold">{t.category}</td>
-                         <td className="px-4 py-3 whitespace-nowrap text-slate-500 max-w-[120px] truncate" title={t.description}>{t.vendorName ? `[${t.vendorName}] ${t.description}` : t.description}</td>
+                         <td className="px-4 py-3 whitespace-nowrap text-slate-500 max-w-[120px] truncate" title={mainDetail}>{mainDetail}</td>
                          <td className="px-4 py-3 whitespace-nowrap text-right font-bold text-rose-600">{formatCurrency(t.amount)}</td>
                          <td className="px-4 py-3 whitespace-nowrap text-center">
                            {t.paymentMethod === 'CREDIT' ? (
@@ -323,10 +330,11 @@ export function ReportsScreen() {
                              <span className="bg-emerald-100 text-emerald-700 px-2 py-0.5 rounded text-[10px] font-bold">{t.paymentMethod || 'CASH'}</span>
                            )}
                          </td>
+                         <td className="px-4 py-3 whitespace-nowrap text-slate-500 max-w-[120px] truncate" title={remarkText}>{remarkText}</td>
                        </tr>
-                     ))}
+                     )})}
                      {expenseTransactions.length === 0 && (
-                       <tr><td colSpan={5} className="text-center py-6 text-slate-400">No expenses found.</td></tr>
+                       <tr><td colSpan={6} className="text-center py-6 text-slate-400">No expenses found.</td></tr>
                      )}
                    </tbody>
                  </table>

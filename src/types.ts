@@ -12,7 +12,7 @@ export interface Member {
   photo?: string;
 }
 
-export type TransactionType = 'DEPOSIT' | 'EXPENSE' | 'CREDIT_PAYMENT';
+export type TransactionType = 'DEPOSIT' | 'EXPENSE' | 'CREDIT_PAYMENT' | 'DEPOSIT_PAYMENT';
 
 export type TransactionCategory =
   | 'सजावट'

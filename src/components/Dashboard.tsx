@@ -50,7 +50,35 @@ export function Dashboard({ data }: { data: ReturnType<typeof useCommitteeData> 
            className="flex overflow-x-auto snap-x snap-mandatory scrollbar-hide px-4 gap-4 pb-2"
            style={{ scrollBehavior: 'smooth' }}
          >
-            {/* Card 1 (Purple) */}
+            {/* Card 1 (Green - Bank Balance) */}
+            <div className="min-w-[92vw] snap-center bg-[linear-gradient(135deg,#0F9D58_0%,#18B96B_50%,#2ECC71_100%)] rounded-[30px] p-6 text-white shadow-[0_8px_32px_rgba(15,157,88,0.3),inset_0_1px_1px_rgba(255,255,255,0.5)] border border-white/20 relative overflow-hidden flex flex-col justify-between">
+               <div className="absolute top-0 left-0 w-full h-1/3 bg-gradient-to-b from-white/20 to-transparent pointer-events-none"></div>
+               <div className="absolute left-[-10%] top-[-10%] w-1/2 h-1/2 bg-white/20 rounded-full blur-3xl pointer-events-none"></div>
+               <div className="absolute right-[-10px] bottom-[-10px] w-32 h-32 bg-[#0B8043]/50 rounded-full blur-2xl pointer-events-none"></div>
+               
+               <div>
+                 <div className="flex justify-between items-start mb-2">
+                   <p className="text-[14px] font-semibold opacity-90">{t('bankBalance')}</p>
+                   <div className="w-9 h-7 bg-white/20 rounded-lg flex items-center justify-center backdrop-blur-sm">
+                     <Building2 className="w-4 h-4 text-white" />
+                   </div>
+                 </div>
+                 <h3 className="text-[32px] font-bold tracking-wider mb-4">{formatCurrency(stats.currentBalance)}</h3>
+               </div>
+
+               <div className="mt-auto relative z-10 flex flex-col gap-4">
+                  <div className="flex justify-between items-center border-b border-white/20 pb-3">
+                    <p className="text-[12px] font-medium opacity-90">{t('todayCollection')}</p>
+                    <p className="text-[14px] font-bold">+₹0</p>
+                  </div>
+                  <div className="flex justify-between items-center">
+                    <p className="text-[12px] font-medium opacity-90">{t('todayExpense')}</p>
+                    <p className="text-[14px] font-bold">-₹0</p>
+                  </div>
+               </div>
+            </div>
+
+            {/* Card 2 (Purple - Total Collection) */}
             <div className="min-w-[92vw] snap-center bg-[linear-gradient(135deg,#5B2EFF_0%,#6F42FF_50%,#7B52FF_100%)] rounded-[30px] p-6 text-white shadow-[0_8px_32px_rgba(91,46,255,0.3),inset_0_1px_1px_rgba(255,255,255,0.5)] border border-white/20 relative overflow-hidden flex flex-col justify-between">
                <div className="absolute top-0 left-0 w-full h-1/3 bg-gradient-to-b from-white/20 to-transparent pointer-events-none"></div>
                <div className="absolute left-[-10%] top-[-10%] w-1/2 h-1/2 bg-white/20 rounded-full blur-3xl pointer-events-none"></div>
@@ -97,7 +125,7 @@ export function Dashboard({ data }: { data: ReturnType<typeof useCommitteeData> 
                </div>
             </div>
 
-            {/* Card 2 (Collection Breakdown - Blue) */}
+            {/* Card 3 (Collection Breakdown - Blue) */}
             <div className="min-w-[92vw] snap-center bg-[linear-gradient(135deg,#1E3A8A_0%,#3B82F6_50%,#60A5FA_100%)] rounded-[30px] p-6 text-white shadow-[0_8px_32px_rgba(59,130,246,0.3),inset_0_1px_1px_rgba(255,255,255,0.5)] border border-white/20 relative overflow-hidden flex flex-col justify-between">
                <div className="absolute top-0 left-0 w-full h-1/3 bg-gradient-to-b from-white/20 to-transparent pointer-events-none"></div>
                <div className="absolute right-[-10px] bottom-[-10px] w-24 h-24 bg-[#1E3A8A]/50 rounded-full blur-2xl pointer-events-none"></div>
@@ -118,6 +146,10 @@ export function Dashboard({ data }: { data: ReturnType<typeof useCommitteeData> 
                     <p className="text-[13px] font-medium opacity-90">वार्षिक जमा (Yearly)</p>
                     <p className="text-[18px] font-bold">{formatCurrency(yearlyCollection)}</p>
                   </div>
+                  <div className="flex justify-between items-center px-1 text-amber-200">
+                    <p className="text-[13px] font-medium opacity-90">बाकी चंदा (Pending)</p>
+                    <p className="text-[18px] font-bold">{formatCurrency(stats.outstandingDeposit)}</p>
+                  </div>
                </div>
 
                <div className="mt-4 pt-4 border-t border-white/20 relative z-10">
@@ -126,7 +158,7 @@ export function Dashboard({ data }: { data: ReturnType<typeof useCommitteeData> 
                </div>
             </div>
 
-            {/* Card 3 (Pink/Red) */}
+            {/* Card 4 (Pink/Red - Monthly Update) */}
             <div className="min-w-[92vw] snap-center bg-[linear-gradient(135deg,#D32F2F_0%,#E53935_50%,#FF6B6B_100%)] rounded-[30px] p-6 text-white shadow-[0_8px_32px_rgba(211,47,47,0.3),inset_0_1px_1px_rgba(255,255,255,0.5)] border border-white/20 relative overflow-hidden flex flex-col justify-between">
                <div className="absolute top-0 left-0 w-full h-1/3 bg-gradient-to-b from-white/20 to-transparent pointer-events-none"></div>
                <div className="absolute left-[-10%] top-[-10%] w-1/2 h-1/2 bg-white/20 rounded-full blur-3xl pointer-events-none"></div>
@@ -157,34 +189,6 @@ export function Dashboard({ data }: { data: ReturnType<typeof useCommitteeData> 
                        <p className="text-[12px] font-medium opacity-90">{t('monthlyExpense')}</p>
                     </div>
                     <p className="text-[18px] font-bold">{formatCurrency(stats.totalExpenses)}</p>
-                  </div>
-               </div>
-            </div>
-
-            {/* Card 4 (Green) */}
-            <div className="min-w-[92vw] snap-center bg-[linear-gradient(135deg,#0F9D58_0%,#18B96B_50%,#2ECC71_100%)] rounded-[30px] p-6 text-white shadow-[0_8px_32px_rgba(15,157,88,0.3),inset_0_1px_1px_rgba(255,255,255,0.5)] border border-white/20 relative overflow-hidden flex flex-col justify-between">
-               <div className="absolute top-0 left-0 w-full h-1/3 bg-gradient-to-b from-white/20 to-transparent pointer-events-none"></div>
-               <div className="absolute left-[-10%] top-[-10%] w-1/2 h-1/2 bg-white/20 rounded-full blur-3xl pointer-events-none"></div>
-               <div className="absolute right-[-10px] bottom-[-10px] w-32 h-32 bg-[#0B8043]/50 rounded-full blur-2xl pointer-events-none"></div>
-               
-               <div>
-                 <div className="flex justify-between items-start mb-2">
-                   <p className="text-[14px] font-semibold opacity-90">{t('bankBalance')}</p>
-                   <div className="w-9 h-7 bg-white/20 rounded-lg flex items-center justify-center backdrop-blur-sm">
-                     <Building2 className="w-4 h-4 text-white" />
-                   </div>
-                 </div>
-                 <h3 className="text-[32px] font-bold tracking-wider mb-4">{formatCurrency(stats.currentBalance)}</h3>
-               </div>
-
-               <div className="mt-auto relative z-10 flex flex-col gap-4">
-                  <div className="flex justify-between items-center border-b border-white/20 pb-3">
-                    <p className="text-[12px] font-medium opacity-90">{t('todayCollection')}</p>
-                    <p className="text-[14px] font-bold">+₹0</p>
-                  </div>
-                  <div className="flex justify-between items-center">
-                    <p className="text-[12px] font-medium opacity-90">{t('todayExpense')}</p>
-                    <p className="text-[14px] font-bold">-₹0</p>
                   </div>
                </div>
             </div>
