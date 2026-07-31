@@ -25,10 +25,10 @@ export const en = {
   todayCollection: "Today's Collection",
   todayExpense: "Today's Expense",
 
-  loanInfo: 'Loan Info',
-  totalLoan: 'Total Loan',
-  pendingEmi: 'Pending EMI',
-  interest: 'Interest',
+  loanInfo: 'Donation Info',
+  totalLoan: 'Total Target',
+  pendingEmi: 'Collected',
+  interest: 'Remaining',
 
   // Dashboard Grid Menu
   menuMembers: 'Members',
@@ -36,7 +36,7 @@ export const en = {
   menuBank: 'Withdrawal',
   menuExpense: 'Expense',
   menuBudget: 'Budget',
-  menuLoan: 'Loan',
+  menuLoan: 'Donation',
   menuSavings: 'Savings',
   menuReports: 'Reports',
   menuEvents: 'Events',

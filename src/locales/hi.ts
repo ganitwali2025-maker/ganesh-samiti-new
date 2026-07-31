@@ -25,10 +25,10 @@ export const hi = {
   todayCollection: 'आज का जमा',
   todayExpense: 'आज का खर्च',
 
-  loanInfo: 'ऋण जानकारी',
-  totalLoan: 'कुल ऋण (Total Loan)',
-  pendingEmi: 'बाकी EMI',
-  interest: 'ब्याज (Interest)',
+  loanInfo: 'चंदा जानकारी',
+  totalLoan: 'कुल लक्ष्य (Total Target)',
+  pendingEmi: 'प्राप्त चंदा (Collected)',
+  interest: 'बाकी (Remaining)',
 
   // Dashboard Grid Menu
   menuMembers: 'सदस्य',
@@ -36,7 +36,7 @@ export const hi = {
   menuBank: 'निकासी',
   menuExpense: 'खर्च',
   menuBudget: 'बजट',
-  menuLoan: 'ऋण',
+  menuLoan: 'चंदा',
   menuSavings: 'सेविंग',
   menuReports: 'रिपोर्ट',
   menuEvents: 'प्रोग्राम',

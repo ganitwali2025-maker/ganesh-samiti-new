@@ -93,17 +93,68 @@ export function useCommitteeData() {
     });
   }, [members]);
 
+  const payCredit = (transactionId: string, paymentAmount: number, paymentMethod: 'CASH' | 'UPI' | 'BANK', remark: string) => {
+    setTransactions((prev) => {
+      let vendorName = '';
+      const updated = prev.map(t => {
+        if (t.id === transactionId && t.type === 'EXPENSE' && t.paymentMethod === 'CREDIT') {
+          vendorName = t.vendorName || '';
+          return {
+            ...t,
+            paidAmount: (t.paidAmount || 0) + paymentAmount,
+          };
+        }
+        return t;
+      });
+
+      if (vendorName) {
+        // Add a new CREDIT_PAYMENT transaction
+        updated.push({
+          id: generateId(),
+          memberId: null,
+          amount: paymentAmount,
+          type: 'CREDIT_PAYMENT',
+          category: 'उधार भुगतान (Credit Paid)',
+          date: new Date().toISOString().split('T')[0],
+          description: `Paid to ${vendorName} - ${remark}`,
+          paymentMethod: paymentMethod,
+        });
+      }
+      return updated;
+    });
+  };
+
   const getStats = () => {
     const totalCollection = transactions
       .filter((t) => t.type === 'DEPOSIT')
       .reduce((sum, t) => sum + t.amount, 0);
-    const totalExpenses = transactions
+      
+    const totalExpensesPaid = transactions
+      .filter((t) => {
+         if (t.type === 'EXPENSE') {
+            return t.paymentMethod !== 'CREDIT';
+         }
+         if (t.type === 'CREDIT_PAYMENT') {
+            return true;
+         }
+         return false;
+      })
+      .reduce((sum, t) => sum + t.amount, 0);
+
+    const totalExpensesIncurred = transactions
       .filter((t) => t.type === 'EXPENSE')
       .reduce((sum, t) => sum + t.amount, 0);
+
+    const totalCreditOutstanding = transactions
+      .filter(t => t.type === 'EXPENSE' && t.paymentMethod === 'CREDIT')
+      .reduce((sum, t) => sum + (t.amount - (t.paidAmount || 0)), 0);
+
     return {
       totalCollection,
-      totalExpenses,
-      availableBalance: totalCollection - totalExpenses,
+      totalExpenses: totalExpensesIncurred,
+      totalExpensesPaid,
+      availableBalance: totalCollection - totalExpensesPaid,
+      totalCreditOutstanding,
     };
   };
 
@@ -116,5 +167,6 @@ export function useCommitteeData() {
     deleteTransaction,
     deleteMember,
     getStats,
+    payCredit,
   };
 }

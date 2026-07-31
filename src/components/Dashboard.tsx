@@ -110,11 +110,11 @@ export function Dashboard({ data }: { data: ReturnType<typeof useCommitteeData> 
                </div>
 
                <div className="flex flex-col gap-3 relative z-10">
-                  <div className="flex justify-between items-center bg-white/10 rounded-2xl p-4 border border-white/20 backdrop-blur-sm">
+                  <div className="flex justify-between items-center px-1">
                     <p className="text-[13px] font-medium opacity-90">मासिक जमा (Monthly)</p>
                     <p className="text-[18px] font-bold">{formatCurrency(monthlyCollection)}</p>
                   </div>
-                  <div className="flex justify-between items-center bg-white/10 rounded-2xl p-4 border border-white/20 backdrop-blur-sm">
+                  <div className="flex justify-between items-center px-1">
                     <p className="text-[13px] font-medium opacity-90">वार्षिक जमा (Yearly)</p>
                     <p className="text-[18px] font-bold">{formatCurrency(yearlyCollection)}</p>
                   </div>
@@ -143,7 +143,7 @@ export function Dashboard({ data }: { data: ReturnType<typeof useCommitteeData> 
                </div>
 
                <div className="mt-auto relative z-10 flex flex-col gap-4">
-                  <div className="flex justify-between items-center bg-white/10 rounded-2xl p-4 border border-white/20 backdrop-blur-sm">
+                  <div className="flex justify-between items-center px-1">
                     <div className="flex items-center gap-3">
                        <div className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center"><ArrowDownCircle className="w-4 h-4 text-white" /></div>
                        <p className="text-[12px] font-medium opacity-90">{t('monthlyDeposit')}</p>
@@ -151,7 +151,7 @@ export function Dashboard({ data }: { data: ReturnType<typeof useCommitteeData> 
                     <p className="text-[18px] font-bold">{formatCurrency(stats.totalCollection)}</p>
                   </div>
                   
-                  <div className="flex justify-between items-center bg-white/10 rounded-2xl p-4 border border-white/20 backdrop-blur-sm">
+                  <div className="flex justify-between items-center px-1">
                     <div className="flex items-center gap-3">
                        <div className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center"><ArrowUpCircle className="w-4 h-4 text-white" /></div>
                        <p className="text-[12px] font-medium opacity-90">{t('monthlyExpense')}</p>
@@ -205,19 +205,19 @@ export function Dashboard({ data }: { data: ReturnType<typeof useCommitteeData> 
                </div>
 
                <div className="mt-auto relative z-10 flex flex-col gap-4">
-                  <div className="flex justify-between items-center bg-white/10 rounded-2xl p-4 border border-white/20 backdrop-blur-sm">
+                  <div className="flex justify-between items-center px-1">
                     <p className="text-[12px] font-medium opacity-90">{t('totalLoan')}</p>
-                    <p className="text-[16px] font-bold">₹0</p>
+                    <p className="text-[16px] font-bold">₹51,000</p>
                   </div>
                   
                   <div className="flex justify-between items-center px-2">
                     <p className="text-[12px] font-medium opacity-90">{t('pendingEmi')}</p>
-                    <p className="text-[14px] font-bold">3 Months</p>
+                    <p className="text-[14px] font-bold">₹0</p>
                   </div>
                   
                   <div className="flex justify-between items-center px-2">
                     <p className="text-[12px] font-medium opacity-90">{t('interest')}</p>
-                    <p className="text-[14px] font-bold">2.5%</p>
+                    <p className="text-[14px] font-bold">₹51,000</p>
                   </div>
                </div>
             </div>

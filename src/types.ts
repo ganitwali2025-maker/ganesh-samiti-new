@@ -12,7 +12,7 @@ export interface Member {
   photo?: string;
 }
 
-export type TransactionType = 'DEPOSIT' | 'EXPENSE';
+export type TransactionType = 'DEPOSIT' | 'EXPENSE' | 'CREDIT_PAYMENT';
 
 export type TransactionCategory =
   | 'सजावट'
@@ -21,7 +21,17 @@ export type TransactionCategory =
   | 'कार्यक्रम'
   | 'ध्वनि / लाइट'
   | 'प्रचार'
-  | 'अन्य';
+  | 'मूर्ति'
+  | 'प्रसाद'
+  | 'अन्य'
+  | string;
+
+export interface Vendor {
+  id: string;
+  name: string;
+}
+
+export type CreditStatus = 'UNPAID' | 'PARTIAL' | 'PAID';
 
 export interface Transaction {
   id: string;
@@ -31,6 +41,12 @@ export interface Transaction {
   category: TransactionCategory | string;
   date: string;
   description: string;
+  
+  // New fields for Expense & Credit
+  paymentMethod?: 'CASH' | 'CREDIT' | 'UPI' | 'BANK';
+  vendorName?: string;
+  dueDate?: string;
+  paidAmount?: number; // For tracking partial payments on CREDIT transactions
 }
 
 export type Tab = 'dashboard' | 'members' | 'transactions';
