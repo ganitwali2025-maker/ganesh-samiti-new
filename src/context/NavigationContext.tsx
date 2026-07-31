@@ -12,6 +12,7 @@ export type ScreenName =
   | 'expense'
   | 'budget'
   | 'savings'
+  | 'monthly_savings'
   | 'bank'
   | 'reports'
   | 'events'
