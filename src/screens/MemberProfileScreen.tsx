@@ -37,7 +37,7 @@ export function MemberProfileScreen() {
       if (t.type === 'DEPOSIT') {
         totalCollection += t.amount;
         
-        if (t.category === 'वार्षिक जमा' || t.description.includes('गणेश चतुर्थी')) {
+        if (t.category === 'वार्षिक जमा' || (t.description && t.description.includes('गणेश चतुर्थी'))) {
           ganeshChaturthi += t.amount;
         } else if (t.category === 'मासिक जमा') {
           // Try to determine month from date (rough estimation based on JS getMonth)
