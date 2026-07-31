@@ -149,12 +149,18 @@ export function useCommitteeData() {
       .filter(t => t.type === 'EXPENSE' && t.paymentMethod === 'CREDIT')
       .reduce((sum, t) => sum + (t.amount - (t.paidAmount || 0)), 0);
 
+    const totalCreditPaid = transactions
+      .filter(t => t.type === 'CREDIT_PAYMENT')
+      .reduce((sum, t) => sum + t.amount, 0);
+
     return {
-      totalCollection,
+      totalDeposit: totalCollection,
       totalExpenses: totalExpensesIncurred,
       totalExpensesPaid,
-      availableBalance: totalCollection - totalExpensesPaid,
-      totalCreditOutstanding,
+      currentBalance: totalCollection - totalExpensesPaid,
+      outstandingCredit: totalCreditOutstanding,
+      creditPaid: totalCreditPaid,
+      totalMembers: members.length
     };
   };
 
