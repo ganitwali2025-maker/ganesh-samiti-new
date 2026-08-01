@@ -60,3 +60,49 @@ export interface Transaction {
 }
 
 export type Tab = 'dashboard' | 'members' | 'transactions';
+
+export interface AuditLog {
+  id: string;
+  recordId: string;
+  action: 'CREATE' | 'UPDATE' | 'DELETE' | 'PAYMENT_RECEIVED';
+  module: 'CHANDA';
+  changes?: string;
+  createdAt: string; // ISO String
+  createdBy: string;
+}
+
+export interface ChandaPayment {
+  id: string;
+  chandaId: string;
+  amount: number;
+  paymentMethod: 'CASH' | 'UPI' | 'BANK';
+  remark?: string;
+  date: string;
+  createdAt: string;
+  createdBy: string;
+}
+
+export interface Chanda {
+  id: string;
+  date: string; // Collection Date
+  donorName: string;
+  mobileNumber?: string;
+  address?: string;
+  amount: number;
+  paymentType: 'CASH' | 'CREDIT';
+  
+  // If CREDIT
+  dueDate?: string;
+  paidAmount: number; // For cash, paidAmount = amount. For credit, initialized to 0.
+  status: 'PAID' | 'PENDING';
+  remark?: string;
+
+  // File attachments
+  receiptPhoto?: string;
+
+  // Audit
+  createdAt: string; // ISO String
+  updatedAt: string; // ISO String
+  createdBy: string;
+  updatedBy: string;
+}

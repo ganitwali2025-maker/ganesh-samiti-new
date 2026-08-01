@@ -1,5 +1,6 @@
 import { useState, useRef } from 'react';
 import { useCommitteeData } from '../hooks/useCommitteeData';
+import { useChandaData } from '../hooks/useChandaData';
 import { useNavigation } from '../context/NavigationContext';
 import { useLanguage } from '../context/LanguageContext';
 import { 
@@ -7,7 +8,7 @@ import {
   Building2, BarChart3, Calendar, Megaphone,
   ArrowDownCircle, ArrowUpCircle, UserPlus, FileText,
   HandCoins, WalletCards, ArrowUpRight, ArrowDownRight, RefreshCw,
-  Banknote
+  Banknote, PlusCircle
 } from 'lucide-react';
 import { formatCurrency } from '../utils/format';
 import { PageHeader } from './PageHeader';
@@ -16,6 +17,11 @@ export function Dashboard({ data }: { data: ReturnType<typeof useCommitteeData> 
   const { navigate, openDrawer } = useNavigation();
   const { t } = useLanguage();
   const stats = data.getStats();
+  const chandaData = useChandaData();
+  const chandaStats = chandaData.getChandaStats();
+
+  const totalBankBalance = stats.currentBalance + chandaStats.totalReceived;
+  const totalSystemCollection = stats.totalDeposit + chandaStats.totalReceived;
 
   const monthlyCollection = data.transactions
     .filter(t => t.type === 'DEPOSIT' && t.category === 'मासिक जमा')
@@ -63,7 +69,7 @@ export function Dashboard({ data }: { data: ReturnType<typeof useCommitteeData> 
                      <Building2 className="w-4 h-4 text-white" />
                    </div>
                  </div>
-                 <h3 className="text-[32px] font-bold tracking-wider mb-4">{formatCurrency(stats.currentBalance)}</h3>
+                 <h3 className="text-[32px] font-bold tracking-wider mb-4">{formatCurrency(totalBankBalance)}</h3>
                </div>
 
                <div className="mt-auto relative z-10 flex flex-col gap-4">
@@ -91,7 +97,7 @@ export function Dashboard({ data }: { data: ReturnType<typeof useCommitteeData> 
                      <WalletCards className="w-4 h-4 text-white" />
                    </div>
                  </div>
-                 <h3 className="text-[32px] font-bold tracking-wider mb-1">{formatCurrency(stats.totalDeposit)}</h3>
+                 <h3 className="text-[32px] font-bold tracking-wider mb-1">{formatCurrency(totalSystemCollection)}</h3>
 
                  <div className="flex items-center justify-between mt-2 mb-6">
                     <p className="text-[12px] font-medium opacity-90">{t('appName')}</p>
@@ -247,8 +253,8 @@ export function Dashboard({ data }: { data: ReturnType<typeof useCommitteeData> 
              { icon: Landmark, label: t('menuCollection'), color: 'text-[#2ECC71]', bg: 'bg-green-50', route: 'collection' as const },
              { icon: WalletCards, label: t('menuBank'), color: 'text-[#3B82F6]', bg: 'bg-blue-50', route: 'bank' as const },
              { icon: Receipt, label: t('menuExpense'), color: 'text-[#FF5FA2]', bg: 'bg-pink-50', route: 'expense' as const },
+             { icon: HandCoins, label: 'चंदा (New)', color: 'text-[#FF5A5F]', bg: 'bg-red-50', route: 'chanda' as const },
              { icon: Target, label: t('menuBudget'), color: 'text-[#7357FF]', bg: 'bg-purple-50', route: 'budget' as const },
-             { icon: HandCoins, label: 'चंदा', color: 'text-[#FF5A5F]', bg: 'bg-red-50', route: 'savings' as const },
              { icon: Building2, label: 'सेविंग', color: 'text-[#20B2AA]', bg: 'bg-teal-50', route: 'monthly_savings' as const },
              { icon: BarChart3, label: t('menuReports'), color: 'text-[#2ECC71]', bg: 'bg-emerald-50', route: 'reports' as const },
              { icon: Calendar, label: t('menuEvents'), color: 'text-[#F59E0B]', bg: 'bg-amber-50', route: 'events' as const },

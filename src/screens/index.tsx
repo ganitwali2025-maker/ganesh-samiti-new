@@ -10,6 +10,10 @@ export * from './BankScreen';
 export * from './ReportsScreen';
 export * from './MemberProfileScreen';
 export * from './MonthlySavingsScreen';
+export * from './ChandaDashboardScreen';
+export * from './ChandaEntryScreen';
+export * from './ChandaRegisterScreen';
+export * from './ChandaReportsScreen';
 
 import { PageHeader } from '../components/PageHeader';
 import { useNavigation } from '../context/NavigationContext';

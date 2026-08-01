@@ -7,7 +7,8 @@ import {
   CollectionScreen, DepositScreen, ExpenseScreen, BudgetScreen, 
   SavingsScreen, BankScreen, ReportsScreen, EventsScreen, 
   NoticeScreen, ProfileScreen, NotificationsScreen, SearchScreen, 
-  SettingsScreen, MemberProfileScreen, MonthlySavingsScreen
+  SettingsScreen, MemberProfileScreen, MonthlySavingsScreen,
+  ChandaDashboardScreen, ChandaEntryScreen, ChandaRegisterScreen, ChandaReportsScreen
 } from '../screens';
 import { Dashboard } from '../components/Dashboard';
 
@@ -119,6 +120,26 @@ export function AppRouter() {
         <Route path="/member-profile/:id" element={
           <motion.div variants={variants} initial="initial" animate="animate" exit="exit" transition={{ duration: 0.2, ease: "easeInOut" }} className="w-full min-h-full">
             <MemberProfileScreen />
+          </motion.div>
+        } />
+        <Route path="/chanda" element={
+          <motion.div variants={variants} initial="initial" animate="animate" exit="exit" transition={{ duration: 0.2, ease: "easeInOut" }} className="w-full min-h-full">
+            <ChandaDashboardScreen />
+          </motion.div>
+        } />
+        <Route path="/chanda-entry" element={
+          <motion.div variants={variants} initial="initial" animate="animate" exit="exit" transition={{ duration: 0.2, ease: "easeInOut" }} className="w-full min-h-full">
+            <ChandaEntryScreen />
+          </motion.div>
+        } />
+        <Route path="/chanda-register" element={
+          <motion.div variants={variants} initial="initial" animate="animate" exit="exit" transition={{ duration: 0.2, ease: "easeInOut" }} className="w-full min-h-full">
+            <ChandaRegisterScreen />
+          </motion.div>
+        } />
+        <Route path="/chanda-reports" element={
+          <motion.div variants={variants} initial="initial" animate="animate" exit="exit" transition={{ duration: 0.2, ease: "easeInOut" }} className="w-full min-h-full">
+            <ChandaReportsScreen />
           </motion.div>
         } />
         <Route path="*" element={
