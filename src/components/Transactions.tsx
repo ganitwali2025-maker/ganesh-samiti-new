@@ -1,13 +1,15 @@
 import React, { useState } from 'react';
 import { useCommitteeData } from '../hooks/useCommitteeData';
-import { Plus, ArrowDownRight, ArrowUpRight, Trash2, Camera } from 'lucide-react';
+import { Plus, ArrowDownRight, ArrowUpRight, Trash2, Camera, Edit2 } from 'lucide-react';
 import { formatCurrency } from '../utils/format';
 import { TransactionType, TransactionCategory } from '../types';
 import { FullScreenImageViewer } from './FullScreenImageViewer';
+import { EditTransactionModal } from './EditTransactionModal';
 
 export function Transactions({ data }: { data: ReturnType<typeof useCommitteeData> }) {
   const [showAddForm, setShowAddForm] = useState(false);
   const [viewerFileId, setViewerFileId] = useState<string | null>(null);
+  const [editingTransaction, setEditingTransaction] = useState<any>(null);
   
   const [type, setType] = useState<TransactionType>('DEPOSIT');
   const [memberId, setMemberId] = useState('');
@@ -182,19 +184,29 @@ export function Transactions({ data }: { data: ReturnType<typeof useCommitteeDat
                       </div>
                     </div>
                     <div className="flex items-center justify-between sm:justify-end gap-4 w-full sm:w-auto pl-16 sm:pl-0">
-                      <div className={`font-bold text-lg ${isDeposit ? 'text-emerald-600' : 'text-rose-600'}`}>
-                        {isDeposit ? '+' : '-'}{formatCurrency(t.amount)}
+                      <div className="flex flex-col sm:flex-row items-center gap-2">
+                        <div className={`font-bold text-lg sm:mr-4 ${isDeposit ? 'text-emerald-600' : 'text-rose-600'}`}>
+                          {isDeposit ? '+' : '-'}{formatCurrency(t.amount)}
+                        </div>
+                        <div className="flex gap-1 opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity">
+                          <button 
+                             onClick={() => setEditingTransaction(t)}
+                             className="text-gray-400 hover:text-blue-500 p-2 rounded-lg hover:bg-blue-50 transition-colors"
+                          >
+                             <Edit2 className="w-4 h-4" />
+                          </button>
+                          <button 
+                             onClick={() => {
+                               if(window.confirm('क्या आप वाकई इस लेन-देन को हटाना चाहते हैं?')) {
+                                 data.deleteTransaction(t.id);
+                               }
+                             }}
+                             className="text-gray-400 hover:text-rose-500 p-2 rounded-lg hover:bg-rose-50 transition-colors"
+                          >
+                             <Trash2 className="w-4 h-4" />
+                          </button>
+                        </div>
                       </div>
-                      <button 
-                         onClick={() => {
-                           if(window.confirm('क्या आप वाकई इस लेन-देन को हटाना चाहते हैं?')) {
-                             data.deleteTransaction(t.id);
-                           }
-                         }}
-                         className="text-gray-400 hover:text-rose-500 p-2 rounded-lg hover:bg-rose-50 transition-colors opacity-100 md:opacity-0 md:group-hover:opacity-100"
-                      >
-                         <Trash2 className="w-4 h-4" />
-                      </button>
                     </div>
                   </div>
                 );
@@ -208,6 +220,14 @@ export function Transactions({ data }: { data: ReturnType<typeof useCommitteeDat
            fileId={viewerFileId} 
            onClose={() => setViewerFileId(null)} 
            title="Attachment Viewer"
+         />
+       )}
+       
+       {editingTransaction && (
+         <EditTransactionModal 
+           transaction={editingTransaction} 
+           onClose={() => setEditingTransaction(null)} 
+           updateTransaction={data.updateTransaction}
          />
        )}
     </div>

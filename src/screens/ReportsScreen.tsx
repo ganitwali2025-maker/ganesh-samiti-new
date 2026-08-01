@@ -3,10 +3,11 @@ import { PageHeader } from '../components/PageHeader';
 import { useCommitteeData } from '../hooks/useCommitteeData';
 import { formatCurrency } from '../utils/format';
 import { FullScreenImageViewer } from '../components/FullScreenImageViewer';
+import { EditTransactionModal } from '../components/EditTransactionModal';
 import { 
   BarChart3, Download, FileText, PieChart, Wallet, 
   ArrowUpCircle, ArrowDownCircle, Users, CreditCard, 
-  Calendar, CheckCircle2, ChevronDown, Printer, Camera
+  Calendar, CheckCircle2, ChevronDown, Printer, Camera, Edit2, Trash2
 } from 'lucide-react';
 import { 
   BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, 
@@ -16,7 +17,7 @@ import {
 type ReportTab = 'SUMMARY' | 'DEPOSIT' | 'EXPENSE' | 'CREDIT' | 'HISTORY' | 'MEMBER' | 'MONTHLY';
 
 export function ReportsScreen() {
-  const { transactions, members, getStats, payCredit } = useCommitteeData();
+  const { transactions, members, getStats, payCredit, deleteTransaction, updateTransaction } = useCommitteeData();
   const stats = getStats();
   const [activeTab, setActiveTab] = useState<ReportTab>('SUMMARY');
 
@@ -24,6 +25,7 @@ export function ReportsScreen() {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedMember, setSelectedMember] = useState('');
   const [viewerFileId, setViewerFileId] = useState<string | null>(null);
+  const [editingTransaction, setEditingTransaction] = useState<any>(null);
 
   // Credit Pay Modal State
   const [payModalOpen, setPayModalOpen] = useState(false);
@@ -272,6 +274,7 @@ export function ReportsScreen() {
                        <th className="px-4 py-3 whitespace-nowrap text-right">Amount</th>
                        <th className="px-4 py-3 whitespace-nowrap">Method</th>
                        <th className="px-4 py-3 whitespace-nowrap">Docs</th>
+                       <th className="px-4 py-3 whitespace-nowrap text-right print:hidden">Actions</th>
                      </tr>
                    </thead>
                    <tbody className="divide-y divide-slate-100 font-medium">
@@ -295,11 +298,17 @@ export function ReportsScreen() {
                                )}
                              </div>
                            </td>
+                           <td className="px-4 py-3 whitespace-nowrap text-right print:hidden">
+                             <div className="flex justify-end gap-2">
+                               <button onClick={() => setEditingTransaction(t)} className="text-blue-500 hover:text-blue-600 bg-blue-50 p-1.5 rounded-md transition-colors"><Edit2 className="w-3.5 h-3.5" /></button>
+                               <button onClick={() => { if(window.confirm('क्या आप इसे हटाना चाहते हैं?')) deleteTransaction(t.id); }} className="text-rose-500 hover:text-rose-600 bg-rose-50 p-1.5 rounded-md transition-colors"><Trash2 className="w-3.5 h-3.5" /></button>
+                             </div>
+                           </td>
                          </tr>
                        )
                      })}
                      {depositTransactions.length === 0 && (
-                       <tr><td colSpan={6} className="text-center py-6 text-slate-400">No deposits found.</td></tr>
+                       <tr><td colSpan={7} className="text-center py-6 text-slate-400">No deposits found.</td></tr>
                      )}
                    </tbody>
                  </table>
@@ -324,6 +333,7 @@ export function ReportsScreen() {
                        <th className="px-4 py-3 whitespace-nowrap text-center">Type</th>
                        <th className="px-4 py-3 whitespace-nowrap">Remark</th>
                        <th className="px-4 py-3 whitespace-nowrap">Docs</th>
+                       <th className="px-4 py-3 whitespace-nowrap text-right print:hidden">Actions</th>
                      </tr>
                    </thead>
                    <tbody className="divide-y divide-slate-100 font-medium">
@@ -356,10 +366,16 @@ export function ReportsScreen() {
                              )}
                            </div>
                          </td>
+                         <td className="px-4 py-3 whitespace-nowrap text-right print:hidden">
+                           <div className="flex justify-end gap-2">
+                             <button onClick={() => setEditingTransaction(t)} className="text-blue-500 hover:text-blue-600 bg-blue-50 p-1.5 rounded-md transition-colors"><Edit2 className="w-3.5 h-3.5" /></button>
+                             <button onClick={() => { if(window.confirm('क्या आप इसे हटाना चाहते हैं?')) deleteTransaction(t.id); }} className="text-rose-500 hover:text-rose-600 bg-rose-50 p-1.5 rounded-md transition-colors"><Trash2 className="w-3.5 h-3.5" /></button>
+                           </div>
+                         </td>
                        </tr>
                      )})}
                      {expenseTransactions.length === 0 && (
-                       <tr><td colSpan={7} className="text-center py-6 text-slate-400">No expenses found.</td></tr>
+                       <tr><td colSpan={8} className="text-center py-6 text-slate-400">No expenses found.</td></tr>
                      )}
                    </tbody>
                  </table>
@@ -594,6 +610,14 @@ export function ReportsScreen() {
           fileId={viewerFileId} 
           onClose={() => setViewerFileId(null)} 
           title="Document Viewer"
+        />
+      )}
+
+      {editingTransaction && (
+        <EditTransactionModal 
+          transaction={editingTransaction} 
+          onClose={() => setEditingTransaction(null)} 
+          updateTransaction={updateTransaction}
         />
       )}
     </div>

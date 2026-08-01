@@ -65,6 +65,10 @@ export function useCommitteeData() {
   const deleteTransaction = (id: string) => {
     setTransactions((prev) => prev.filter(t => t.id !== id));
   };
+
+  const updateTransaction = (id: string, updatedData: Partial<Transaction>) => {
+    setTransactions((prev) => prev.map(t => t.id === id ? { ...t, ...updatedData } : t));
+  };
   
   const updateMember = (id: string, updatedData: Partial<Omit<Member, 'id' | 'joinedAt'>>) => {
     setMembers((prev) => 
@@ -227,6 +231,7 @@ export function useCommitteeData() {
     updateMember,
     deleteMember,
     addTransaction,
+    updateTransaction,
     deleteTransaction,
     getStats,
     payCredit,
