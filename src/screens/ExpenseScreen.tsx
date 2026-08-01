@@ -41,13 +41,15 @@ export function ExpenseScreen() {
   const [viewerImageId, setViewerImageId] = useState<string | null>(null);
 
   const handleDelete = (expense: Expense) => {
-    if (window.confirm(`Are you sure you want to delete Expense ${expense.expenseNo} for ${formatCurrency(expense.amount)}?`)) {
+    if (window.confirm(`\u0915\u094d\u092f\u093e \u0906\u092a \u0907\u0938 \u0916\u0930\u094d\u091a \u0915\u094b \u0939\u091f\u093e\u0928\u093e \u091a\u093e\u0939\u0924\u0947 \u0939\u0948\u0902? ${expense.expenseNo} - ${formatCurrency(expense.amount)}`)) {
       deleteExpense(expense.id);
-      toast.success('Expense Deleted Successfully');
+      toast.success('\u0916\u0930\u094d\u091a \u0938\u092b\u0932\u0924\u093e\u092a\u0942\u0930\u094d\u0935\u0915 \u0939\u091f\u093e \u0926\u093f\u092f\u093e \u0917\u092f\u093e!');
     }
   };
 
-  const outstandingCredits = expenses.filter(e => e.paymentType === 'CREDIT' && e.status !== 'PAID');
+  // All credit entries (paid + unpaid)
+  const allCredits = expenses.filter(e => e.paymentType === 'CREDIT');
+  const outstandingCredits = allCredits.filter(e => e.status !== 'PAID');
 
   return (
     <div className="flex flex-col min-h-screen bg-[#FAFAFA] font-['Plus_Jakarta_Sans',sans-serif]">
@@ -227,14 +229,14 @@ export function ExpenseScreen() {
           </div>
         ) : (
           <div className="space-y-4">
-             {/* Credit List View */}
-             {outstandingCredits.length === 0 ? (
+             {/* Credit List View - ALL credits (paid + unpaid) */}
+             {allCredits.length === 0 ? (
                 <div className="bg-white rounded-[24px] p-8 text-center border border-slate-100 shadow-sm mt-4">
                   <div className="w-16 h-16 bg-emerald-50 rounded-full flex items-center justify-center mx-auto mb-4">
                      <CheckCircle2 className="w-8 h-8 text-emerald-400" />
                   </div>
-                  <p className="text-emerald-600 font-bold text-[16px] mb-1">All Clear!</p>
-                  <p className="text-slate-500 font-medium text-[13px]">There are no pending credit expenses.</p>
+                  <p className="text-emerald-600 font-bold text-[16px] mb-1">कोई उधार नहीं!</p>
+                  <p className="text-slate-500 font-medium text-[13px]">अभी तक कोई उधार खर्च नहीं हुआ.</p>
                 </div>
              ) : (
                <div className="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden mt-4">
@@ -242,21 +244,22 @@ export function ExpenseScreen() {
                    <table className="w-full text-left border-collapse">
                      <thead>
                        <tr className="bg-slate-50 border-b border-slate-100 text-[11px] font-extrabold text-slate-500 tracking-wider uppercase">
-                         <th className="p-3 pl-4">Due Date</th>
-                         <th className="p-3">Vendor</th>
-                         <th className="p-3 text-right">Total</th>
-                         <th className="p-3 text-right">Paid</th>
-                         <th className="p-3 text-right">Remaining</th>
-                         <th className="p-3 pr-4 text-center">Action</th>
+                         <th className="p-3 pl-4">तारीख</th>
+                         <th className="p-3">वेंडर</th>
+                         <th className="p-3 text-right">कुल</th>
+                         <th className="p-3 text-right">चुका</th>
+                         <th className="p-3 text-right">बाकी</th>
+                         <th className="p-3 text-center">स्थिति</th>
+                         <th className="p-3 pr-4 text-center">कार्रवाई</th>
                        </tr>
                      </thead>
                      <tbody className="divide-y divide-slate-100">
-                       {outstandingCredits.map((expense) => (
-                          <tr key={expense.id} className="hover:bg-slate-50/50 transition-colors">
-                             <td className="p-3 pl-4 whitespace-nowrap text-[13px] font-semibold text-rose-500">
-                               {expense.dueDate ? new Date(expense.dueDate).toLocaleDateString('en-IN', {day:'2-digit', month:'short', year:'numeric'}) : 'N/A'}
+                       {allCredits.map((expense) => (
+                          <tr key={expense.id} className={`hover:bg-slate-50/50 transition-colors ${expense.status === 'PAID' ? 'opacity-70' : ''}`}>
+                             <td className="p-3 pl-4 whitespace-nowrap text-[13px] font-semibold text-slate-600">
+                               {new Date(expense.date).toLocaleDateString('en-IN', {day:'2-digit', month:'short', year:'numeric'})}
                              </td>
-                             <td className="p-3 text-[13px] text-slate-800 min-w-[150px]">
+                             <td className="p-3 text-[13px] text-slate-800 min-w-[130px]">
                                <div>
                                  <span className="font-extrabold text-slate-400 text-[10px] mr-1">{expense.expenseNo}</span>
                                  <span className="font-bold">{expense.vendorName}</span>
@@ -270,24 +273,33 @@ export function ExpenseScreen() {
                                {formatCurrency(expense.paidAmount)}
                              </td>
                              <td className="p-3 text-right whitespace-nowrap font-extrabold text-[14px] text-rose-600">
-                               {formatCurrency(expense.amount - expense.paidAmount)}
+                               {formatCurrency(Math.max(0, expense.amount - expense.paidAmount))}
+                             </td>
+                             <td className="p-3 text-center">
+                               <span className={`text-[10px] font-extrabold px-2 py-1 rounded-md uppercase tracking-wider ${
+                                 expense.status === 'PAID' ? 'bg-emerald-100 text-emerald-700' : 'bg-rose-100 text-rose-700'
+                               }`}>
+                                 {expense.status === 'PAID' ? 'चुकाया' : 'बाकी'}
+                               </span>
                              </td>
                              <td className="p-3 pr-4 text-center whitespace-nowrap">
-                                <div className="flex items-center justify-center gap-2">
-                                  <button 
-                                    onClick={() => setPayCreditExpense(expense)}
-                                    className="px-3 py-2 bg-emerald-50 text-emerald-600 border border-emerald-200 rounded-[10px] font-bold text-[12px] flex items-center justify-center gap-1.5 active:scale-[0.95] transition-transform"
-                                  >
-                                    <IndianRupee className="w-3.5 h-3.5" /> Pay
-                                  </button>
-                                  <button 
-                                    onClick={() => handleDelete(expense)}
-                                    className="p-2 bg-rose-50 text-rose-500 border border-rose-200 rounded-[10px] active:scale-[0.95] transition-transform"
-                                    title="Delete"
-                                  >
-                                    <Trash className="w-4 h-4" />
-                                  </button>
-                                </div>
+                               <div className="flex items-center justify-center gap-2">
+                                 {expense.status !== 'PAID' && (
+                                   <button 
+                                     onClick={() => setPayCreditExpense(expense)}
+                                     className="px-3 py-2 bg-emerald-50 text-emerald-600 border border-emerald-200 rounded-[10px] font-bold text-[12px] flex items-center justify-center gap-1.5 active:scale-[0.95] transition-transform"
+                                   >
+                                     <IndianRupee className="w-3.5 h-3.5" /> Pay
+                                   </button>
+                                 )}
+                                 <button 
+                                   onClick={() => handleDelete(expense)}
+                                   className="p-2 bg-rose-50 text-rose-500 border border-rose-200 rounded-[10px] active:scale-[0.95] transition-transform"
+                                   title="हटाएं"
+                                 >
+                                   <Trash className="w-4 h-4" />
+                                 </button>
+                               </div>
                              </td>
                           </tr>
                        ))}
