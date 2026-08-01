@@ -207,14 +207,14 @@ export function ExpenseScreen() {
                                 )}
                               </td>
                               <td className="p-3 pr-4 text-center whitespace-nowrap">
-                                <div className="flex items-center justify-center gap-1.5">
-                                   <button onClick={() => setAuditExpense(expense)} className="p-1.5 text-slate-400 hover:bg-slate-200 rounded-full active:scale-90 transition-transform">
+                                <div className="flex items-center justify-center gap-2">
+                                   <button onClick={() => setAuditExpense(expense)} className="p-2 text-slate-400 bg-slate-50 border border-slate-200 rounded-lg active:scale-90 transition-transform" title="इतिहास">
                                      <Info className="w-4 h-4" />
                                    </button>
-                                   <button onClick={() => setEditExpense(expense)} className="p-1.5 text-slate-400 hover:bg-slate-200 rounded-full active:scale-90 transition-transform">
+                                   <button onClick={() => setEditExpense(expense)} className="p-2 text-blue-500 bg-blue-50 border border-blue-200 rounded-lg active:scale-90 transition-transform" title="बदलें">
                                      <Edit className="w-4 h-4" />
                                    </button>
-                                   <button onClick={() => handleDelete(expense)} className="p-1.5 text-rose-400 hover:bg-rose-100 rounded-full active:scale-90 transition-transform">
+                                   <button onClick={() => handleDelete(expense)} className="p-2 text-white bg-rose-500 border border-rose-600 rounded-lg active:scale-90 transition-transform shadow-sm" title="हटाएं">
                                      <Trash className="w-4 h-4" />
                                    </button>
                                 </div>
