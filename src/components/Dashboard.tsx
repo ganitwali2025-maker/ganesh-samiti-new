@@ -25,6 +25,16 @@ export function Dashboard({ data }: { data: ReturnType<typeof useCommitteeData> 
   const expenseData = useExpenseData();
   const expenseStats = expenseData.getExpenseStats();
 
+  // Calculate today's collection dynamically
+  const today = new Date().toISOString().split('T')[0];
+  const todayCollection = data.transactions
+    .filter(t => (t.type === 'DEPOSIT' || t.type === 'DEPOSIT_PAYMENT') && t.date === today)
+    .reduce((sum, t) => sum + (Number(t.amount) || 0), 0);
+  const todayChandaCollection = chandaData.chandas
+    .filter(c => c.date === today && c.status === 'PAID')
+    .reduce((sum, c) => sum + (Number(c.amount) || 0), 0);
+  const totalTodayCollection = todayCollection + todayChandaCollection;
+
   // Deduct actual paid expenses from total collection
   const totalBankBalance = stats.currentBalance + chandaStats.totalReceived - expenseStats.totalPaid;
   const totalSystemCollection = stats.totalDeposit + chandaStats.totalReceived;
@@ -44,7 +54,6 @@ export function Dashboard({ data }: { data: ReturnType<typeof useCommitteeData> 
     if (carouselRef.current) {
       const scrollPosition = carouselRef.current.scrollLeft;
       const cardWidth = carouselRef.current.offsetWidth;
-      // Calculate which card is currently most visible
       const newIndex = Math.round(scrollPosition / cardWidth);
       if (newIndex !== activeCard && newIndex >= 0 && newIndex < 5) {
         setActiveCard(newIndex);
@@ -81,11 +90,11 @@ export function Dashboard({ data }: { data: ReturnType<typeof useCommitteeData> 
                <div className="mt-auto relative z-10 flex flex-col gap-4">
                   <div className="flex justify-between items-center border-b border-white/20 pb-3">
                     <p className="text-[12px] font-medium opacity-90">{t('todayCollection')}</p>
-                    <p className="text-[14px] font-bold">+₹0</p>
+                    <p className="text-[14px] font-bold">+{formatCurrency(totalTodayCollection)}</p>
                   </div>
                   <div className="flex justify-between items-center">
                     <p className="text-[12px] font-medium opacity-90">{t('todayExpense')}</p>
-                    <p className="text-[14px] font-bold">-₹{expenseStats.todayExpense || 0}</p>
+                    <p className="text-[14px] font-bold">-{formatCurrency(expenseStats.todayExpense || 0)}</p>
                   </div>
                </div>
             </div>
@@ -223,17 +232,17 @@ export function Dashboard({ data }: { data: ReturnType<typeof useCommitteeData> 
                <div className="mt-auto relative z-10 flex flex-col gap-4">
                   <div className="flex justify-between items-center px-1">
                     <p className="text-[12px] font-medium opacity-90">{t('totalLoan')}</p>
-                    <p className="text-[16px] font-bold">₹51,000</p>
+                    <p className="text-[16px] font-bold">{formatCurrency(0)}</p>
                   </div>
                   
                   <div className="flex justify-between items-center px-2">
                     <p className="text-[12px] font-medium opacity-90">{t('pendingEmi')}</p>
-                    <p className="text-[14px] font-bold">₹0</p>
+                    <p className="text-[14px] font-bold">{formatCurrency(0)}</p>
                   </div>
                   
                   <div className="flex justify-between items-center px-2">
                     <p className="text-[12px] font-medium opacity-90">{t('interest')}</p>
-                    <p className="text-[14px] font-bold">₹51,000</p>
+                    <p className="text-[14px] font-bold">{formatCurrency(0)}</p>
                   </div>
                </div>
             </div>
@@ -283,7 +292,7 @@ export function Dashboard({ data }: { data: ReturnType<typeof useCommitteeData> 
             <h3 className="text-[16px] font-bold text-[#333333] drop-shadow-sm">{t('mainActivities')}</h3>
          </div>
          <div className="grid grid-cols-4 gap-4">
-            <div onClick={() => navigate('members')} className="flex flex-col items-center justify-center gap-2.5 cursor-pointer active:scale-95 transition-all">
+            <div onClick={() => navigate('members?action=add')} className="flex flex-col items-center justify-center gap-2.5 cursor-pointer active:scale-95 transition-all">
                <div className="w-[60px] h-[60px] rounded-[20px] bg-green-50 border border-green-100 flex items-center justify-center shadow-sm">
                   <UserPlus className="w-7 h-7 text-[#2ECC71]" strokeWidth={2.5} />
                </div>
@@ -297,7 +306,7 @@ export function Dashboard({ data }: { data: ReturnType<typeof useCommitteeData> 
                <span className="text-[11px] font-bold text-[#555555] text-center">{t('addDeposit')}</span>
             </div>
 
-            <div onClick={() => navigate('expense')} className="flex flex-col items-center justify-center gap-2.5 cursor-pointer active:scale-95 transition-all">
+            <div onClick={() => navigate('expense?action=add')} className="flex flex-col items-center justify-center gap-2.5 cursor-pointer active:scale-95 transition-all">
                <div className="w-[60px] h-[60px] rounded-[20px] bg-pink-50 border border-pink-100 flex items-center justify-center shadow-sm">
                   <ArrowUpCircle className="w-7 h-7 text-[#FF5FA2]" strokeWidth={2.5} />
                </div>

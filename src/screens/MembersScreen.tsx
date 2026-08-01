@@ -1,5 +1,6 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Search, Filter, Plus, UserCircle, Phone, MapPin } from 'lucide-react';
+import { useSearchParams } from 'react-router-dom';
 import { useCommitteeData } from '../hooks/useCommitteeData';
 import { useNavigation } from '../context/NavigationContext';
 import { PageHeader } from '../components/PageHeader';
@@ -12,11 +13,19 @@ export function MembersScreen() {
   const { members, addMember, updateMember, deleteMember } = useCommitteeData();
   const [searchTerm, setSearchTerm] = useState('');
   const { navigate } = useNavigation();
+  const [searchParams, setSearchParams] = useSearchParams();
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [memberToEdit, setMemberToEdit] = useState<Member | null>(null);
   const [isFabOpen, setIsFabOpen] = useState(false);
   const [actionMode, setActionMode] = useState<'edit' | 'delete' | null>(null);
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
+
+  useEffect(() => {
+    if (searchParams.get('action') === 'add') {
+      setIsAddModalOpen(true);
+      setSearchParams(new URLSearchParams());
+    }
+  }, [searchParams, setSearchParams]);
 
   const filteredMembers = members.filter(m => 
     m.name.toLowerCase().includes(searchTerm.toLowerCase()) || 

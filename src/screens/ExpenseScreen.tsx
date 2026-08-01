@@ -1,5 +1,6 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigation } from '../context/NavigationContext';
+import { useSearchParams } from 'react-router-dom';
 import { useExpenseData } from '../hooks/useExpenseData';
 import { 
   ArrowLeft, Filter, Bell, Receipt, FileText, 
@@ -18,6 +19,7 @@ import { PageHeader } from '../components/PageHeader';
 
 export function ExpenseScreen() {
   const { goBack } = useNavigation();
+  const [searchParams, setSearchParams] = useSearchParams();
   const { expenses, deleteExpense, getExpenseStats } = useExpenseData();
   const stats = getExpenseStats();
   
@@ -25,6 +27,14 @@ export function ExpenseScreen() {
   
   // Modals
   const [isEntryModalOpen, setIsEntryModalOpen] = useState(false);
+  
+  useEffect(() => {
+    if (searchParams.get('action') === 'add') {
+      setIsEntryModalOpen(true);
+      setSearchParams(new URLSearchParams());
+    }
+  }, [searchParams, setSearchParams]);
+
   const [editExpense, setEditExpense] = useState<Expense | null>(null);
   const [payCreditExpense, setPayCreditExpense] = useState<Expense | null>(null);
   const [auditExpense, setAuditExpense] = useState<Expense | null>(null);
