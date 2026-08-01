@@ -35,8 +35,21 @@ export function Dashboard({ data }: { data: ReturnType<typeof useCommitteeData> 
     .reduce((sum, c) => sum + (Number(c.amount) || 0), 0);
   const totalTodayCollection = todayCollection + todayChandaCollection;
 
-  // Deduct actual paid expenses from total collection
-  const totalBankBalance = stats.currentBalance + chandaStats.totalReceived - expenseStats.totalPaid;
+  // ✅ CORRECT Bank Balance formula:
+  // Total physical money IN  = Deposits (cash only) + DEPOSIT_PAYMENT + Chanda received
+  // Total physical money OUT = Expense cash paid + Expense credit paid (via payments)
+  const totalDepositsIn = data.transactions
+    .filter(t =>
+      (t.type === 'DEPOSIT' && t.paymentMethod !== 'CREDIT') ||
+      t.type === 'DEPOSIT_PAYMENT'
+    )
+    .reduce((sum, t) => sum + (Number(t.amount) || 0), 0);
+
+  const totalBankBalance = Math.max(0,
+    totalDepositsIn + chandaStats.totalReceived - expenseStats.totalPaid
+  );
+
+  // Total System Collection = all money that came in (including credit pending)
   const totalSystemCollection = stats.totalDeposit + chandaStats.totalReceived;
 
   const monthlyCollection = data.transactions
