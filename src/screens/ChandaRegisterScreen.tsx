@@ -123,12 +123,13 @@ export function ChandaRegisterScreen() {
                  )}
 
                  <div className="flex justify-between items-center">
-                    <div className="flex gap-2">
-                       <button onClick={() => setAuditLogId(c.id)} className="w-8 h-8 rounded-full bg-slate-50 border border-slate-100 flex items-center justify-center text-slate-500">
-                          <History className="w-4 h-4" />
-                       </button>
-                       <button onClick={() => handleDelete(c.id)} className="w-8 h-8 rounded-full bg-red-50 border border-red-100 flex items-center justify-center text-red-500">
+                    <div className="flex gap-2 items-center">
+                       <button onClick={() => handleDelete(c.id)} className="w-8 h-8 rounded-full bg-red-50 border border-red-100 flex items-center justify-center text-red-500 active:scale-95 transition-transform">
                           <Trash2 className="w-4 h-4" />
+                       </button>
+                       <button onClick={() => setAuditLogId(c.id)} className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-blue-50 border border-blue-100 text-blue-600 font-bold text-[11px] active:scale-95 transition-transform">
+                          <History className="w-3.5 h-3.5" />
+                          <span>Audit</span>
                        </button>
                     </div>
                     
