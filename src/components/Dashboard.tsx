@@ -100,14 +100,20 @@ export function Dashboard({ data }: { data: ReturnType<typeof useCommitteeData> 
                  <h3 className="text-[32px] font-bold tracking-wider mb-4">{formatCurrency(totalBankBalance)}</h3>
                </div>
 
-               <div className="mt-auto relative z-10 flex flex-col gap-4">
+               <div className="mt-auto relative z-10 flex flex-col gap-3">
                   <div className="flex justify-between items-center border-b border-white/20 pb-3">
-                    <p className="text-[12px] font-medium opacity-90">{t('todayCollection')}</p>
-                    <p className="text-[14px] font-bold">+{formatCurrency(totalTodayCollection)}</p>
+                    <div className="flex items-center gap-1.5">
+                      <div className="w-2 h-2 rounded-full bg-green-200"></div>
+                      <p className="text-[12px] font-medium opacity-90">आज की जमा</p>
+                    </div>
+                    <p className="text-[14px] font-bold text-green-100">+{formatCurrency(totalTodayCollection)}</p>
                   </div>
                   <div className="flex justify-between items-center">
-                    <p className="text-[12px] font-medium opacity-90">{t('todayExpense')}</p>
-                    <p className="text-[14px] font-bold">-{formatCurrency(expenseStats.todayExpense || 0)}</p>
+                    <div className="flex items-center gap-1.5">
+                      <div className="w-2 h-2 rounded-full bg-red-300"></div>
+                      <p className="text-[12px] font-medium opacity-90">आज का खर्च</p>
+                    </div>
+                    <p className="text-[14px] font-bold text-red-100">-{formatCurrency(expenseStats.todayExpense || 0)}</p>
                   </div>
                </div>
             </div>
@@ -180,15 +186,15 @@ export function Dashboard({ data }: { data: ReturnType<typeof useCommitteeData> 
                     <p className="text-[13px] font-medium opacity-90">वार्षिक जमा (Yearly)</p>
                     <p className="text-[18px] font-bold">{formatCurrency(yearlyCollection)}</p>
                   </div>
-                  <div className="flex justify-between items-center px-1 text-amber-200">
-                    <p className="text-[13px] font-medium opacity-90">बाकी चंदा (Pending)</p>
-                    <p className="text-[18px] font-bold">{formatCurrency(stats.outstandingDeposit + chandaStats.outstandingCredit)}</p>
+                  <div className="flex justify-between items-center px-1">
+                    <p className="text-[13px] font-medium opacity-90">चंदा जमा (Chanda)</p>
+                    <p className="text-[18px] font-bold">{formatCurrency(chandaStats.cashCollection)}</p>
                   </div>
                </div>
 
                <div className="mt-4 pt-4 border-t border-white/20 relative z-10">
                   <p className="text-[12px] opacity-80 font-medium mb-1">कुल जमा (Total Collection)</p>
-                  <h3 className="text-[28px] font-bold tracking-wider">{formatCurrency(monthlyCollection + yearlyCollection)}</h3>
+                  <h3 className="text-[28px] font-bold tracking-wider">{formatCurrency(monthlyCollection + yearlyCollection + chandaStats.cashCollection)}</h3>
                </div>
             </div>
 
@@ -201,7 +207,7 @@ export function Dashboard({ data }: { data: ReturnType<typeof useCommitteeData> 
                <div className="flex justify-between items-start mb-4 relative z-10">
                   <div>
                      <p className="text-[14px] font-semibold opacity-90">{t('monthlyUpdate')}</p>
-                     <p className="text-[12px] font-bold mt-1 opacity-80">{t('july2025')}</p>
+                     <p className="text-[12px] font-bold mt-1 opacity-80">{new Date().toLocaleString('hi-IN', { month: 'long', year: 'numeric' })}</p>
                   </div>
                   <div className="w-9 h-7 bg-white/20 rounded-lg flex items-center justify-center backdrop-blur-sm">
                      <Calendar className="w-4 h-4 text-white" />
@@ -212,17 +218,17 @@ export function Dashboard({ data }: { data: ReturnType<typeof useCommitteeData> 
                   <div className="flex justify-between items-center px-1">
                     <div className="flex items-center gap-3">
                        <div className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center"><ArrowDownCircle className="w-4 h-4 text-white" /></div>
-                       <p className="text-[12px] font-medium opacity-90">{t('monthlyDeposit')}</p>
+                       <p className="text-[12px] font-medium opacity-90">इस महीने जमा</p>
                     </div>
-                    <p className="text-[18px] font-bold">{formatCurrency(stats.totalDeposit)}</p>
+                    <p className="text-[18px] font-bold">{formatCurrency(chandaStats.monthlyCollection + (data.transactions.filter(t => (t.type === 'DEPOSIT' || t.type === 'DEPOSIT_PAYMENT') && t.date.startsWith(today.substring(0, 7))).reduce((s, t) => s + (Number(t.amount) || 0), 0)))}</p>
                   </div>
                   
                   <div className="flex justify-between items-center px-1">
                     <div className="flex items-center gap-3">
                        <div className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center"><ArrowUpCircle className="w-4 h-4 text-white" /></div>
-                       <p className="text-[12px] font-medium opacity-90">{t('monthlyExpense')}</p>
+                       <p className="text-[12px] font-medium opacity-90">इस महीने खर्च</p>
                     </div>
-                    <p className="text-[18px] font-bold">{formatCurrency(expenseStats.totalPaid)}</p>
+                    <p className="text-[18px] font-bold">{formatCurrency(expenseStats.monthlyExpense)}</p>
                   </div>
                </div>
             </div>
