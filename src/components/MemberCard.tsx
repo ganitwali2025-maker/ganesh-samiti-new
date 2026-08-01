@@ -1,7 +1,7 @@
 import React from 'react';
 import { Camera, User, Medal, Calendar, Phone, MapPin } from 'lucide-react';
 import { Member } from '../types';
-import { Link } from 'react-router-dom';
+import { useNavigation } from '../context/NavigationContext';
 import { StorageImage } from './StorageImage';
 
 interface MemberCardProps {
@@ -12,6 +12,7 @@ interface MemberCardProps {
 }
 
 export function MemberCard({ member, selectableMode, isSelected, onSelect }: MemberCardProps) {
+  const { navigate } = useNavigation();
   const handleClick = (e: React.MouseEvent) => {
     if (selectableMode && onSelect) {
       e.preventDefault();
@@ -139,8 +140,8 @@ export function MemberCard({ member, selectableMode, isSelected, onSelect }: Mem
   }
 
   return (
-    <Link to={`/member-profile/${member.id}`} className={className} style={{ display: 'flex', textDecoration: 'none' }}>
+    <div onClick={() => navigate(`member-profile/${member.id}`)} className={className}>
       {CardContent}
-    </Link>
+    </div>
   );
 }

@@ -2,11 +2,12 @@ import { useState } from 'react';
 import { PageHeader } from '../components/PageHeader';
 import { useNavigation } from '../context/NavigationContext';
 import { useChandaData } from '../hooks/useChandaData';
-import { FileText, Search, User, IndianRupee, MapPin, Eye, Trash2, ShieldAlert, History, ArrowLeft } from 'lucide-react';
+import { FileText, Search, User, IndianRupee, MapPin, Eye, Trash2, ShieldAlert, History, ArrowLeft, Edit } from 'lucide-react';
 import { formatCurrency } from '../utils/format';
 import { ChandaPaymentModal } from '../components/ChandaPaymentModal';
-import { ChandaAuditLogModal } from '../components/ChandaAuditLogModal';
+import { ChandaEditModal } from '../components/ChandaEditModal';
 import toast from 'react-hot-toast';
+import { Chanda } from '../types';
 
 export function ChandaRegisterScreen() {
   const { navigate } = useNavigation();
@@ -16,7 +17,7 @@ export function ChandaRegisterScreen() {
   const [filterType, setFilterType] = useState<'ALL' | 'CASH' | 'CREDIT' | 'PENDING'>('ALL');
 
   const [paymentModalData, setPaymentModalData] = useState<{ id: string, name: string, total: number, paid: number } | null>(null);
-  const [auditLogId, setAuditLogId] = useState<string | null>(null);
+  const [editModalData, setEditModalData] = useState<Chanda | null>(null);
 
   const handleDelete = (id: string) => {
     if (window.confirm('Are you sure you want to delete this Chanda record?')) {
@@ -127,9 +128,9 @@ export function ChandaRegisterScreen() {
                        <button onClick={() => handleDelete(c.id)} className="w-8 h-8 rounded-full bg-red-50 border border-red-100 flex items-center justify-center text-red-500 active:scale-95 transition-transform">
                           <Trash2 className="w-4 h-4" />
                        </button>
-                       <button onClick={() => setAuditLogId(c.id)} className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-blue-50 border border-blue-100 text-blue-600 font-bold text-[11px] active:scale-95 transition-transform">
-                          <History className="w-3.5 h-3.5" />
-                          <span>Audit</span>
+                       <button onClick={() => setEditModalData(c)} className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-blue-50 border border-blue-100 text-blue-600 font-bold text-[11px] active:scale-95 transition-transform">
+                          <Edit className="w-3.5 h-3.5" />
+                          <span>बदलें (Edit)</span>
                        </button>
                     </div>
                     
@@ -158,8 +159,8 @@ export function ChandaRegisterScreen() {
         />
       )}
 
-      {auditLogId && (
-        <ChandaAuditLogModal chandaId={auditLogId} onClose={() => setAuditLogId(null)} />
+      {editModalData && (
+        <ChandaEditModal chanda={editModalData} onClose={() => setEditModalData(null)} />
       )}
     </div>
   );
