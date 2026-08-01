@@ -68,7 +68,7 @@ export function SavingsScreen() {
 
       {/* TOP SUMMARY CARD */}
       <div className="px-4 pt-4 pb-2 shrink-0">
-        <div className="bg-gradient-to-br from-[#FF8A3D] to-[#FFB86C] rounded-[24px] p-5 text-white shadow-[0_8px_24px_rgba(255,138,61,0.25)] relative overflow-hidden">
+        <div className="bg-gradient-to-br from-[#FF5A5F] to-[#D12B30] rounded-[28px] p-5 text-white shadow-[0_8px_30px_rgba(255,90,95,0.3)] relative overflow-hidden">
           <div className="absolute right-[-10%] top-[-10%] w-32 h-32 bg-white/20 rounded-full blur-2xl pointer-events-none"></div>
           
           <div className="flex justify-between items-start mb-6 relative z-10">

@@ -43,71 +43,82 @@ export function ExpenseScreen() {
     <div className="flex flex-col min-h-screen bg-[#FAFAFA] font-['Plus_Jakarta_Sans',sans-serif]">
       <PageHeader title="खर्च विवरण (Expenses)" subtitle="समिति के खर्च की जानकारी" />
 
-      {/* Tabs */}
-      <div className="flex px-6 pt-6 gap-4 shrink-0">
-        <button 
-          onClick={() => setActiveTab('REGISTER')}
-          className={`flex-1 py-3 text-[13px] font-bold rounded-2xl transition-all flex items-center justify-center gap-2 ${
-            activeTab === 'REGISTER' 
-              ? 'bg-orange-100 text-orange-700 shadow-sm border border-orange-200' 
-              : 'bg-white text-slate-500 border border-slate-200'
-          }`}
-        >
-          <Receipt className="w-4 h-4" /> Expense Register
-        </button>
-        <button 
-          onClick={() => setActiveTab('CREDIT_LIST')}
-          className={`flex-1 py-3 text-[13px] font-bold rounded-2xl transition-all relative flex items-center justify-center gap-2 ${
-            activeTab === 'CREDIT_LIST' 
-              ? 'bg-orange-100 text-orange-700 shadow-sm border border-orange-200' 
-              : 'bg-white text-slate-500 border border-slate-200'
-          }`}
-        >
-          <Clock className="w-4 h-4" /> Credit List
-          {outstandingCredits.length > 0 && (
-            <span className="absolute -top-1.5 -right-1.5 w-5 h-5 bg-rose-500 text-white text-[10px] rounded-full flex items-center justify-center border-2 border-[#FAFAFA] font-bold shadow-sm">
-              {outstandingCredits.length}
-            </span>
-          )}
-        </button>
-      </div>
+      {/* Quick Action Tabs moved below */}
 
       {/* Main Content Area */}
       <div className="p-4 flex-1 overflow-y-auto pb-32">
-        {activeTab === 'REGISTER' ? (
-          <div className="space-y-4">
-             {/* Expense Stats Card Box (Chanda Theme Style) */}
-             <div className="bg-gradient-to-br from-[#FF5A5F] to-[#D12B30] rounded-[28px] p-6 text-white shadow-[0_8px_30px_rgba(255,90,95,0.3)] relative overflow-hidden">
-                <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full blur-2xl -mr-10 -mt-10 pointer-events-none"></div>
-                
-                <div className="flex justify-between items-start mb-2 relative z-10">
-                  <div>
-                    <p className="text-[13px] font-semibold opacity-90">कुल खर्च (Total Expense)</p>
-                  </div>
-                  <div className="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center backdrop-blur-sm">
-                    <Receipt className="w-5 h-5 text-white" />
-                  </div>
+        <div className="space-y-4">
+          {/* Expense Stats Card Box (Chanda Theme Style) */}
+          <div className="bg-gradient-to-br from-[#FF5A5F] to-[#D12B30] rounded-[28px] p-6 text-white shadow-[0_8px_30px_rgba(255,90,95,0.3)] relative overflow-hidden">
+            <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full blur-2xl -mr-10 -mt-10 pointer-events-none"></div>
+            
+            <div className="flex justify-between items-start mb-2 relative z-10">
+              <div>
+                <p className="text-[13px] font-extrabold opacity-95">कुल खर्च (Total Expense)</p>
+              </div>
+              <div className="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center backdrop-blur-sm">
+                <Receipt className="w-5 h-5 text-white" />
+              </div>
+            </div>
+            <h2 className="text-[36px] font-extrabold tracking-wider mb-4 relative z-10">{formatCurrency(stats.totalExpense)}</h2>
+            
+            <div className="flex flex-col gap-3 relative z-10 border-t border-white/20 pt-4">
+              <div className="flex justify-between items-center">
+                <div className="flex items-center gap-2">
+                  <div className="w-2 h-2 rounded-full bg-emerald-300"></div>
+                  <p className="text-[12px] opacity-95 font-bold">नकद (Cash)</p>
                 </div>
-                <h2 className="text-[36px] font-extrabold tracking-wider mb-4 relative z-10">{formatCurrency(stats.totalExpense)}</h2>
-                
-                <div className="flex flex-col gap-3 relative z-10 border-t border-white/20 pt-4">
-                  <div className="flex justify-between items-center">
-                    <div className="flex items-center gap-2">
-                       <div className="w-2 h-2 rounded-full bg-emerald-300"></div>
-                       <p className="text-[12px] opacity-90">नकद (Cash Paid)</p>
-                    </div>
-                    <p className="text-[14px] font-bold">{formatCurrency(stats.totalPaid)}</p>
-                  </div>
-                  <div className="flex justify-between items-center">
-                    <div className="flex items-center gap-2">
-                       <div className="w-2 h-2 rounded-full bg-amber-300"></div>
-                       <p className="text-[12px] opacity-90">बाकी उधार (Pending Credit)</p>
-                    </div>
-                    <p className="text-[14px] font-bold">{formatCurrency(stats.outstandingCredit)}</p>
-                  </div>
+                <p className="text-[14px] font-extrabold">{formatCurrency(stats.totalPaid)}</p>
+              </div>
+              <div className="flex justify-between items-center">
+                <div className="flex items-center gap-2">
+                  <div className="w-2 h-2 rounded-full bg-amber-300"></div>
+                  <p className="text-[12px] opacity-95 font-bold">उधार (Credit)</p>
                 </div>
-             </div>
+                <p className="text-[14px] font-extrabold">{formatCurrency(stats.outstandingCredit)}</p>
+              </div>
+            </div>
+          </div>
 
+          {/* Quick Action Tabs moved here */}
+          <div className="pt-2 shrink-0">
+            <h3 className="text-[15px] font-extrabold text-slate-800 mb-4 px-1">त्वरित कार्य (Quick Actions)</h3>
+            <div className="grid grid-cols-2 gap-4">
+              <button 
+                onClick={() => setActiveTab('REGISTER')}
+                className={`bg-white p-4 rounded-[24px] shadow-sm flex flex-col items-center justify-center gap-3 active:scale-95 transition-transform ${
+                  activeTab === 'REGISTER' ? 'border-2 border-orange-400' : 'border border-slate-100'
+                }`}
+              >
+                <div className="w-12 h-12 rounded-full bg-orange-50 flex items-center justify-center">
+                  <Receipt className="w-6 h-6 text-orange-500" />
+                </div>
+                <span className={`text-[13px] font-extrabold ${activeTab === 'REGISTER' ? 'text-orange-600' : 'text-slate-800'}`}>खर्च रजिस्टर (Register)</span>
+              </button>
+              
+              <button 
+                onClick={() => setActiveTab('CREDIT_LIST')}
+                className={`bg-white p-4 rounded-[24px] shadow-sm flex flex-col items-center justify-center gap-3 active:scale-95 transition-transform relative ${
+                  activeTab === 'CREDIT_LIST' ? 'border-2 border-orange-400' : 'border border-slate-100'
+                }`}
+              >
+                <div className="w-12 h-12 rounded-full bg-blue-50 flex items-center justify-center">
+                  <Clock className="w-6 h-6 text-blue-500" />
+                </div>
+                <span className={`text-[13px] font-extrabold ${activeTab === 'CREDIT_LIST' ? 'text-orange-600' : 'text-slate-800'}`}>उधार सूची (Pending)</span>
+                
+                {outstandingCredits.length > 0 && (
+                  <span className="absolute top-2 right-2 w-6 h-6 bg-rose-500 text-white text-[11px] rounded-full flex items-center justify-center border-2 border-white font-bold shadow-sm">
+                    {outstandingCredits.length}
+                  </span>
+                )}
+              </button>
+            </div>
+          </div>
+        </div>
+
+        {activeTab === 'REGISTER' ? (
+          <div className="space-y-4 mt-6">
              {/* Expense List */}
              {expenses.length === 0 ? (
                <div className="bg-white rounded-[24px] p-8 text-center border border-slate-100 shadow-sm mt-8">

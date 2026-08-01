@@ -138,7 +138,7 @@ export function MonthlySavingsScreen() {
         {/* DASHBOARD TAB */}
         {activeTab === 'DASHBOARD' && (
           <div className="space-y-4">
-            <div className="bg-gradient-to-br from-teal-500 to-emerald-400 rounded-3xl p-5 text-white shadow-lg relative overflow-hidden">
+            <div className="bg-gradient-to-br from-[#FF5A5F] to-[#D12B30] rounded-[28px] p-5 text-white shadow-[0_8px_30px_rgba(255,90,95,0.3)] relative overflow-hidden">
                <div className="absolute right-[-10%] top-[-10%] w-32 h-32 bg-white/20 rounded-full blur-2xl"></div>
                <h3 className="text-[13px] font-bold opacity-90 uppercase tracking-wide mb-4">Current Month Status</h3>
                <div className="grid grid-cols-2 gap-4 mb-4">

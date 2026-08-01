@@ -159,24 +159,40 @@ export function DepositScreen() {
     <div className="flex flex-col min-h-screen bg-[#FAFAFA] font-['Plus_Jakarta_Sans',sans-serif]">
       <PageHeader title="" subtitle="" />
       
-      <div className="flex px-4 pt-4 gap-4 pb-2">
-        <button 
-          onClick={() => setActiveTab('NEW')}
-          className={`flex-1 py-3 text-sm font-bold rounded-2xl transition-all ${activeTab === 'NEW' ? 'bg-orange-100 text-orange-700 shadow-sm' : 'bg-white text-slate-500 border border-slate-100'}`}
-        >
-          नया जमा (New Deposit)
-        </button>
-        <button 
-          onClick={() => setActiveTab('CREDIT_LIST')}
-          className={`flex-1 py-3 text-sm font-bold rounded-2xl transition-all relative ${activeTab === 'CREDIT_LIST' ? 'bg-orange-100 text-orange-700 shadow-sm' : 'bg-white text-slate-500 border border-slate-100'}`}
-        >
-          उधार सूची (Pending)
-          {outstandingDeposits.filter(c => c.status !== 'PAID').length > 0 && (
-            <span className="absolute -top-1 -right-1 w-5 h-5 bg-rose-500 text-white text-[10px] rounded-full flex items-center justify-center">
-              {outstandingDeposits.filter(c => c.status !== 'PAID').length}
-            </span>
-          )}
-        </button>
+      {/* Quick Action Tabs */}
+      <div className="px-4 pt-6 shrink-0">
+        <h3 className="text-[15px] font-extrabold text-slate-800 mb-4 px-1">त्वरित कार्य (Quick Actions)</h3>
+        <div className="grid grid-cols-2 gap-4">
+          <button 
+            onClick={() => setActiveTab('NEW')}
+            className={`bg-white p-4 rounded-[24px] shadow-sm flex flex-col items-center justify-center gap-3 active:scale-95 transition-transform ${
+              activeTab === 'NEW' ? 'border-2 border-orange-400' : 'border border-slate-100'
+            }`}
+          >
+            <div className="w-12 h-12 rounded-full bg-red-50 flex items-center justify-center">
+              <Plus className="w-6 h-6 text-[#FF5A5F]" />
+            </div>
+            <span className={`text-[13px] font-extrabold ${activeTab === 'NEW' ? 'text-orange-600' : 'text-slate-800'}`}>नया जमा (New Deposit)</span>
+          </button>
+          
+          <button 
+            onClick={() => setActiveTab('CREDIT_LIST')}
+            className={`bg-white p-4 rounded-[24px] shadow-sm flex flex-col items-center justify-center gap-3 active:scale-95 transition-transform relative ${
+              activeTab === 'CREDIT_LIST' ? 'border-2 border-orange-400' : 'border border-slate-100'
+            }`}
+          >
+            <div className="w-12 h-12 rounded-full bg-blue-50 flex items-center justify-center">
+              <Clock className="w-6 h-6 text-blue-500" />
+            </div>
+            <span className={`text-[13px] font-extrabold ${activeTab === 'CREDIT_LIST' ? 'text-orange-600' : 'text-slate-800'}`}>उधार सूची (Pending)</span>
+            
+            {outstandingDeposits.filter(c => c.status !== 'PAID').length > 0 && (
+              <span className="absolute top-2 right-2 w-6 h-6 bg-rose-500 text-white text-[11px] rounded-full flex items-center justify-center border-2 border-white font-bold shadow-sm">
+                {outstandingDeposits.filter(c => c.status !== 'PAID').length}
+              </span>
+            )}
+          </button>
+        </div>
       </div>
 
       <div className="p-4 flex-1 overflow-y-auto pb-28">
