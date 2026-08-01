@@ -128,73 +128,91 @@ export function ExpenseScreen() {
                  <p className="text-slate-500 font-medium text-[14px]">No expenses recorded yet.</p>
                </div>
              ) : (
-               <div className="space-y-3">
-                 {expenses.map((expense) => (
-                   <div key={expense.id} className="bg-white rounded-[20px] p-4 border border-slate-100 shadow-sm relative overflow-hidden group">
-                     {expense.status === 'PENDING' && (
-                       <div className="absolute top-0 right-0 w-2 h-full bg-rose-500"></div>
-                     )}
-                     
-                     <div className="flex justify-between items-start mb-3">
-                        <div className="flex items-center gap-3">
-                           <div className="w-10 h-10 rounded-full bg-slate-50 border border-slate-100 flex items-center justify-center shrink-0">
-                             <Receipt className="w-5 h-5 text-slate-400" />
-                           </div>
-                           <div>
-                             <p className="text-[10px] font-extrabold text-slate-400 mb-0.5">{expense.expenseNo} • {new Date(expense.date).toLocaleDateString('en-IN', {day:'2-digit', month:'short', year:'numeric'})}</p>
-                             <h4 className="text-[14px] font-bold text-slate-800 line-clamp-1">{expense.vendorName}</h4>
-                           </div>
-                        </div>
-                        <div className="text-right">
-                           <p className="text-[16px] font-extrabold text-slate-800">{formatCurrency(expense.amount)}</p>
-                           <p className="text-[10px] font-bold text-slate-500 mt-0.5 bg-slate-100 px-2 py-0.5 rounded-full inline-block">{expense.category}</p>
-                        </div>
-                     </div>
-
-                     <p className="text-[13px] font-medium text-slate-600 mb-3 bg-slate-50 p-2.5 rounded-xl border border-slate-100 line-clamp-2">
-                       {expense.description}
-                     </p>
-
-                     <div className="flex items-center justify-between pt-3 border-t border-slate-100">
-                        <div className="flex items-center gap-2">
-                           <span className={`text-[10px] font-extrabold px-2 py-1 rounded-md uppercase tracking-wider ${
-                             expense.paymentType === 'CREDIT' ? 'bg-amber-100 text-amber-700' : 'bg-emerald-100 text-emerald-700'
-                           }`}>
-                             {expense.paymentType}
-                           </span>
-                           {expense.paymentType === 'CREDIT' && (
-                             <span className={`text-[10px] font-extrabold px-2 py-1 rounded-md uppercase tracking-wider ${
-                               expense.status === 'PAID' ? 'bg-emerald-100 text-emerald-700' : 'bg-rose-100 text-rose-700'
-                             }`}>
-                               {expense.status}
-                             </span>
-                           )}
-                           {expense.billPhoto && (
-                             <button 
-                               onClick={() => setViewerImageId(expense.billPhoto!)}
-                               className="w-6 h-6 bg-blue-50 text-blue-500 rounded-full flex items-center justify-center border border-blue-100 active:scale-90"
-                             >
-                               <FileText className="w-3 h-3" />
-                             </button>
-                           )}
-                        </div>
-
-                        <div className="flex items-center gap-1.5">
-                           <button onClick={() => setAuditExpense(expense)} className="p-2 text-slate-400 hover:bg-slate-50 rounded-full active:scale-90 transition-transform">
-                             <Info className="w-4 h-4" />
-                           </button>
-                           <button onClick={() => setEditExpense(expense)} className="p-2 text-slate-400 hover:bg-slate-50 rounded-full active:scale-90 transition-transform">
-                             <Edit className="w-4 h-4" />
-                           </button>
-                           <button onClick={() => handleDelete(expense)} className="p-2 text-rose-400 hover:bg-rose-50 rounded-full active:scale-90 transition-transform">
-                             <Trash className="w-4 h-4" />
-                           </button>
-                        </div>
-                     </div>
-
-                   </div>
-                 ))}
-               </div>
+                <div className="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden">
+                  <div className="overflow-x-auto">
+                    <table className="w-full text-left border-collapse">
+                      <thead>
+                        <tr className="bg-slate-50 border-b border-slate-100 text-[11px] font-extrabold text-slate-500 tracking-wider uppercase">
+                          <th className="p-3 pl-4">Date</th>
+                          <th className="p-3">Category</th>
+                          <th className="p-3">Detail</th>
+                          <th className="p-3 text-right">Amount</th>
+                          <th className="p-3 text-center">Type</th>
+                          <th className="p-3 text-center">Remark</th>
+                          <th className="p-3 text-center">Docs</th>
+                          <th className="p-3 pr-4 text-center">Action</th>
+                        </tr>
+                      </thead>
+                      <tbody className="divide-y divide-slate-100">
+                        {expenses.map((expense) => (
+                           <tr key={expense.id} className="hover:bg-slate-50/50 transition-colors">
+                              <td className="p-3 pl-4 whitespace-nowrap text-[13px] font-semibold text-slate-600">
+                                {new Date(expense.date).toLocaleDateString('en-IN', {day:'2-digit', month:'short', year:'numeric'})}
+                              </td>
+                              <td className="p-3 whitespace-nowrap text-[13px] font-bold text-slate-800">
+                                {expense.category}
+                              </td>
+                              <td className="p-3 text-[13px] text-slate-800 min-w-[200px]">
+                                <div>
+                                  <span className="font-extrabold text-slate-400 text-[10px] mr-1">{expense.expenseNo}</span>
+                                  <span className="font-bold">{expense.vendorName}</span>
+                                </div>
+                                {expense.description && (
+                                  <p className="text-[11px] font-medium text-slate-500 mt-0.5 line-clamp-1">{expense.description}</p>
+                                )}
+                              </td>
+                              <td className="p-3 text-right whitespace-nowrap font-extrabold text-[14px] text-slate-800">
+                                {formatCurrency(expense.amount)}
+                              </td>
+                              <td className="p-3 text-center whitespace-nowrap">
+                                <span className={`text-[10px] font-extrabold px-2 py-1 rounded-md uppercase tracking-wider ${
+                                  expense.paymentType === 'CREDIT' ? 'bg-amber-100 text-amber-700' : 'bg-emerald-100 text-emerald-700'
+                                }`}>
+                                  {expense.paymentType}
+                                </span>
+                              </td>
+                              <td className="p-3 text-center whitespace-nowrap">
+                                {expense.paymentType === 'CREDIT' ? (
+                                  <span className={`text-[10px] font-extrabold px-2 py-1 rounded-md uppercase tracking-wider ${
+                                    expense.status === 'PAID' ? 'bg-emerald-100 text-emerald-700' : 'bg-rose-100 text-rose-700'
+                                  }`}>
+                                    {expense.status}
+                                  </span>
+                                ) : (
+                                  <span className="text-slate-300 font-bold text-[12px]">-</span>
+                                )}
+                              </td>
+                              <td className="p-3 text-center">
+                                {expense.billPhoto ? (
+                                  <button 
+                                    onClick={() => setViewerImageId(expense.billPhoto!)}
+                                    className="w-7 h-7 bg-blue-50 text-blue-500 rounded-full flex items-center justify-center border border-blue-100 active:scale-90 mx-auto"
+                                  >
+                                    <FileText className="w-3.5 h-3.5" />
+                                  </button>
+                                ) : (
+                                  <span className="text-slate-300 font-bold text-[12px]">-</span>
+                                )}
+                              </td>
+                              <td className="p-3 pr-4 text-center whitespace-nowrap">
+                                <div className="flex items-center justify-center gap-1.5">
+                                   <button onClick={() => setAuditExpense(expense)} className="p-1.5 text-slate-400 hover:bg-slate-200 rounded-full active:scale-90 transition-transform">
+                                     <Info className="w-4 h-4" />
+                                   </button>
+                                   <button onClick={() => setEditExpense(expense)} className="p-1.5 text-slate-400 hover:bg-slate-200 rounded-full active:scale-90 transition-transform">
+                                     <Edit className="w-4 h-4" />
+                                   </button>
+                                   <button onClick={() => handleDelete(expense)} className="p-1.5 text-rose-400 hover:bg-rose-100 rounded-full active:scale-90 transition-transform">
+                                     <Trash className="w-4 h-4" />
+                                   </button>
+                                </div>
+                              </td>
+                           </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
              )}
           </div>
         ) : (
@@ -209,29 +227,54 @@ export function ExpenseScreen() {
                   <p className="text-slate-500 font-medium text-[13px]">There are no pending credit expenses.</p>
                 </div>
              ) : (
-               <div className="space-y-3">
-                 {outstandingCredits.map(expense => (
-                   <div key={expense.id} className="bg-white rounded-[20px] p-4 border border-rose-100 shadow-sm relative overflow-hidden">
-                      <div className="flex justify-between items-start mb-3">
-                        <div>
-                          <p className="text-[10px] font-extrabold text-rose-400 uppercase tracking-wider mb-1">Due Date: {expense.dueDate ? new Date(expense.dueDate).toLocaleDateString() : 'N/A'}</p>
-                          <h4 className="text-[15px] font-bold text-slate-800">{expense.vendorName}</h4>
-                          <p className="text-[12px] font-medium text-slate-500 mt-0.5">{expense.category}</p>
-                        </div>
-                        <div className="text-right">
-                          <p className="text-[18px] font-extrabold text-rose-600">{formatCurrency(expense.amount - expense.paidAmount)}</p>
-                          <p className="text-[10px] font-bold text-slate-400 mt-0.5">Remaining out of {formatCurrency(expense.amount)}</p>
-                        </div>
-                      </div>
-                      
-                      <button 
-                        onClick={() => setPayCreditExpense(expense)}
-                        className="w-full mt-2 py-3 bg-emerald-50 text-emerald-600 border border-emerald-200 rounded-[14px] font-bold text-[13px] flex items-center justify-center gap-2 active:scale-[0.98] transition-transform"
-                      >
-                        <IndianRupee className="w-4 h-4" /> Pay Credit
-                      </button>
-                   </div>
-                 ))}
+               <div className="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden mt-4">
+                 <div className="overflow-x-auto">
+                   <table className="w-full text-left border-collapse">
+                     <thead>
+                       <tr className="bg-slate-50 border-b border-slate-100 text-[11px] font-extrabold text-slate-500 tracking-wider uppercase">
+                         <th className="p-3 pl-4">Due Date</th>
+                         <th className="p-3">Vendor</th>
+                         <th className="p-3 text-right">Total</th>
+                         <th className="p-3 text-right">Paid</th>
+                         <th className="p-3 text-right">Remaining</th>
+                         <th className="p-3 pr-4 text-center">Action</th>
+                       </tr>
+                     </thead>
+                     <tbody className="divide-y divide-slate-100">
+                       {outstandingCredits.map((expense) => (
+                          <tr key={expense.id} className="hover:bg-slate-50/50 transition-colors">
+                             <td className="p-3 pl-4 whitespace-nowrap text-[13px] font-semibold text-rose-500">
+                               {expense.dueDate ? new Date(expense.dueDate).toLocaleDateString('en-IN', {day:'2-digit', month:'short', year:'numeric'}) : 'N/A'}
+                             </td>
+                             <td className="p-3 text-[13px] text-slate-800 min-w-[150px]">
+                               <div>
+                                 <span className="font-extrabold text-slate-400 text-[10px] mr-1">{expense.expenseNo}</span>
+                                 <span className="font-bold">{expense.vendorName}</span>
+                               </div>
+                               <p className="text-[11px] font-medium text-slate-500 mt-0.5">{expense.category}</p>
+                             </td>
+                             <td className="p-3 text-right whitespace-nowrap font-bold text-[13px] text-slate-600">
+                               {formatCurrency(expense.amount)}
+                             </td>
+                             <td className="p-3 text-right whitespace-nowrap font-bold text-[13px] text-emerald-600">
+                               {formatCurrency(expense.paidAmount)}
+                             </td>
+                             <td className="p-3 text-right whitespace-nowrap font-extrabold text-[14px] text-rose-600">
+                               {formatCurrency(expense.amount - expense.paidAmount)}
+                             </td>
+                             <td className="p-3 pr-4 text-center whitespace-nowrap">
+                               <button 
+                                 onClick={() => setPayCreditExpense(expense)}
+                                 className="px-4 py-2 bg-emerald-50 text-emerald-600 border border-emerald-200 rounded-[10px] font-bold text-[12px] flex items-center justify-center gap-1.5 active:scale-[0.95] transition-transform mx-auto"
+                               >
+                                 <IndianRupee className="w-3.5 h-3.5" /> Pay
+                               </button>
+                             </td>
+                          </tr>
+                       ))}
+                     </tbody>
+                   </table>
+                 </div>
                </div>
              )}
           </div>
