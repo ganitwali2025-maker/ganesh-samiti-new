@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom';
 import { 
   ArrowLeft, Camera, Download, Share2, Edit, 
   Wallet, PiggyBank, Sparkles, TrendingUp,
-  CheckCircle2, Clock
+  CheckCircle2, Clock, User
 } from 'lucide-react';
 import { useNavigation } from '../context/NavigationContext';
 import { useCommitteeData } from '../hooks/useCommitteeData';
