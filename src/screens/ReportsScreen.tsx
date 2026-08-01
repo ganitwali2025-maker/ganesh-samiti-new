@@ -593,12 +593,24 @@ export function ReportsScreen() {
                  </div>
                </div>
 
+               <div>
+                 <label className="text-[12px] font-bold text-slate-700 mb-2 block">Remark (Optional)</label>
+                 <input 
+                   type="text"
+                   value={payRemark}
+                   onChange={(e) => setPayRemark(e.target.value)}
+                   placeholder="e.g. Cleared full due"
+                   className="w-full bg-slate-50 border border-slate-200 text-slate-800 text-sm rounded-xl px-4 py-3 focus:outline-none focus:border-emerald-400 font-medium"
+                 />
+               </div>
+
                <button 
+                 type="button"
                  onClick={handlePayCreditSubmit}
                  disabled={!payAmount || Number(payAmount) <= 0 || Number(payAmount) > selectedCreditTx.remaining}
-                 className="w-full py-4 bg-slate-800 text-white rounded-xl font-bold text-lg active:scale-95 transition-transform disabled:opacity-50 mt-2"
+                 className="w-full py-4 bg-slate-800 text-white rounded-xl font-bold text-lg active:scale-95 transition-transform disabled:opacity-50 mt-2 flex justify-center items-center gap-2"
                >
-                 Confirm Payment
+                 Save and Pay (सेव और पे)
                </button>
              </div>
           </div>

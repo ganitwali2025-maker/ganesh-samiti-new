@@ -490,11 +490,12 @@ export function ExpenseScreen() {
                </div>
 
                <button 
+                 type="button"
                  onClick={handlePayCredit}
                  disabled={!payAmount || Number(payAmount) <= 0 || Number(payAmount) > selectedCreditTx.remaining}
-                 className="w-full py-4 bg-slate-800 text-white rounded-xl font-bold text-lg active:scale-95 transition-transform disabled:opacity-50 mt-2"
+                 className="w-full py-4 bg-slate-800 text-white rounded-xl font-bold text-lg active:scale-95 transition-transform disabled:opacity-50 mt-2 flex justify-center items-center gap-2"
                >
-                 Confirm Payment
+                 Save and Pay (सेव और पे)
                </button>
              </div>
           </div>
