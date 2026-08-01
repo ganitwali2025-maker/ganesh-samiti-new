@@ -273,12 +273,21 @@ export function ExpenseScreen() {
                                {formatCurrency(expense.amount - expense.paidAmount)}
                              </td>
                              <td className="p-3 pr-4 text-center whitespace-nowrap">
-                               <button 
-                                 onClick={() => setPayCreditExpense(expense)}
-                                 className="px-4 py-2 bg-emerald-50 text-emerald-600 border border-emerald-200 rounded-[10px] font-bold text-[12px] flex items-center justify-center gap-1.5 active:scale-[0.95] transition-transform mx-auto"
-                               >
-                                 <IndianRupee className="w-3.5 h-3.5" /> Pay
-                               </button>
+                                <div className="flex items-center justify-center gap-2">
+                                  <button 
+                                    onClick={() => setPayCreditExpense(expense)}
+                                    className="px-3 py-2 bg-emerald-50 text-emerald-600 border border-emerald-200 rounded-[10px] font-bold text-[12px] flex items-center justify-center gap-1.5 active:scale-[0.95] transition-transform"
+                                  >
+                                    <IndianRupee className="w-3.5 h-3.5" /> Pay
+                                  </button>
+                                  <button 
+                                    onClick={() => handleDelete(expense)}
+                                    className="p-2 bg-rose-50 text-rose-500 border border-rose-200 rounded-[10px] active:scale-[0.95] transition-transform"
+                                    title="Delete"
+                                  >
+                                    <Trash className="w-4 h-4" />
+                                  </button>
+                                </div>
                              </td>
                           </tr>
                        ))}
