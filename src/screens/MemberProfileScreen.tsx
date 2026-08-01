@@ -43,17 +43,14 @@ export function MemberProfileScreen() {
         if (t.category === 'वार्षिक जमा' || (t.description && t.description.includes('गणेश चतुर्थी'))) {
           ganeshChaturthi += t.amount;
         } else if (t.category === 'मासिक जमा') {
-          // Try to determine month from date (rough estimation based on JS getMonth)
-          // For a real app, you might want a specific 'month' field.
-          // For now, we'll just put it in the month it was created.
           const date = new Date(t.date);
-          const jsMonth = date.getMonth(); // 0-11 (Jan-Dec)
-          // Map JS month to our April-March array
-          // Jan=9, Feb=10, Mar=11, Apr=0, May=1...
-          const monthIndex = jsMonth >= 3 ? jsMonth - 3 : jsMonth + 9;
-          const monthName = MONTHS[monthIndex];
-          if (monthlyData[monthName] !== undefined) {
-            monthlyData[monthName] += t.amount;
+          const jsMonth = date.getMonth(); 
+          if (!isNaN(jsMonth)) {
+            const monthIndex = jsMonth >= 3 ? jsMonth - 3 : jsMonth + 9;
+            const monthName = MONTHS[monthIndex];
+            if (monthlyData[monthName] !== undefined) {
+              monthlyData[monthName] += t.amount;
+            }
           }
         }
       }
@@ -281,7 +278,10 @@ export function MemberProfileScreen() {
                       <div>
                         <p className="text-[13px] font-bold text-slate-800">{t.category}</p>
                         <p className="text-[11px] font-medium text-slate-400 mt-0.5">
-                          {new Date(t.date).toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' })}
+                          {t.date && !isNaN(new Date(t.date).getTime()) 
+                            ? new Date(t.date).toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' })
+                            : 'N/A'
+                          }
                         </p>
                       </div>
                     </div>

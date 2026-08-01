@@ -283,7 +283,9 @@ export function ReportsScreen() {
                        const memberName = member ? member.name : t.donorName || 'Unknown';
                        return (
                          <tr key={t.id} className="hover:bg-slate-50 transition-colors">
-                           <td className="px-4 py-3 whitespace-nowrap text-slate-600">{new Date(t.date).toLocaleDateString('en-IN')}</td>
+                           <td className="px-4 py-3 whitespace-nowrap text-slate-600">
+                             {t.date && !isNaN(new Date(t.date).getTime()) ? new Date(t.date).toLocaleDateString('en-IN') : 'N/A'}
+                           </td>
                            <td className="px-4 py-3 whitespace-nowrap font-bold text-slate-800">{memberName}</td>
                            <td className="px-4 py-3 whitespace-nowrap text-emerald-600 bg-emerald-50/50 rounded-md inline-block mt-2 mb-2 ml-4 px-2 py-0.5">{t.category}</td>
                            <td className="px-4 py-3 whitespace-nowrap text-right font-bold text-slate-800">{formatCurrency(t.amount)}</td>
@@ -344,7 +346,9 @@ export function ReportsScreen() {
                        
                        return (
                        <tr key={t.id} className="hover:bg-slate-50 transition-colors">
-                         <td className="px-4 py-3 whitespace-nowrap text-slate-600">{new Date(t.date).toLocaleDateString('en-IN')}</td>
+                         <td className="px-4 py-3 whitespace-nowrap text-slate-600">
+                           {t.date && !isNaN(new Date(t.date).getTime()) ? new Date(t.date).toLocaleDateString('en-IN') : 'N/A'}
+                         </td>
                          <td className="px-4 py-3 whitespace-nowrap text-slate-800 font-bold">{t.category}</td>
                          <td className="px-4 py-3 whitespace-nowrap text-slate-500 max-w-[120px] truncate" title={mainDetail}>{mainDetail}</td>
                          <td className="px-4 py-3 whitespace-nowrap text-right font-bold text-rose-600">{formatCurrency(t.amount)}</td>
@@ -468,7 +472,9 @@ export function ReportsScreen() {
                    <tbody className="divide-y divide-slate-100 font-medium">
                      {creditPaymentTransactions.map(t => (
                        <tr key={t.id} className="hover:bg-slate-50 transition-colors">
-                         <td className="px-4 py-3 whitespace-nowrap text-slate-600">{new Date(t.date).toLocaleDateString('en-IN')}</td>
+                         <td className="px-4 py-3 whitespace-nowrap text-slate-600">
+                           {t.date && !isNaN(new Date(t.date).getTime()) ? new Date(t.date).toLocaleDateString('en-IN') : 'N/A'}
+                         </td>
                          <td className="px-4 py-3 whitespace-nowrap text-slate-800 font-bold max-w-[150px] truncate">{t.description}</td>
                          <td className="px-4 py-3 whitespace-nowrap text-slate-500">{t.paymentMethod || 'CASH'}</td>
                          <td className="px-4 py-3 whitespace-nowrap text-right font-bold text-indigo-600">{formatCurrency(t.amount)}</td>
@@ -528,7 +534,9 @@ export function ReportsScreen() {
                      <tbody className="divide-y divide-slate-100 font-medium">
                        {transactions.filter(t => t.memberId === selectedMember).map(t => (
                          <tr key={t.id} className="hover:bg-slate-50">
-                           <td className="px-4 py-2 text-slate-600">{new Date(t.date).toLocaleDateString('en-IN')}</td>
+                           <td className="px-4 py-2 text-slate-600">
+                             {t.date && !isNaN(new Date(t.date).getTime()) ? new Date(t.date).toLocaleDateString('en-IN') : 'N/A'}
+                           </td>
                            <td className="px-4 py-2 text-slate-800 font-bold">{t.category}</td>
                            <td className="px-4 py-2 text-right font-bold text-emerald-600">{formatCurrency(t.amount)}</td>
                          </tr>

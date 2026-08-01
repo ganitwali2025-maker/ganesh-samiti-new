@@ -154,7 +154,10 @@ export function Transactions({ data }: { data: ReturnType<typeof useCommitteeDat
                         <div className="flex items-center gap-2">
                           <p className="font-bold text-slate-900 leading-tight">{t.category}</p>
                           <span className="text-[10px] px-2 py-0.5 rounded-md bg-slate-100 text-slate-500 font-bold uppercase">
-                            {new Date(t.date).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}
+                            {t.date && !isNaN(new Date(t.date).getTime()) 
+                              ? new Date(t.date).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })
+                              : 'N/A'
+                            }
                           </span>
                         </div>
                         <p className="text-sm text-slate-500 mt-1">
