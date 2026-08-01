@@ -456,6 +456,7 @@ export function ReportsScreen() {
 
         {/* CREDIT HISTORY TAB */}
         {activeTab === 'HISTORY' && (
+          <div className="space-y-4">
             <h2 className="text-xl font-extrabold text-slate-800 px-1">Credit Payment History</h2>
             <div className="bg-white rounded-[24px] shadow-sm border border-slate-100 overflow-hidden">
                <div className="overflow-x-auto">
@@ -466,7 +467,7 @@ export function ReportsScreen() {
                        <th className="px-4 py-3 whitespace-nowrap">Description</th>
                        <th className="px-4 py-3 whitespace-nowrap">Method</th>
                        <th className="px-4 py-3 whitespace-nowrap text-right">Amount Paid</th>
-                       <th className="px-4 py-3 whitespace-nowrap text-center">Actions</th>
+                       <th className="px-4 py-3 whitespace-nowrap text-center">हटाएं</th>
                      </tr>
                    </thead>
                    <tbody className="divide-y divide-slate-100 font-medium">
@@ -479,12 +480,18 @@ export function ReportsScreen() {
                          <td className="px-4 py-3 whitespace-nowrap text-slate-500">{t.paymentMethod || 'CASH'}</td>
                          <td className="px-4 py-3 whitespace-nowrap text-right font-bold text-indigo-600">{formatCurrency(t.amount)}</td>
                          <td className="px-4 py-3 text-center">
-                           <button onClick={() => { if(window.confirm('क्या आप इसे हटाना चाहते हैं?')) deleteTransaction(t.id); }} className="text-rose-500 hover:text-rose-600 bg-rose-50 p-1.5 rounded-md transition-colors"><Trash2 className="w-3.5 h-3.5" /></button>
+                           <button
+                             onClick={() => { if(window.confirm('क्या आप इसे हटाना चाहते हैं?')) deleteTransaction(t.id); }}
+                             className="p-2 text-white bg-rose-500 border border-rose-600 rounded-lg active:scale-90 transition-transform shadow-sm"
+                             title="हटाएं"
+                           >
+                             <Trash2 className="w-4 h-4" />
+                           </button>
                          </td>
                        </tr>
                      ))}
                      {creditPaymentTransactions.length === 0 && (
-                       <tr><td colSpan={5} className="text-center py-6 text-slate-400">No credit payments yet.</td></tr>
+                       <tr><td colSpan={5} className="text-center py-6 text-slate-400">कोई credit payment नहीं मिली.</td></tr>
                      )}
                    </tbody>
                  </table>
