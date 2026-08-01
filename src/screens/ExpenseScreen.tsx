@@ -14,6 +14,7 @@ import { ExpenseAuditLogModal } from '../components/ExpenseAuditLogModal';
 import { Expense } from '../types';
 import toast from 'react-hot-toast';
 import { FullScreenImageViewer } from '../components/FullScreenImageViewer';
+import { PageHeader } from '../components/PageHeader';
 
 export function ExpenseScreen() {
   const { goBack } = useNavigation();
@@ -40,27 +41,7 @@ export function ExpenseScreen() {
 
   return (
     <div className="flex flex-col min-h-screen bg-[#FAFAFA] font-['Plus_Jakarta_Sans',sans-serif]">
-      {/* Custom Header matching the premium orange banking design */}
-      <div className="bg-gradient-to-br from-[#FF8A3D] to-[#F57C00] rounded-b-[32px] pt-12 pb-6 px-6 text-white shadow-lg relative z-20 shrink-0">
-         <div className="flex justify-between items-center mb-4">
-            <button onClick={goBack} className="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center backdrop-blur-sm active:scale-95 transition-transform">
-               <ArrowLeft className="w-5 h-5" />
-            </button>
-            <div className="flex gap-3">
-               <button className="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center backdrop-blur-sm">
-                  <Filter className="w-5 h-5" />
-               </button>
-               <button className="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center backdrop-blur-sm relative">
-                  <Bell className="w-5 h-5" />
-                  <span className="absolute top-2 right-2 w-2 h-2 bg-red-500 rounded-full border border-[#FF8A3D]"></span>
-               </button>
-            </div>
-         </div>
-         <div className="text-center">
-            <h1 className="text-[22px] font-extrabold tracking-wide mb-1">खर्च विवरण (Expenses)</h1>
-            <p className="text-white/80 text-[13px] font-medium">समिति के खर्च की जानकारी</p>
-         </div>
-      </div>
+      <PageHeader title="खर्च विवरण (Expenses)" subtitle="समिति के खर्च की जानकारी" />
 
       {/* Tabs */}
       <div className="flex px-6 pt-6 gap-4 shrink-0">
