@@ -64,8 +64,8 @@ export type Tab = 'dashboard' | 'members' | 'transactions';
 export interface AuditLog {
   id: string;
   recordId: string;
-  action: 'CREATE' | 'UPDATE' | 'DELETE' | 'PAYMENT_RECEIVED';
-  module: 'CHANDA';
+  action: 'CREATE' | 'UPDATE' | 'DELETE' | 'PAYMENT_RECEIVED' | 'PAYMENT_MADE';
+  module: 'CHANDA' | 'EXPENSE';
   changes?: string;
   createdAt: string; // ISO String
   createdBy: string;
@@ -103,6 +103,44 @@ export interface Chanda {
   // Audit
   createdAt: string; // ISO String
   updatedAt: string; // ISO String
+  createdBy: string;
+  updatedBy: string;
+}
+
+export interface ExpensePayment {
+  id: string;
+  expenseId: string;
+  amount: number;
+  paymentMethod: 'CASH' | 'UPI' | 'BANK';
+  remark?: string;
+  date: string;
+  createdAt: string;
+  createdBy: string;
+}
+
+export interface Expense {
+  id: string;
+  date: string;
+  expenseNo: string;
+  vendorName: string;
+  category: string;
+  description: string;
+  amount: number;
+  paymentType: 'CASH' | 'CREDIT' | 'UPI' | 'BANK';
+  
+  // If CREDIT
+  dueDate?: string;
+  paidAmount: number; 
+  status: 'PAID' | 'PENDING';
+  remark?: string;
+
+  // Attachments
+  billPhoto?: string;
+  invoicePhoto?: string;
+  otherPhoto?: string;
+  
+  createdAt: string;
+  updatedAt: string;
   createdBy: string;
   updatedBy: string;
 }

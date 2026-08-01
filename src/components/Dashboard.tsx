@@ -1,6 +1,7 @@
 import { useState, useRef } from 'react';
 import { useCommitteeData } from '../hooks/useCommitteeData';
 import { useChandaData } from '../hooks/useChandaData';
+import { useExpenseData } from '../hooks/useExpenseData';
 import { useNavigation } from '../context/NavigationContext';
 import { useLanguage } from '../context/LanguageContext';
 import { 
@@ -17,10 +18,15 @@ export function Dashboard({ data }: { data: ReturnType<typeof useCommitteeData> 
   const { navigate, openDrawer } = useNavigation();
   const { t } = useLanguage();
   const stats = data.getStats();
+  
   const chandaData = useChandaData();
   const chandaStats = chandaData.getChandaStats();
 
-  const totalBankBalance = stats.currentBalance + chandaStats.totalReceived;
+  const expenseData = useExpenseData();
+  const expenseStats = expenseData.getExpenseStats();
+
+  // Deduct actual paid expenses from total collection
+  const totalBankBalance = stats.currentBalance + chandaStats.totalReceived - expenseStats.totalPaid;
   const totalSystemCollection = stats.totalDeposit + chandaStats.totalReceived;
 
   const monthlyCollection = data.transactions
@@ -79,7 +85,7 @@ export function Dashboard({ data }: { data: ReturnType<typeof useCommitteeData> 
                   </div>
                   <div className="flex justify-between items-center">
                     <p className="text-[12px] font-medium opacity-90">{t('todayExpense')}</p>
-                    <p className="text-[14px] font-bold">-₹0</p>
+                    <p className="text-[14px] font-bold">-₹{expenseStats.todayExpense || 0}</p>
                   </div>
                </div>
             </div>
@@ -154,7 +160,7 @@ export function Dashboard({ data }: { data: ReturnType<typeof useCommitteeData> 
                   </div>
                   <div className="flex justify-between items-center px-1 text-amber-200">
                     <p className="text-[13px] font-medium opacity-90">बाकी चंदा (Pending)</p>
-                    <p className="text-[18px] font-bold">{formatCurrency(stats.outstandingDeposit)}</p>
+                    <p className="text-[18px] font-bold">{formatCurrency(stats.outstandingDeposit + chandaStats.outstandingCredit)}</p>
                   </div>
                </div>
 
@@ -194,7 +200,7 @@ export function Dashboard({ data }: { data: ReturnType<typeof useCommitteeData> 
                        <div className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center"><ArrowUpCircle className="w-4 h-4 text-white" /></div>
                        <p className="text-[12px] font-medium opacity-90">{t('monthlyExpense')}</p>
                     </div>
-                    <p className="text-[18px] font-bold">{formatCurrency(stats.totalExpenses)}</p>
+                    <p className="text-[18px] font-bold">{formatCurrency(expenseStats.totalPaid)}</p>
                   </div>
                </div>
             </div>

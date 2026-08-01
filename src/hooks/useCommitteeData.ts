@@ -186,43 +186,16 @@ export function useCommitteeData() {
       })
       .reduce((sum, t) => sum + (Number(t.amount) || 0), 0);
       
-    const totalExpensesPaid = transactions
-      .filter((t) => {
-         if (t.type === 'EXPENSE') {
-            return t.paymentMethod !== 'CREDIT';
-         }
-         if (t.type === 'CREDIT_PAYMENT') {
-            return true;
-         }
-         return false;
-      })
-      .reduce((sum, t) => sum + (Number(t.amount) || 0), 0);
-
-    const totalExpensesIncurred = transactions
-      .filter((t) => t.type === 'EXPENSE')
-      .reduce((sum, t) => sum + (Number(t.amount) || 0), 0);
-
-    const totalCreditOutstanding = transactions
-      .filter(t => t.type === 'EXPENSE' && t.paymentMethod === 'CREDIT')
-      .reduce((sum, t) => sum + ((Number(t.amount) || 0) - (Number(t.paidAmount) || 0)), 0);
-
-    const totalCreditPaid = transactions
-      .filter(t => t.type === 'CREDIT_PAYMENT')
-      .reduce((sum, t) => sum + (Number(t.amount) || 0), 0);
-
-    const totalDepositOutstanding = transactions
+    // Calculate outstanding deposits
+    const outstandingDeposit = transactions
       .filter(t => t.type === 'DEPOSIT' && t.paymentMethod === 'CREDIT')
       .reduce((sum, t) => sum + ((Number(t.amount) || 0) - (Number(t.paidAmount) || 0)), 0);
 
     return {
+      totalMembers: members.length,
       totalDeposit: totalCollection,
-      totalExpenses: totalExpensesIncurred,
-      totalExpensesPaid,
-      currentBalance: totalCollection - totalExpensesPaid,
-      outstandingCredit: totalCreditOutstanding,
-      creditPaid: totalCreditPaid,
-      outstandingDeposit: totalDepositOutstanding,
-      totalMembers: members.length
+      outstandingDeposit,
+      currentBalance: totalCollection
     };
   };
 
