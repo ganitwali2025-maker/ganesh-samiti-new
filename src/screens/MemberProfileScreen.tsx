@@ -9,6 +9,7 @@ import { useNavigation } from '../context/NavigationContext';
 import { useCommitteeData } from '../hooks/useCommitteeData';
 import { formatCurrency } from '../utils/format';
 import { FullScreenImageViewer } from '../components/FullScreenImageViewer';
+import { StorageImage } from '../components/StorageImage';
 
 const MONTHS = [
   'अप्रैल', 'मई', 'जून', 'जुलाई', 'अगस्त', 'सितम्बर', 
@@ -106,11 +107,13 @@ export function MemberProfileScreen() {
                 }
               }}
             >
-              {(member.profilePhoto || member.photo) ? (
-                <img src={member.profilePhoto || member.photo} alt={member.name} className="w-full h-full object-cover" />
-              ) : (
-                <User className="w-10 h-10 text-slate-300" />
-              )}
+              <StorageImage
+                fileId={member.profilePhoto}
+                fallbackBase64={member.photo}
+                fallbackIcon={<User className="w-10 h-10 text-slate-300" />}
+                className="w-full h-full object-cover"
+                alt={member.name}
+              />
             </div>
             <button className="absolute bottom-0 right-0 w-8 h-8 bg-[#FF6508] rounded-full flex items-center justify-center text-white border-2 border-white shadow-sm active:scale-90 transition-transform">
               <Camera className="w-4 h-4" />

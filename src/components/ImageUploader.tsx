@@ -1,17 +1,36 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { Camera, Upload, Loader2, X } from 'lucide-react';
-import { saveFile } from '../utils/storage';
+import { saveFile, getFile } from '../utils/storage';
 
 interface ImageUploaderProps {
   label?: string;
   onUpload: (fileId: string) => void;
   className?: string;
+  initialFileId?: string;
 }
 
-export function ImageUploader({ label = "Upload Photo", onUpload, className = "" }: ImageUploaderProps) {
+export function ImageUploader({ label = "Upload Photo", onUpload, className = "", initialFileId }: ImageUploaderProps) {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [isUploading, setIsUploading] = useState(false);
   const [preview, setPreview] = useState<string | null>(null);
+
+  useEffect(() => {
+    let isMounted = true;
+    const fetchInitial = async () => {
+      if (initialFileId) {
+        try {
+          const data = await getFile(initialFileId);
+          if (isMounted && data) {
+            setPreview(data);
+          }
+        } catch (e) {
+          console.error("Failed to fetch initial image", e);
+        }
+      }
+    };
+    fetchInitial();
+    return () => { isMounted = false; };
+  }, [initialFileId]);
 
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];

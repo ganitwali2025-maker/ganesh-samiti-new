@@ -2,6 +2,7 @@ import React, { useRef, useState } from 'react';
 import { Camera, User, Medal, Calendar, Phone, MapPin } from 'lucide-react';
 import { Member } from '../types';
 import { useNavigation } from '../context/NavigationContext';
+import { StorageImage } from './StorageImage';
 
 interface MemberCardProps {
   member: Member;
@@ -12,7 +13,6 @@ interface MemberCardProps {
 
 export function MemberCard({ member, selectableMode, isSelected, onSelect }: MemberCardProps) {
   const { navigate } = useNavigation();
-  const photo = member.photo || null;
 
   const handleClick = () => {
     if (selectableMode && onSelect) {
@@ -64,13 +64,13 @@ export function MemberCard({ member, selectableMode, isSelected, onSelect }: Mem
         
         <div className="relative shrink-0 group ml-1">
           <div className="w-[100px] h-[100px] sm:w-[120px] sm:h-[120px] rounded-full border-[3px] border-theme-primary p-[2px] shadow-[0_8px_20px_rgba(255,122,0,0.15)] bg-white relative overflow-hidden flex items-center justify-center">
-            {photo ? (
-              <img src={photo} alt={member.name} className="w-full h-full object-cover rounded-full" />
-            ) : (
-              <div className="w-full h-full bg-orange-50 rounded-full flex flex-col items-center justify-center text-theme-primary/50">
-                <User className="w-10 h-10 mb-1" />
-              </div>
-            )}
+            <StorageImage 
+              fileId={member.profilePhoto} 
+              fallbackBase64={member.photo}
+              fallbackIcon={<User className="w-10 h-10 text-theme-primary/50 mb-1" />}
+              className="w-full h-full object-cover rounded-full"
+              alt={member.name}
+            />
           </div>
         </div>
 

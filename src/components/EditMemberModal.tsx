@@ -76,7 +76,7 @@ export function EditMemberModal({ isOpen, onClose, onEdit, member }: EditMemberM
             {/* Photo Upload */}
             <div className="mb-2">
               <label className="text-[12px] font-bold text-slate-500 mb-2 block">प्रोफाइल फोटो</label>
-              <ImageUploader onUpload={setProfilePhoto} label="Upload Profile Photo" />
+              <ImageUploader onUpload={setProfilePhoto} label="Upload Profile Photo" initialFileId={member.profilePhoto} />
             </div>
 
             {/* Inputs */}
@@ -168,11 +168,11 @@ export function EditMemberModal({ isOpen, onClose, onEdit, member }: EditMemberM
               <div className="grid grid-cols-2 gap-4 mt-2">
                 <div>
                   <label className="text-[11px] font-bold text-slate-500 mb-1.5 block">Aadhaar Card (Optional)</label>
-                  <ImageUploader onUpload={setAadhaarPhoto} label="Upload Aadhaar" />
+                  <ImageUploader onUpload={setAadhaarPhoto} label="Upload Aadhaar" initialFileId={member.aadhaarPhoto} />
                 </div>
                 <div>
                   <label className="text-[11px] font-bold text-slate-500 mb-1.5 block">PAN Card (Optional)</label>
-                  <ImageUploader onUpload={setPanPhoto} label="Upload PAN" />
+                  <ImageUploader onUpload={setPanPhoto} label="Upload PAN" initialFileId={member.panPhoto} />
                 </div>
               </div>
               
