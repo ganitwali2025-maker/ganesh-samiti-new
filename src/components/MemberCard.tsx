@@ -1,7 +1,7 @@
 import React, { useRef, useState } from 'react';
 import { Camera, User, Medal, Calendar, Phone, MapPin } from 'lucide-react';
 import { Member } from '../types';
-import { useNavigation } from '../context/NavigationContext';
+import { useNavigate } from 'react-router-dom';
 import { StorageImage } from './StorageImage';
 
 interface MemberCardProps {
@@ -12,13 +12,13 @@ interface MemberCardProps {
 }
 
 export function MemberCard({ member, selectableMode, isSelected, onSelect }: MemberCardProps) {
-  const { navigate } = useNavigation();
+  const routerNavigate = useNavigate();
 
   const handleClick = () => {
     if (selectableMode && onSelect) {
       onSelect(member);
     } else if (!selectableMode) {
-      navigate(`member-profile/${member.id}`);
+      routerNavigate(`/member-profile/${member.id}`);
     }
   };
 
