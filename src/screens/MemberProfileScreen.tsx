@@ -25,7 +25,7 @@ export function MemberProfileScreen() {
   const member = members.find(m => m.id === id);
 
   const memberTransactions = useMemo(() => 
-    transactions.filter(t => t.memberId === id)
+    transactions.filter(t => t && typeof t === 'object' && t.memberId === id)
   , [transactions, id]);
 
   const stats = useMemo(() => {

@@ -11,7 +11,8 @@ export function useCommitteeData() {
   const [members, setMembers] = useState<Member[]>(() => {
     try {
       const saved = localStorage.getItem('committee_members');
-      return saved ? JSON.parse(saved) : [];
+      const parsed = saved ? JSON.parse(saved) : [];
+      return Array.isArray(parsed) ? parsed : [];
     } catch {
       return [];
     }
@@ -20,7 +21,8 @@ export function useCommitteeData() {
   const [transactions, setTransactions] = useState<Transaction[]>(() => {
     try {
       const saved = localStorage.getItem('committee_transactions');
-      return saved ? JSON.parse(saved) : [];
+      const parsed = saved ? JSON.parse(saved) : [];
+      return Array.isArray(parsed) ? parsed : [];
     } catch {
       return [];
     }
