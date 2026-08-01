@@ -95,20 +95,36 @@ export function ExpenseScreen() {
       <div className="p-4 flex-1 overflow-y-auto pb-32">
         {activeTab === 'REGISTER' ? (
           <div className="space-y-4">
-             {/* Stats Card */}
-             <div className="bg-white rounded-[24px] p-5 shadow-sm border border-slate-100 grid grid-cols-2 gap-4">
-               <div>
-                 <p className="text-[11px] font-bold text-slate-400 mb-1">कुल खर्च (Total Expense)</p>
-                 <p className="text-[20px] font-extrabold text-slate-800">{formatCurrency(stats.totalExpense)}</p>
-               </div>
-               <div>
-                 <p className="text-[11px] font-bold text-slate-400 mb-1">नकद (Cash Paid)</p>
-                 <p className="text-[20px] font-extrabold text-emerald-600">{formatCurrency(stats.totalPaid)}</p>
-               </div>
-               <div className="col-span-2 pt-3 mt-1 border-t border-slate-50 flex justify-between items-center">
-                 <p className="text-[12px] font-bold text-slate-500">बाकी उधार (Pending Credit)</p>
-                 <p className="text-[16px] font-extrabold text-rose-500">{formatCurrency(stats.outstandingCredit)}</p>
-               </div>
+             {/* Expense Stats Card Box (Chanda Theme Style) */}
+             <div className="bg-gradient-to-br from-[#FF5A5F] to-[#D12B30] rounded-[28px] p-6 text-white shadow-[0_8px_30px_rgba(255,90,95,0.3)] relative overflow-hidden">
+                <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full blur-2xl -mr-10 -mt-10 pointer-events-none"></div>
+                
+                <div className="flex justify-between items-start mb-2 relative z-10">
+                  <div>
+                    <p className="text-[13px] font-semibold opacity-90">कुल खर्च (Total Expense)</p>
+                  </div>
+                  <div className="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center backdrop-blur-sm">
+                    <Receipt className="w-5 h-5 text-white" />
+                  </div>
+                </div>
+                <h2 className="text-[36px] font-extrabold tracking-wider mb-4 relative z-10">{formatCurrency(stats.totalExpense)}</h2>
+                
+                <div className="flex flex-col gap-3 relative z-10 border-t border-white/20 pt-4">
+                  <div className="flex justify-between items-center">
+                    <div className="flex items-center gap-2">
+                       <div className="w-2 h-2 rounded-full bg-emerald-300"></div>
+                       <p className="text-[12px] opacity-90">नकद (Cash Paid)</p>
+                    </div>
+                    <p className="text-[14px] font-bold">{formatCurrency(stats.totalPaid)}</p>
+                  </div>
+                  <div className="flex justify-between items-center">
+                    <div className="flex items-center gap-2">
+                       <div className="w-2 h-2 rounded-full bg-amber-300"></div>
+                       <p className="text-[12px] opacity-90">बाकी उधार (Pending Credit)</p>
+                    </div>
+                    <p className="text-[14px] font-bold">{formatCurrency(stats.outstandingCredit)}</p>
+                  </div>
+                </div>
              </div>
 
              {/* Expense List */}
