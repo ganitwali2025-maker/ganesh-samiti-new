@@ -1,7 +1,7 @@
-import React, { useRef, useState } from 'react';
+import React from 'react';
 import { Camera, User, Medal, Calendar, Phone, MapPin } from 'lucide-react';
 import { Member } from '../types';
-import { useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { StorageImage } from './StorageImage';
 
 interface MemberCardProps {
@@ -12,21 +12,15 @@ interface MemberCardProps {
 }
 
 export function MemberCard({ member, selectableMode, isSelected, onSelect }: MemberCardProps) {
-  const routerNavigate = useNavigate();
-
-  const handleClick = () => {
+  const handleClick = (e: React.MouseEvent) => {
     if (selectableMode && onSelect) {
+      e.preventDefault();
       onSelect(member);
-    } else if (!selectableMode) {
-      routerNavigate(`/member-profile/${member.id}`);
     }
   };
 
-  return (
-    <div 
-      onClick={handleClick}
-      className={`w-full bg-white rounded-[24px] shadow-[0_16px_40px_rgba(0,0,0,0.12)] overflow-hidden flex flex-col relative border ${isSelected ? 'border-theme-primary ring-2 ring-theme-primary/50' : 'border-slate-100'} cursor-pointer active:scale-[0.98] transition-transform`}
-    >
+  const CardContent = (
+    <>
       {/* HEADER */}
       <div className="relative bg-theme-gradient py-4 px-4 flex items-center shrink-0">
         <div className="w-[70px] h-[70px] bg-white rounded-full p-1 shadow-md relative z-10 shrink-0 border-2 border-white">
@@ -128,9 +122,25 @@ export function MemberCard({ member, selectableMode, isSelected, onSelect }: Mem
       <div className="bg-theme-gradient py-3 px-4 flex items-center justify-center gap-2 text-white shrink-0">
         <MapPin className="w-4 h-4 shrink-0" />
         <p className="text-[12px] font-medium tracking-wide">
-          {member.address || 'नागरगांव, धरसीवा, रायपुर (छत्तीसगढ़)'}
+          {member.address || 'रायपुर (Raipur, Chhattisgarh)'}
         </p>
       </div>
-    </div>
+    </>
+  );
+
+  const className = `w-full bg-white rounded-[24px] shadow-[0_16px_40px_rgba(0,0,0,0.12)] overflow-hidden flex flex-col relative border ${isSelected ? 'border-theme-primary ring-2 ring-theme-primary/50' : 'border-slate-100'} cursor-pointer active:scale-[0.98] transition-transform`;
+
+  if (selectableMode) {
+    return (
+      <div onClick={handleClick} className={className}>
+        {CardContent}
+      </div>
+    );
+  }
+
+  return (
+    <Link to={`/member-profile/${member.id}`} className={className} style={{ display: 'flex', textDecoration: 'none' }}>
+      {CardContent}
+    </Link>
   );
 }
