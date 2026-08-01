@@ -9,7 +9,11 @@ export interface Member {
   joinedAt: string;
   age?: string;
   address?: string;
-  photo?: string;
+  profilePhoto?: string;
+  aadhaarPhoto?: string;
+  panPhoto?: string;
+  familyPhoto?: string;
+  documents?: string[];
 }
 
 export type TransactionType = 'DEPOSIT' | 'EXPENSE' | 'CREDIT_PAYMENT' | 'DEPOSIT_PAYMENT';
@@ -48,6 +52,11 @@ export interface Transaction {
   donorName?: string; // For external depositors (non-members)
   dueDate?: string;
   paidAmount?: number; // For tracking partial payments on CREDIT transactions
+  
+  // File attachments
+  receiptPhoto?: string;
+  paymentScreenshot?: string;
+  vendorPhoto?: string;
 }
 
 export type Tab = 'dashboard' | 'members' | 'transactions';

@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
 import { useCommitteeData } from '../hooks/useCommitteeData';
-import { Plus, ArrowDownRight, ArrowUpRight, Trash2 } from 'lucide-react';
+import { Plus, ArrowDownRight, ArrowUpRight, Trash2, Camera } from 'lucide-react';
 import { formatCurrency } from '../utils/format';
 import { TransactionType, TransactionCategory } from '../types';
+import { FullScreenImageViewer } from './FullScreenImageViewer';
 
 export function Transactions({ data }: { data: ReturnType<typeof useCommitteeData> }) {
   const [showAddForm, setShowAddForm] = useState(false);
+  const [viewerFileId, setViewerFileId] = useState<string | null>(null);
   
   const [type, setType] = useState<TransactionType>('DEPOSIT');
   const [memberId, setMemberId] = useState('');
@@ -158,6 +160,25 @@ export function Transactions({ data }: { data: ReturnType<typeof useCommitteeDat
                           {isDeposit && member && t.description ? <span className="mx-1 text-slate-300">•</span> : ''}
                           {t.description}
                         </p>
+                        {(t.receiptPhoto || t.vendorPhoto || t.paymentScreenshot) && (
+                          <div className="flex gap-2 mt-2">
+                            {t.receiptPhoto && (
+                              <button onClick={() => setViewerFileId(t.receiptPhoto!)} className="flex items-center gap-1 text-[10px] bg-slate-100 text-slate-600 px-2 py-1 rounded-md hover:bg-slate-200">
+                                <Camera className="w-3 h-3" /> Receipt
+                              </button>
+                            )}
+                            {t.vendorPhoto && (
+                              <button onClick={() => setViewerFileId(t.vendorPhoto!)} className="flex items-center gap-1 text-[10px] bg-slate-100 text-slate-600 px-2 py-1 rounded-md hover:bg-slate-200">
+                                <Camera className="w-3 h-3" /> Vendor
+                              </button>
+                            )}
+                            {t.paymentScreenshot && (
+                              <button onClick={() => setViewerFileId(t.paymentScreenshot!)} className="flex items-center gap-1 text-[10px] bg-slate-100 text-slate-600 px-2 py-1 rounded-md hover:bg-slate-200">
+                                <Camera className="w-3 h-3" /> Screenshot
+                              </button>
+                            )}
+                          </div>
+                        )}
                       </div>
                     </div>
                     <div className="flex items-center justify-between sm:justify-end gap-4 w-full sm:w-auto pl-16 sm:pl-0">
@@ -181,6 +202,14 @@ export function Transactions({ data }: { data: ReturnType<typeof useCommitteeDat
             </div>
           )}
        </div>
+
+       {viewerFileId && (
+         <FullScreenImageViewer 
+           fileId={viewerFileId} 
+           onClose={() => setViewerFileId(null)} 
+           title="Attachment Viewer"
+         />
+       )}
     </div>
   );
 }

@@ -3,6 +3,7 @@ import { useNavigation } from '../context/NavigationContext';
 import { useCommitteeData } from '../hooks/useCommitteeData';
 import { ArrowLeft, Filter, Bell, Receipt, Calendar, FileText, Banknote, Smartphone, Landmark, Clock, RefreshCw, Plus, CheckCircle2, X } from 'lucide-react';
 import { formatCurrency } from '../utils/format';
+import { ImageUploader } from '../components/ImageUploader';
 
 export function ExpenseScreen() {
   const { goBack } = useNavigation();
@@ -19,6 +20,10 @@ export function ExpenseScreen() {
   // Credit specific state
   const [vendorName, setVendorName] = useState('');
   const [dueDate, setDueDate] = useState('');
+  
+  // Attachments
+  const [receiptPhoto, setReceiptPhoto] = useState('');
+  const [vendorPhoto, setVendorPhoto] = useState('');
   
   const [isSuccess, setIsSuccess] = useState(false);
   const [activeTab, setActiveTab] = useState<'NEW' | 'CREDIT_LIST'>('NEW');
@@ -55,6 +60,8 @@ export function ExpenseScreen() {
         vendorName: paymentMethod === 'CREDIT' ? vendorName : undefined,
         dueDate: paymentMethod === 'CREDIT' ? dueDate : undefined,
         paidAmount: 0,
+        receiptPhoto: receiptPhoto || undefined,
+        vendorPhoto: paymentMethod === 'CREDIT' && vendorPhoto ? vendorPhoto : undefined,
       });
 
       setIsSuccess(true);
@@ -74,6 +81,8 @@ export function ExpenseScreen() {
     setRemark('');
     setVendorName('');
     setDueDate('');
+    setReceiptPhoto('');
+    setVendorPhoto('');
   };
 
   const handlePayCredit = () => {
@@ -308,6 +317,23 @@ export function ExpenseScreen() {
                    {remark.length}/200
                  </div>
                </div>
+            </div>
+
+            {/* Document Uploads */}
+            <div>
+              <label className="text-[13px] font-bold text-slate-700 mb-2 block">दस्तावेज़ (Attachments)</label>
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="text-[11px] font-bold text-slate-500 mb-1.5 block">Bill / Receipt</label>
+                  <ImageUploader onUpload={setReceiptPhoto} label="Upload Bill" />
+                </div>
+                {paymentMethod === 'CREDIT' && (
+                  <div>
+                    <label className="text-[11px] font-bold text-slate-500 mb-1.5 block">Vendor Photo</label>
+                    <ImageUploader onUpload={setVendorPhoto} label="Upload Vendor" />
+                  </div>
+                )}
+              </div>
             </div>
 
             {/* Action Buttons */}

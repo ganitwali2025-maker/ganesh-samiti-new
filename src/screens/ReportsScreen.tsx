@@ -2,10 +2,11 @@ import { useState, useMemo } from 'react';
 import { PageHeader } from '../components/PageHeader';
 import { useCommitteeData } from '../hooks/useCommitteeData';
 import { formatCurrency } from '../utils/format';
+import { FullScreenImageViewer } from '../components/FullScreenImageViewer';
 import { 
   BarChart3, Download, FileText, PieChart, Wallet, 
   ArrowUpCircle, ArrowDownCircle, Users, CreditCard, 
-  Calendar, CheckCircle2, ChevronDown, Printer
+  Calendar, CheckCircle2, ChevronDown, Printer, Camera
 } from 'lucide-react';
 import { 
   BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, 
@@ -22,6 +23,7 @@ export function ReportsScreen() {
   // Search & Filter state
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedMember, setSelectedMember] = useState('');
+  const [viewerFileId, setViewerFileId] = useState<string | null>(null);
 
   // Credit Pay Modal State
   const [payModalOpen, setPayModalOpen] = useState(false);
@@ -269,6 +271,7 @@ export function ReportsScreen() {
                        <th className="px-4 py-3 whitespace-nowrap">Category</th>
                        <th className="px-4 py-3 whitespace-nowrap text-right">Amount</th>
                        <th className="px-4 py-3 whitespace-nowrap">Method</th>
+                       <th className="px-4 py-3 whitespace-nowrap">Docs</th>
                      </tr>
                    </thead>
                    <tbody className="divide-y divide-slate-100 font-medium">
@@ -282,11 +285,21 @@ export function ReportsScreen() {
                            <td className="px-4 py-3 whitespace-nowrap text-emerald-600 bg-emerald-50/50 rounded-md inline-block mt-2 mb-2 ml-4 px-2 py-0.5">{t.category}</td>
                            <td className="px-4 py-3 whitespace-nowrap text-right font-bold text-slate-800">{formatCurrency(t.amount)}</td>
                            <td className="px-4 py-3 whitespace-nowrap text-slate-500">{t.description.split('via ')[1] || 'Cash'}</td>
+                           <td className="px-4 py-3 whitespace-nowrap">
+                             <div className="flex gap-1">
+                               {t.receiptPhoto && (
+                                 <button onClick={() => setViewerFileId(t.receiptPhoto!)} className="bg-slate-100 text-slate-500 p-1 rounded hover:bg-slate-200"><Camera className="w-3 h-3" /></button>
+                               )}
+                               {t.paymentScreenshot && (
+                                 <button onClick={() => setViewerFileId(t.paymentScreenshot!)} className="bg-slate-100 text-slate-500 p-1 rounded hover:bg-slate-200"><Camera className="w-3 h-3" /></button>
+                               )}
+                             </div>
+                           </td>
                          </tr>
                        )
                      })}
                      {depositTransactions.length === 0 && (
-                       <tr><td colSpan={5} className="text-center py-6 text-slate-400">No deposits found.</td></tr>
+                       <tr><td colSpan={6} className="text-center py-6 text-slate-400">No deposits found.</td></tr>
                      )}
                    </tbody>
                  </table>
@@ -310,6 +323,7 @@ export function ReportsScreen() {
                        <th className="px-4 py-3 whitespace-nowrap text-right">Amount</th>
                        <th className="px-4 py-3 whitespace-nowrap text-center">Type</th>
                        <th className="px-4 py-3 whitespace-nowrap">Remark</th>
+                       <th className="px-4 py-3 whitespace-nowrap">Docs</th>
                      </tr>
                    </thead>
                    <tbody className="divide-y divide-slate-100 font-medium">
@@ -332,10 +346,20 @@ export function ReportsScreen() {
                            )}
                          </td>
                          <td className="px-4 py-3 text-slate-500 whitespace-normal min-w-[150px] leading-snug">{remarkText}</td>
+                         <td className="px-4 py-3 whitespace-nowrap">
+                           <div className="flex gap-1">
+                             {t.receiptPhoto && (
+                               <button onClick={() => setViewerFileId(t.receiptPhoto!)} className="bg-slate-100 text-slate-500 p-1 rounded hover:bg-slate-200" title="View Receipt"><Camera className="w-3 h-3" /></button>
+                             )}
+                             {t.vendorPhoto && (
+                               <button onClick={() => setViewerFileId(t.vendorPhoto!)} className="bg-slate-100 text-slate-500 p-1 rounded hover:bg-slate-200" title="View Vendor Photo"><Camera className="w-3 h-3" /></button>
+                             )}
+                           </div>
+                         </td>
                        </tr>
                      )})}
                      {expenseTransactions.length === 0 && (
-                       <tr><td colSpan={6} className="text-center py-6 text-slate-400">No expenses found.</td></tr>
+                       <tr><td colSpan={7} className="text-center py-6 text-slate-400">No expenses found.</td></tr>
                      )}
                    </tbody>
                  </table>
@@ -563,6 +587,14 @@ export function ReportsScreen() {
              </div>
           </div>
         </div>
+      )}
+
+      {viewerFileId && (
+        <FullScreenImageViewer 
+          fileId={viewerFileId} 
+          onClose={() => setViewerFileId(null)} 
+          title="Document Viewer"
+        />
       )}
     </div>
   );

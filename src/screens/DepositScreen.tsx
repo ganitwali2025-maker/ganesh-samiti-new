@@ -4,6 +4,7 @@ import { Wallet, ChevronDown, CheckCircle2, Moon, PiggyBank, Sparkles, Receipt, 
 import { useNavigation } from '../context/NavigationContext';
 import { useCommitteeData } from '../hooks/useCommitteeData';
 import { formatCurrency } from '../utils/format';
+import { ImageUploader } from '../components/ImageUploader';
 
 export function DepositScreen() {
   const { goBack } = useNavigation();
@@ -22,8 +23,11 @@ export function DepositScreen() {
   const [monthlyAmount, setMonthlyAmount] = useState('');
   const [otherAmount, setOtherAmount] = useState('');
   
-  // Payment Method
   const [paymentMethod, setPaymentMethod] = useState<'CASH' | 'UPI' | 'BANK' | 'CREDIT'>('CASH');
+  
+  // Attachments
+  const [receiptPhoto, setReceiptPhoto] = useState('');
+  const [paymentScreenshot, setPaymentScreenshot] = useState('');
   
   const [isSuccess, setIsSuccess] = useState(false);
 
@@ -72,7 +76,9 @@ export function DepositScreen() {
           date,
           description: baseDesc,
           paymentMethod,
-          paidAmount: 0
+          paidAmount: 0,
+          receiptPhoto: receiptPhoto || undefined,
+          paymentScreenshot: paymentScreenshot || undefined
         });
       }
       if (Number(chandaAmount) > 0) {
@@ -85,7 +91,9 @@ export function DepositScreen() {
           date,
           description: baseDesc,
           paymentMethod,
-          paidAmount: 0
+          paidAmount: 0,
+          receiptPhoto: receiptPhoto || undefined,
+          paymentScreenshot: paymentScreenshot || undefined
         });
       }
       if (Number(monthlyAmount) > 0) {
@@ -98,7 +106,9 @@ export function DepositScreen() {
           date,
           description: baseDesc,
           paymentMethod,
-          paidAmount: 0
+          paidAmount: 0,
+          receiptPhoto: receiptPhoto || undefined,
+          paymentScreenshot: paymentScreenshot || undefined
         });
       }
       if (Number(otherAmount) > 0) {
@@ -111,7 +121,9 @@ export function DepositScreen() {
           date,
           description: baseDesc,
           paymentMethod,
-          paidAmount: 0
+          paidAmount: 0,
+          receiptPhoto: receiptPhoto || undefined,
+          paymentScreenshot: paymentScreenshot || undefined
         });
       }
 
@@ -396,6 +408,23 @@ export function DepositScreen() {
                   className="w-full bg-white border border-slate-200 text-slate-800 text-[15px] rounded-2xl px-4 py-4 focus:outline-none focus:border-orange-400 focus:ring-4 focus:ring-orange-100 transition-all font-medium shadow-sm"
                 />
               </div>
+
+              {/* Document Uploads */}
+              <div className="bg-white/70 backdrop-blur-xl p-5 rounded-[24px] shadow-[0_4px_24px_rgba(0,0,0,0.03)] border border-white mt-4">
+                 <label className="text-[13px] font-bold text-slate-700 mb-2 block">दस्तावेज़ (Attachments)</label>
+                 <div className="grid grid-cols-2 gap-4">
+                   <div>
+                     <label className="text-[11px] font-bold text-slate-500 mb-1.5 block">Receipt Photo (Optional)</label>
+                     <ImageUploader onUpload={setReceiptPhoto} label="Upload Receipt" />
+                   </div>
+                   {(paymentMethod === 'UPI' || paymentMethod === 'BANK') && (
+                     <div>
+                       <label className="text-[11px] font-bold text-slate-500 mb-1.5 block">Payment Screenshot</label>
+                       <ImageUploader onUpload={setPaymentScreenshot} label="Upload Screenshot" />
+                     </div>
+                   )}
+                 </div>
+               </div>
               
             </div>
           </>

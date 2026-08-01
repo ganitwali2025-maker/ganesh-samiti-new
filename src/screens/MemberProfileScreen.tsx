@@ -8,6 +8,7 @@ import {
 import { useNavigation } from '../context/NavigationContext';
 import { useCommitteeData } from '../hooks/useCommitteeData';
 import { formatCurrency } from '../utils/format';
+import { FullScreenImageViewer } from '../components/FullScreenImageViewer';
 
 const MONTHS = [
   'अप्रैल', 'मई', 'जून', 'जुलाई', 'अगस्त', 'सितम्बर', 
@@ -18,6 +19,7 @@ export function MemberProfileScreen() {
   const { id } = useParams<{ id: string }>();
   const { goBack } = useNavigation();
   const { members, transactions } = useCommitteeData();
+  const [viewerFileId, setViewerFileId] = React.useState<string | null>(null);
 
   const member = members.find(m => m.id === id);
 
@@ -94,9 +96,18 @@ export function MemberProfileScreen() {
         <div className="bg-white/80 backdrop-blur-xl border border-white rounded-[24px] shadow-[0_12px_40px_rgba(0,0,0,0.08)] p-5 flex items-center gap-5">
           {/* LEFT: Photo */}
           <div className="relative shrink-0">
-            <div className="w-[90px] h-[90px] rounded-full border-[3px] border-white shadow-[0_8px_20px_rgba(248,78,2,0.15)] bg-slate-100 flex items-center justify-center overflow-hidden">
-              {member.photo ? (
-                <img src={member.photo} alt={member.name} className="w-full h-full object-cover" />
+            <div 
+              className="w-[90px] h-[90px] rounded-full border-[3px] border-white shadow-[0_8px_20px_rgba(248,78,2,0.15)] bg-slate-100 flex items-center justify-center overflow-hidden cursor-pointer"
+              onClick={() => {
+                if (member.profilePhoto) {
+                  setViewerFileId(member.profilePhoto);
+                } else if (member.photo) {
+                  setViewerFileId(member.photo); // fallback for old photo
+                }
+              }}
+            >
+              {(member.profilePhoto || member.photo) ? (
+                <img src={member.profilePhoto || member.photo} alt={member.name} className="w-full h-full object-cover" />
               ) : (
                 <User className="w-10 h-10 text-slate-300" />
               )}
@@ -161,6 +172,37 @@ export function MemberProfileScreen() {
             <p className="text-[18px] font-bold">{formatCurrency(stats.totalBalance)}</p>
           </div>
         </div>
+
+        {/* DOCUMENTS SECTION */}
+        {(member.aadhaarPhoto || member.panPhoto) && (
+          <div>
+            <h3 className="text-[15px] font-bold text-slate-800 mb-3 ml-1">दस्तावेज़ (Documents)</h3>
+            <div className="grid grid-cols-2 gap-3">
+              {member.aadhaarPhoto && (
+                <button 
+                  onClick={() => setViewerFileId(member.aadhaarPhoto!)}
+                  className="bg-white p-4 rounded-2xl shadow-sm border border-slate-100 flex flex-col items-center justify-center gap-2 active:scale-95 transition-transform"
+                >
+                  <div className="w-10 h-10 bg-blue-50 text-blue-500 rounded-full flex items-center justify-center">
+                    <Camera className="w-5 h-5" />
+                  </div>
+                  <span className="text-[12px] font-bold text-slate-600">Aadhaar Card</span>
+                </button>
+              )}
+              {member.panPhoto && (
+                <button 
+                  onClick={() => setViewerFileId(member.panPhoto!)}
+                  className="bg-white p-4 rounded-2xl shadow-sm border border-slate-100 flex flex-col items-center justify-center gap-2 active:scale-95 transition-transform"
+                >
+                  <div className="w-10 h-10 bg-amber-50 text-amber-500 rounded-full flex items-center justify-center">
+                    <Camera className="w-5 h-5" />
+                  </div>
+                  <span className="text-[12px] font-bold text-slate-600">PAN Card</span>
+                </button>
+              )}
+            </div>
+          </div>
+        )}
 
         {/* MONTHLY SAVING */}
         <div>
@@ -267,6 +309,14 @@ export function MemberProfileScreen() {
         </div>
 
       </div>
+
+      {viewerFileId && (
+        <FullScreenImageViewer 
+          fileId={viewerFileId} 
+          onClose={() => setViewerFileId(null)} 
+          title="Document Preview"
+        />
+      )}
     </div>
   );
 }
