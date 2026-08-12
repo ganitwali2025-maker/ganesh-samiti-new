@@ -1,56 +1,69 @@
-import { Home, Users, BarChart3, User } from 'lucide-react';
-import { useNavigation } from '../context/NavigationContext';
-import { useLanguage } from '../context/LanguageContext';
+import React from 'react';
+import { Home as HomeIcon, Users, FileDown, FileUp, Plus } from 'lucide-react';
 
-export function BottomNav() {
-  const { currentScreen, navigate } = useNavigation();
-  const { t } = useLanguage();
+interface BottomNavProps {
+  currentView: string;
+  onChangeView: (view: string) => void;
+  onOpenQuickAdd: () => void;
+}
 
+export function BottomNav({ currentView, onChangeView, onOpenQuickAdd }: BottomNavProps) {
   return (
-    <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-slate-100 px-6 py-2 pb-6 z-50">
-      <div className="flex justify-between items-center max-w-md mx-auto relative">
-      <button 
-        onClick={() => navigate('dashboard')}
-        className={`flex flex-col items-center gap-1 w-16 ${currentScreen === 'dashboard' ? 'text-theme-primary' : 'text-slate-400'}`}
-      >
-        <Home className={`w-6 h-6 ${currentScreen === 'dashboard' ? 'fill-current' : ''}`} strokeWidth={currentScreen === 'dashboard' ? 2 : 1.5} />
-        <span className="text-[10px] font-semibold">{t('navHome')}</span>
-      </button>
-      
-      <button 
-        onClick={() => navigate('members')}
-        className={`flex flex-col items-center gap-1 w-16 ${currentScreen === 'members' ? 'text-theme-primary' : 'text-slate-400'}`}
-      >
-        <Users className={`w-6 h-6 ${currentScreen === 'members' ? 'fill-current' : ''}`} strokeWidth={currentScreen === 'members' ? 2 : 1.5} />
-        <span className="text-[10px] font-semibold">{t('navMembers')}</span>
-      </button>
+    <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-100 z-50 px-2 pb-safe pt-2 max-w-md mx-auto rounded-t-3xl shadow-[0_-4px_20px_rgba(0,0,0,0.05)]">
+      <div className="flex justify-between items-end h-16 relative pb-1">
+        <NavItem
+          icon={<HomeIcon size={24} />}
+          label="होम"
+          isActive={currentView === 'home'}
+          onClick={() => onChangeView('home')}
+        />
+        <NavItem
+          icon={<Users size={24} />}
+          label="सदस्य"
+          isActive={currentView === 'members'}
+          onClick={() => onChangeView('members')}
+        />
+        
+        {/* Center + Button */}
+        <div className="flex flex-col items-center justify-end w-20 h-full relative">
+          <div className="absolute -top-10">
+            <button
+              onClick={onOpenQuickAdd}
+              className="bg-[#4B20B5] text-white rounded-full p-3 shadow-[0_4px_12px_rgba(75,32,181,0.4)] hover:bg-purple-800 active:bg-purple-900 transition-colors flex items-center justify-center h-14 w-14"
+            >
+              <Plus size={32} />
+            </button>
+          </div>
+          <span className="text-[10px] font-medium tracking-wide text-gray-500 mt-auto">नया जोड़ें</span>
+        </div>
 
-      {/* Floating Action Button for Deposit */}
-      <div className="relative -top-6">
-         <button 
-           onClick={() => navigate('deposit')}
-           className="w-14 h-14 bg-theme-gradient rounded-full flex flex-col items-center justify-center text-white shadow-lg shadow-orange-500/30 active:scale-95 transition-transform border-4 border-[#FFF8F3]"
-         >
-           <span className="text-2xl font-light leading-none">+</span>
-         </button>
-      </div>
-
-      <button 
-        onClick={() => navigate('reports')}
-        className={`flex flex-col items-center gap-1 w-16 ${currentScreen === 'reports' ? 'text-theme-primary' : 'text-slate-400'}`}
-      >
-        <BarChart3 className={`w-6 h-6 ${currentScreen === 'reports' ? 'fill-current' : ''}`} strokeWidth={currentScreen === 'reports' ? 2 : 1.5} />
-        <span className="text-[10px] font-semibold">{t('navReports')}</span>
-      </button>
-
-      <button 
-        onClick={() => navigate('profile')}
-        className={`flex flex-col items-center gap-1 w-16 ${currentScreen === 'profile' ? 'text-theme-primary' : 'text-slate-400'}`}
-      >
-        <User className={`w-6 h-6 ${currentScreen === 'profile' ? 'fill-current' : ''}`} strokeWidth={currentScreen === 'profile' ? 2 : 1.5} />
-        <span className="text-[10px] font-semibold">{t('navProfile')}</span>
-      </button>
+        <NavItem
+          icon={<FileDown size={24} />}
+          label="जमा शीट"
+          isActive={currentView === 'deposits'}
+          onClick={() => onChangeView('deposits')}
+        />
+        <NavItem
+          icon={<FileUp size={24} />}
+          label="खर्च शीट"
+          isActive={currentView === 'expenses'}
+          onClick={() => onChangeView('expenses')}
+        />
       </div>
     </div>
+  );
+}
+
+function NavItem({ icon, label, isActive, onClick }: { icon: React.ReactNode; label: string; isActive: boolean; onClick: () => void }) {
+  return (
+    <button
+      onClick={onClick}
+      className={`flex flex-col items-center justify-end w-16 h-full transition-colors ${
+        isActive ? 'text-[#4B20B5]' : 'text-gray-500 hover:text-gray-900'
+      }`}
+    >
+      <div className="mb-1">{icon}</div>
+      <span className="text-[10px] font-medium tracking-wide">{label}</span>
+    </button>
   );
 }

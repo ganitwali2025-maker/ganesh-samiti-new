@@ -1,36 +1,16 @@
 @import "tailwindcss";
 
-@theme {
-  --font-sans: "Poppins", "Hind", sans-serif;
-  --animate-glow: glow 4s ease-in-out infinite alternate;
-  --animate-glow-reverse: glow-reverse 5s ease-in-out infinite alternate;
-  --color-theme-primary: #F84E02;
-}
-
-@utility bg-theme-gradient {
-  background: linear-gradient(90deg, #F84E02 0%, #FF6508 35%, #FF7A0A 70%, #FF8C1A 100%);
-}
-
-@keyframes glow {
-  from { opacity: 0.4; transform: scale(0.8) translate(25%, -50%); }
-  to { opacity: 0.9; transform: scale(1.2) translate(15%, -40%); }
-}
-
-@keyframes glow-reverse {
-  from { opacity: 0.3; transform: scale(1.1) translate(-25%, 50%); }
-  to { opacity: 0.7; transform: scale(0.9) translate(-15%, 40%); }
-}
-
-@utility scrollbar-hide {
-  &::-webkit-scrollbar {
-    display: none;
-  }
-  -ms-overflow-style: none;
-  scrollbar-width: none;
-}
-
 @layer base {
   body {
-    background-color: #f1f5f9;
+    @apply bg-gray-50 text-gray-800 font-sans antialiased;
+  }
+}
+
+@layer utilities {
+  .pb-safe {
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+  .pt-safe {
+    padding-top: env(safe-area-inset-top);
   }
 }

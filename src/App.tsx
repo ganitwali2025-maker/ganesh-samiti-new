@@ -1,45 +1,68 @@
-import { NavigationProvider, useNavigation } from './context/NavigationContext';
-import { SideDrawer } from './components/SideDrawer';
+/**
+ * @license
+ * SPDX-License-Identifier: Apache-2.0
+ */
+
+import React, { useState } from 'react';
 import { BottomNav } from './components/BottomNav';
-import { Dashboard } from './components/Dashboard';
-import { useCommitteeData } from './hooks/useCommitteeData';
-import { motion, AnimatePresence } from 'motion/react';
-import { AppRouter } from './router';
-import { GlobalAppHeader } from './components/GlobalAppHeader';
+import { QuickActionModal } from './components/QuickActionModal';
+import { AddMemberModal } from './components/AddMemberModal';
+import { AddJamaModal } from './components/AddJamaModal';
+import { AddKharchaModal } from './components/AddKharchaModal';
+import { Home } from './views/Home';
+import { Members } from './views/Members';
+import { Deposits } from './views/Deposits';
+import { Expenses } from './views/Expenses';
 
-import { LanguageProvider } from './context/LanguageContext';
-
-function AppLayout({ data }: { data: any }) {
-  const { currentScreen } = useNavigation();
-
-  // Screens that should NOT show the bottom nav
-  const hideBottomNavScreens = ['splash', 'login', 'deposit', 'expense'];
-  const showBottomNav = !hideBottomNavScreens.includes(currentScreen) && !currentScreen.startsWith('member-profile');
-  const showGlobalHeader = currentScreen === 'dashboard';
-
-  return (
-    <>
-      <main className={`flex-1 flex flex-col overflow-y-auto overflow-x-hidden scrollbar-hide bg-[#FFF8F1] relative ${showBottomNav ? 'pb-24' : ''}`}>
-        {showGlobalHeader && <GlobalAppHeader />}
-        <AppRouter />
-      </main>
-      
-      {showBottomNav && <BottomNav />}
-      <SideDrawer />
-    </>
-  );
-}
+type View = 'home' | 'members' | 'deposits' | 'expenses';
 
 export default function App() {
-  const data = useCommitteeData();
+  const [currentView, setCurrentView] = useState<View>('home');
+  const [isQuickActionOpen, setIsQuickActionOpen] = useState(false);
+  const [activeModal, setActiveModal] = useState<'addMember' | 'addJama' | 'addKharcha' | null>(null);
+
+  const renderView = () => {
+    switch (currentView) {
+      case 'home':
+        return <Home />;
+      case 'members':
+        return <Members onAddClick={() => setActiveModal('addMember')} />;
+      case 'deposits':
+        return <Deposits />;
+      case 'expenses':
+        return <Expenses />;
+      default:
+        return <Home />;
+    }
+  };
 
   return (
-    <LanguageProvider>
-      <div className="bg-[#FFF8F1] font-sans w-full h-[100dvh] flex flex-col relative overflow-hidden text-slate-800">
-        <NavigationProvider>
-          <AppLayout data={data} />
-        </NavigationProvider>
+    <div className="min-h-screen bg-gray-100 text-gray-900 font-sans selection:bg-[#4B20B5] selection:text-white">
+      {/* Mobile constraint wrapper */}
+      <div className="max-w-md mx-auto bg-white min-h-screen relative shadow-xl overflow-hidden flex flex-col">
+        
+        {/* Main Content Area */}
+        <main className="flex-1 h-full overflow-y-auto">
+          {renderView()}
+        </main>
+
+        <BottomNav 
+          currentView={currentView} 
+          onChangeView={(view) => setCurrentView(view as View)}
+          onOpenQuickAdd={() => setIsQuickActionOpen(true)}
+        />
+        
+        <QuickActionModal 
+          isOpen={isQuickActionOpen} 
+          onClose={() => setIsQuickActionOpen(false)} 
+          onSelectAction={(action) => setActiveModal(action)} 
+        />
+
+        <AddMemberModal isOpen={activeModal === 'addMember'} onClose={() => setActiveModal(null)} />
+        <AddJamaModal isOpen={activeModal === 'addJama'} onClose={() => setActiveModal(null)} />
+        <AddKharchaModal isOpen={activeModal === 'addKharcha'} onClose={() => setActiveModal(null)} />
       </div>
-    </LanguageProvider>
+    </div>
   );
 }
+

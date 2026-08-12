@@ -1,6 +1,6 @@
 {
-  "name": "Local Committee Manager",
-  "description": "A responsive app for managing local committee (समिति) members, deposits, and expenses using local storage.",
+  "name": "Ganesh Samiti App",
+  "description": "A simple and professional mobile app for managing Ganesh Samiti members, deposits, and expenses.",
   "requestFramePermissions": [],
   "majorCapabilities": [
     "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
