@@ -1,69 +1,62 @@
 import React, { useState, useEffect } from 'react';
 import { useAppStore } from '../store';
-import { generateId } from '../utils';
-import { ChevronLeft, Calendar, HandCoins, User, Tag, IndianRupee, CreditCard, CalendarDays, ClipboardEdit, RotateCcw, Save, History } from 'lucide-react';
+import { Jama } from '../types';
+import { ChevronLeft, Calendar, HandCoins, User, Tag, IndianRupee, CreditCard, CalendarDays, ClipboardEdit, Save } from 'lucide-react';
 
 interface Props {
+  jama: Jama;
   isOpen: boolean;
   onClose: () => void;
 }
 
-type JamaType = 'MONTHLY' | 'DONATION' | 'GANESH_CHATURTHI';
-
-export function AddJamaModal({ isOpen, onClose }: Props) {
-  const { members, addJama } = useAppStore();
+export function EditJamaModal({ jama, isOpen, onClose }: Props) {
+  const { members, updateJama } = useAppStore();
   
-  const [jamaType, setJamaType] = useState<JamaType>('MONTHLY');
-  const [memberId, setMemberId] = useState('');
-  const [date, setDate] = useState(new Date().toISOString().split('T')[0]);
-  const [amount, setAmount] = useState('');
-  const [mode, setMode] = useState<'Cash' | 'UPI' | 'Bank'>('Cash');
-  const [note, setNote] = useState('');
+  const [jamaType, setJamaType] = useState(jama.jamaType || 'MONTHLY');
+  const [memberId, setMemberId] = useState(jama.memberId);
+  const [date, setDate] = useState(jama.date);
+  const [amount, setAmount] = useState(jama.amount.toString());
+  const [mode, setMode] = useState(jama.mode);
+  const [note, setNote] = useState(jama.note);
+
+  useEffect(() => {
+    setJamaType(jama.jamaType || 'MONTHLY');
+    setMemberId(jama.memberId);
+    setDate(jama.date);
+    setAmount(jama.amount.toString());
+    setMode(jama.mode);
+    setNote(jama.note);
+  }, [jama, isOpen]);
 
   if (!isOpen) return null;
-
-  const handleReset = () => {
-    setMemberId('');
-    setAmount('');
-    setNote('');
-    setJamaType('MONTHLY');
-    setMode('Cash');
-    setDate(new Date().toISOString().split('T')[0]);
-  };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!memberId || !date || !amount || !jamaType) return;
 
-    addJama({
-      id: generateId(),
+    updateJama(jama.id, {
       memberId,
-      jamaType,
+      jamaType: jamaType as any,
       date,
       amount: Number(amount),
       mode,
       note
     });
 
-    handleReset();
     onClose();
   };
 
   return (
-    <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-[110] flex flex-col justify-end sm:justify-center items-center h-[100dvh]">
+    <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-[120] flex flex-col justify-end sm:justify-center items-center h-[100dvh]">
       <div className="bg-gray-50 w-full h-full sm:h-auto sm:max-w-2xl sm:rounded-3xl shadow-2xl animate-in slide-in-from-bottom-full duration-300 flex flex-col overflow-hidden">
         {/* Purple Header */}
         <div className="bg-[#3A1499] text-white p-4 flex items-center justify-between shadow-sm z-10 flex-shrink-0">
           <div className="flex items-center gap-3">
-            <button onClick={onClose} className="p-1">
+            <button type="button" onClick={onClose} className="p-1">
               <ChevronLeft size={28} />
             </button>
-            <h2 className="text-xl font-bold tracking-wide">पैसा जमा करें</h2>
+            <h2 className="text-xl font-bold tracking-wide">जमा प्रविष्टि संपादित करें</h2>
           </div>
-          <button className="flex items-center gap-1.5 text-sm bg-white/10 px-3 py-1.5 rounded-lg hover:bg-white/20 transition-colors">
-            <History size={16} />
-            <span>जमा इतिहास</span>
-          </button>
         </div>
 
         <div className="overflow-y-auto flex-1 pb-safe">
@@ -125,7 +118,7 @@ export function AddJamaModal({ isOpen, onClose }: Props) {
             </div>
 
             {/* Form Fields */}
-            <form id="addJamaForm" onSubmit={handleSubmit} className="bg-white rounded-3xl p-5 shadow-sm border border-gray-100 space-y-5">
+            <form id="editJamaForm" onSubmit={handleSubmit} className="bg-white rounded-3xl p-5 shadow-sm border border-gray-100 space-y-5">
               
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                 {/* Member */}
@@ -148,7 +141,7 @@ export function AddJamaModal({ isOpen, onClose }: Props) {
                     <Tag size={16} className="text-[#3A1499]" />
                     जमा टाइप <span className="text-red-500">*</span>
                   </label>
-                  <select required value={jamaType} onChange={e => setJamaType(e.target.value as JamaType)} className="w-full px-4 py-3.5 bg-gray-50 border border-gray-200 rounded-2xl focus:ring-2 focus:ring-[#3A1499] focus:border-[#3A1499] focus:bg-white outline-none transition-all text-sm font-medium">
+                  <select required value={jamaType} onChange={e => setJamaType(e.target.value as any)} className="w-full px-4 py-3.5 bg-gray-50 border border-gray-200 rounded-2xl focus:ring-2 focus:ring-[#3A1499] focus:border-[#3A1499] focus:bg-white outline-none transition-all text-sm font-medium">
                     <option value="MONTHLY">मासिक जमा</option>
                     <option value="DONATION">चंदा जमा</option>
                     <option value="GANESH_CHATURTHI">गणेश चतुर्थी के लिए जमा</option>
@@ -200,13 +193,9 @@ export function AddJamaModal({ isOpen, onClose }: Props) {
             
             {/* Actions */}
             <div className="flex gap-4 pt-2">
-              <button type="button" onClick={handleReset} className="flex-1 bg-white border-2 border-[#3A1499] text-[#3A1499] font-bold text-sm py-4 rounded-2xl flex items-center justify-center gap-2 active:bg-gray-50 transition-colors">
-                <RotateCcw size={18} />
-                रीसेट करें
-              </button>
-              <button type="submit" form="addJamaForm" className="flex-1 bg-[#3A1499] text-white font-bold text-sm py-4 rounded-2xl hover:bg-purple-900 active:bg-purple-950 transition-colors shadow-lg shadow-purple-900/30 flex items-center justify-center gap-2">
+              <button type="submit" form="editJamaForm" className="w-full bg-[#3A1499] text-white font-bold text-sm py-4 rounded-2xl hover:bg-purple-900 active:bg-purple-950 transition-colors shadow-lg shadow-purple-900/30 flex items-center justify-center gap-2">
                 <Save size={18} />
-                जमा करें
+                बदलाव सेव करें
               </button>
             </div>
             

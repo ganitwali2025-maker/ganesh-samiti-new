@@ -10,6 +10,7 @@ export interface Member {
 export interface Jama {
   id: string;
   memberId: string;
+  jamaType?: 'MONTHLY' | 'DONATION' | 'GANESH_CHATURTHI';
   date: string;
   amount: number;
   mode: 'Cash' | 'UPI' | 'Bank';
