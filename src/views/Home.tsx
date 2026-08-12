@@ -3,7 +3,7 @@ import { useAppStore } from '../store';
 import { formatCurrency, formatDate } from '../utils';
 import { Menu, Bell, Users, Wallet, TrendingDown, LayoutDashboard, UserPlus, FileDown, FileUp } from 'lucide-react';
 
-export function Home() {
+export function Home({ onOpenSidebar }: { onOpenSidebar?: () => void }) {
   const { members, jamas, kharchas } = useAppStore();
 
   const totalMembers = members.length;
@@ -18,11 +18,11 @@ export function Home() {
   ].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()).slice(0, 5);
 
   return (
-    <div className="pb-28 min-h-screen bg-gray-50">
-      {/* Top Header */}
-      <div className="bg-gradient-to-r from-[#4B20B5] to-[#5B2ACF] pt-safe px-4 pb-28 text-white relative">
+    <div className="h-full flex flex-col bg-gray-50 relative">
+      {/* Top Header - Fixed/Shrink-0 */}
+      <div className="flex-shrink-0 bg-gradient-to-r from-[#4B20B5] to-[#5B2ACF] pt-safe px-4 pb-20 text-white relative z-0">
         <div className="flex justify-between items-center h-14 mt-2">
-          <button className="p-2 -ml-2">
+          <button className="p-2 -ml-2" onClick={onOpenSidebar}>
             <Menu size={24} />
           </button>
           <h1 className="text-xl font-semibold">डैशबोर्ड</h1>
@@ -33,7 +33,8 @@ export function Home() {
         </div>
       </div>
 
-      <div className="px-4 -mt-24 relative z-10 space-y-4">
+      {/* Scrollable Content */}
+      <div className="flex-1 overflow-y-auto px-4 pb-6 -mt-16 z-10 relative space-y-4">
         {/* Welcome Card */}
         <div className="bg-white rounded-2xl p-4 shadow-sm border border-gray-100 flex justify-between items-center">
           <div>
@@ -79,7 +80,7 @@ export function Home() {
 
         {/* Quick Actions */}
         <div>
-          <h3 className="text-sm font-bold text-gray-900 mb-3 ml-1">त्वरित कार्य करें</h3>
+          <h3 className="text-sm font-bold text-gray-900 mb-2.5 ml-1">त्वरित कार्य करें</h3>
           <div className="flex gap-3">
             <QuickActionBtn
               icon={<UserPlus size={24} />}
@@ -103,8 +104,8 @@ export function Home() {
         </div>
 
         {/* Recent Activity */}
-        <div className="pt-2">
-          <div className="flex justify-between items-center mb-3 px-1">
+        <div className="pt-1">
+          <div className="flex justify-between items-center mb-2.5 px-1">
             <h3 className="text-sm font-bold text-gray-900">हाल की गतिविधि</h3>
             <button className="text-xs text-[#4B20B5] font-medium">देखें सभी</button>
           </div>
@@ -152,17 +153,17 @@ export function Home() {
 
 function StatCard({ icon, label, value, subLabel, bgColor }: { icon: React.ReactNode, label: string, value: string, subLabel: string, bgColor: string }) {
   return (
-    <div className={`${bgColor} p-3 rounded-2xl border border-white/50 shadow-sm relative overflow-hidden`}>
+    <div className={`${bgColor} p-3 rounded-2xl border border-white/50 shadow-sm relative overflow-hidden flex flex-col justify-between`}>
       <div className="flex justify-between items-start mb-2">
-        <span className="text-[11px] font-semibold text-gray-700">{label}</span>
-        <div className="bg-white p-1 rounded-md opacity-80">
+        <span className="text-[11px] font-semibold text-gray-700 leading-tight">{label}</span>
+        <div className="bg-white p-1 rounded-md opacity-80 flex-shrink-0">
           {icon}
         </div>
       </div>
-      <div className="mt-1">
-        <span className="text-xl font-bold text-gray-900">{value}</span>
+      <div className="mt-auto">
+        <span className="text-xl font-bold text-gray-900 leading-none">{value}</span>
       </div>
-      <span className="text-[10px] text-gray-500 mt-1 block">{subLabel}</span>
+      <span className="text-[10px] text-gray-500 mt-1 block leading-none">{subLabel}</span>
     </div>
   );
 }
@@ -173,7 +174,7 @@ function QuickActionBtn({ icon, label, color, bg }: { icon: React.ReactNode, lab
       <div className={`${bg} ${color} w-10 h-10 rounded-full flex items-center justify-center`}>
         {icon}
       </div>
-      <span className={`text-[10px] font-semibold ${color}`}>{label}</span>
+      <span className={`text-[10px] font-semibold ${color} text-center leading-tight`}>{label}</span>
     </button>
   );
 }

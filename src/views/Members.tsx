@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { useAppStore } from '../store';
 import { formatCurrency } from '../utils';
-import { Search, ChevronLeft, Plus } from 'lucide-react';
+import { Search, Menu, Plus } from 'lucide-react';
 
-export function Members({ onAddClick }: { onAddClick: () => void }) {
+export function Members({ onAddClick, onOpenSidebar }: { onAddClick: () => void, onOpenSidebar?: () => void }) {
   const { members, jamas } = useAppStore();
   const [searchTerm, setSearchTerm] = useState('');
 
@@ -14,12 +14,12 @@ export function Members({ onAddClick }: { onAddClick: () => void }) {
   );
 
   return (
-    <div className="pb-28 min-h-screen bg-gray-50 flex flex-col">
+    <div className="h-full flex flex-col bg-gray-50 relative">
       {/* Purple Header */}
-      <div className="bg-[#4B20B5] text-white pt-safe px-4 pb-4">
+      <div className="flex-shrink-0 bg-[#4B20B5] text-white pt-safe px-4 pb-4">
         <div className="flex justify-between items-center h-14 mt-2">
-          <button className="p-2 -ml-2">
-            <ChevronLeft size={24} />
+          <button className="p-2 -ml-2" onClick={onOpenSidebar}>
+            <Menu size={24} />
           </button>
           <h1 className="text-lg font-semibold">सदस्य सूची</h1>
           <button className="p-2 -mr-2" onClick={onAddClick}>
@@ -28,9 +28,9 @@ export function Members({ onAddClick }: { onAddClick: () => void }) {
         </div>
       </div>
 
-      <div className="px-4 py-4 flex-1 flex flex-col">
+      <div className="flex-1 flex flex-col px-4 py-4 overflow-hidden">
         {/* Search Bar */}
-        <div className="relative mb-4">
+        <div className="flex-shrink-0 relative mb-4">
           <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
             <Search size={18} className="text-gray-400" />
           </div>
@@ -44,7 +44,7 @@ export function Members({ onAddClick }: { onAddClick: () => void }) {
         </div>
 
         {/* Member List */}
-        <div className="flex-1 overflow-y-auto space-y-3 pb-2">
+        <div className="flex-1 overflow-y-auto space-y-3 pb-6">
           {filteredMembers.length === 0 ? (
             <div className="text-center py-10 text-gray-500 text-sm">
               <p>कोई सदस्य नहीं मिला।</p>
