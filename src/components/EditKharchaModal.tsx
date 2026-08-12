@@ -1,43 +1,41 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useAppStore } from '../store';
-import { generateId } from '../utils';
-import { ChevronLeft, Flame, MoreHorizontal, Tag, IndianRupee, CreditCard, CalendarDays, ClipboardEdit, RotateCcw, Save, History, FileText } from 'lucide-react';
+import { Kharcha } from '../types';
+import { ChevronLeft, Flame, MoreHorizontal, Tag, IndianRupee, CreditCard, CalendarDays, ClipboardEdit, Save, FileText } from 'lucide-react';
 
 interface Props {
+  kharcha: Kharcha;
   isOpen: boolean;
   onClose: () => void;
 }
 
-type KharchaType = 'POOJA' | 'GANESH_UTSAV' | 'OTHER';
-
-export function AddKharchaModal({ isOpen, onClose }: Props) {
-  const addKharcha = useAppStore(state => state.addKharcha);
+export function EditKharchaModal({ kharcha, isOpen, onClose }: Props) {
+  const updateKharcha = useAppStore(state => state.updateKharcha);
   
-  const [kharchaType, setKharchaType] = useState<KharchaType>('POOJA');
-  const [details, setDetails] = useState('');
-  const [date, setDate] = useState(new Date().toISOString().split('T')[0]);
-  const [amount, setAmount] = useState('');
-  const [mode, setMode] = useState<'Cash' | 'UPI' | 'Bank'>('Cash');
-  const [note, setNote] = useState('');
+  const [kharchaType, setKharchaType] = useState(kharcha.kharchaType || 'OTHER');
+  const [details, setDetails] = useState(kharcha.details);
+  const [date, setDate] = useState(kharcha.date);
+  const [amount, setAmount] = useState(kharcha.amount.toString());
+  const [mode, setMode] = useState(kharcha.mode);
+  const [note, setNote] = useState(kharcha.note);
+
+  useEffect(() => {
+    setKharchaType(kharcha.kharchaType || 'OTHER');
+    setDetails(kharcha.details);
+    setDate(kharcha.date);
+    setAmount(kharcha.amount.toString());
+    setMode(kharcha.mode);
+    setNote(kharcha.note);
+  }, [kharcha, isOpen]);
 
   if (!isOpen) return null;
-
-  const handleReset = () => {
-    setDetails('');
-    setAmount('');
-    setNote('');
-    setKharchaType('POOJA');
-    setMode('Cash');
-    setDate(new Date().toISOString().split('T')[0]);
-  };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!details || !date || !amount || !kharchaType) return;
 
-    addKharcha({
-      id: generateId(),
-      kharchaType,
+    updateKharcha(kharcha.id, {
+      kharchaType: kharchaType as any,
       details,
       date,
       amount: Number(amount),
@@ -45,25 +43,20 @@ export function AddKharchaModal({ isOpen, onClose }: Props) {
       note
     });
 
-    handleReset();
     onClose();
   };
 
   return (
-    <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-[110] flex flex-col justify-end sm:justify-center items-center h-[100dvh]">
+    <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-[120] flex flex-col justify-end sm:justify-center items-center h-[100dvh]">
       <div className="bg-gray-50 w-full h-full sm:h-auto sm:max-w-2xl sm:rounded-3xl shadow-2xl animate-in slide-in-from-bottom-full duration-300 flex flex-col overflow-hidden">
         {/* Purple Header */}
         <div className="bg-[#3A1499] text-white p-4 flex items-center justify-between shadow-sm z-10 flex-shrink-0">
           <div className="flex items-center gap-3">
-            <button onClick={onClose} className="p-1">
+            <button type="button" onClick={onClose} className="p-1">
               <ChevronLeft size={28} />
             </button>
-            <h2 className="text-xl font-bold tracking-wide">खर्चा जोड़ें</h2>
+            <h2 className="text-xl font-bold tracking-wide">खर्चा प्रविष्टि संपादित करें</h2>
           </div>
-          <button className="flex items-center gap-1.5 text-sm bg-white/10 px-3 py-1.5 rounded-lg hover:bg-white/20 transition-colors">
-            <History size={16} />
-            <span>खर्च इतिहास</span>
-          </button>
         </div>
 
         <div className="overflow-y-auto flex-1 pb-safe">
@@ -125,7 +118,7 @@ export function AddKharchaModal({ isOpen, onClose }: Props) {
             </div>
 
             {/* Form Fields */}
-            <form id="addKharchaForm" onSubmit={handleSubmit} className="bg-white rounded-3xl p-5 shadow-sm border border-gray-100 space-y-5">
+            <form id="editKharchaForm" onSubmit={handleSubmit} className="bg-white rounded-3xl p-5 shadow-sm border border-gray-100 space-y-5">
               
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                 
@@ -135,7 +128,7 @@ export function AddKharchaModal({ isOpen, onClose }: Props) {
                     <Tag size={16} className="text-[#3A1499]" />
                     खर्चा टाइप <span className="text-red-500">*</span>
                   </label>
-                  <select required value={kharchaType} onChange={e => setKharchaType(e.target.value as KharchaType)} className="w-full px-4 py-3.5 bg-gray-50 border border-gray-200 rounded-2xl focus:ring-2 focus:ring-[#3A1499] focus:border-[#3A1499] focus:bg-white outline-none transition-all text-sm font-medium">
+                  <select required value={kharchaType} onChange={e => setKharchaType(e.target.value as any)} className="w-full px-4 py-3.5 bg-gray-50 border border-gray-200 rounded-2xl focus:ring-2 focus:ring-[#3A1499] focus:border-[#3A1499] focus:bg-white outline-none transition-all text-sm font-medium">
                     <option value="POOJA">पूजा सामग्री</option>
                     <option value="GANESH_UTSAV">गणेश उत्सव खर्च</option>
                     <option value="OTHER">अन्य खर्च</option>
@@ -196,13 +189,9 @@ export function AddKharchaModal({ isOpen, onClose }: Props) {
             
             {/* Actions */}
             <div className="flex gap-4 pt-2">
-              <button type="button" onClick={handleReset} className="flex-1 bg-white border-2 border-[#3A1499] text-[#3A1499] font-bold text-sm py-4 rounded-2xl flex items-center justify-center gap-2 active:bg-gray-50 transition-colors">
-                <RotateCcw size={18} />
-                रीसेट करें
-              </button>
-              <button type="submit" form="addKharchaForm" className="flex-1 bg-[#3A1499] text-white font-bold text-sm py-4 rounded-2xl hover:bg-purple-900 active:bg-purple-950 transition-colors shadow-lg shadow-purple-900/30 flex items-center justify-center gap-2">
+              <button type="submit" form="editKharchaForm" className="w-full bg-[#3A1499] text-white font-bold text-sm py-4 rounded-2xl hover:bg-purple-900 active:bg-purple-950 transition-colors shadow-lg shadow-purple-900/30 flex items-center justify-center gap-2">
                 <Save size={18} />
-                खर्चा जोड़ें
+                बदलाव सेव करें
               </button>
             </div>
             

@@ -19,6 +19,7 @@ export interface Jama {
 
 export interface Kharcha {
   id: string;
+  kharchaType?: 'POOJA' | 'GANESH_UTSAV' | 'OTHER';
   date: string;
   details: string;
   amount: number;
