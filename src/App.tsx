@@ -11,7 +11,7 @@ const dispDate = (d) => {
 
 const STORAGE_KEY = "hisaab-data-v1";
 
-const AVATAR_COLORS = ["#534AB7", "#7F77DD", "#9B59D0", "#6D4FC7", "#8B5FBF", "#4C3F8A"];
+const AVATAR_COLORS = ["#766ED3", "#9D97E8", "#B584DF", "#8E76D9", "#A682D4", "#6B59B3"];
 const colorFor = (str) => {
   let h = 0;
   for (let i = 0; i < str.length; i++) h = str.charCodeAt(i) + ((h << 5) - h);
@@ -19,28 +19,23 @@ const colorFor = (str) => {
 };
 
 export default function HisaabApp() {
-  const [data, setData] = useState({ members: [], jama: [], expenses: [] });
-  const [loaded, setLoaded] = useState(false);
+  const [data, setData] = useState(() => {
+    try {
+      const res = localStorage.getItem(STORAGE_KEY);
+      return res ? JSON.parse(res) : { members: [], jama: [], expenses: [] };
+    } catch (e) {
+      return { members: [], jama: [], expenses: [] };
+    }
+  });
   const [tab, setTab] = useState("home");
   const [modal, setModal] = useState(null);
   const [toast, setToast] = useState("");
 
   useEffect(() => {
     try {
-      const res = localStorage.getItem(STORAGE_KEY);
-      if (res) setData(JSON.parse(res));
-    } catch (e) {
-      /* no existing data yet */
-    }
-    setLoaded(true);
-  }, []);
-
-  useEffect(() => {
-    if (!loaded) return;
-    try {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
     } catch (e) {}
-  }, [data, loaded]);
+  }, [data]);
 
   const showToast = (msg) => {
     setToast(msg);
@@ -85,10 +80,6 @@ export default function HisaabApp() {
   const removeExpense = (id) => setData((d) => ({ ...d, expenses: d.expenses.filter((e) => e.id !== id) }));
   const memberName = (id) => data.members.find((m) => m.id === id)?.name || "अज्ञात सदस्य";
 
-  const ringPct = totals.totalJama > 0 ? Math.min(100, Math.round((totals.balance / totals.totalJama) * 100)) : 0;
-  const circumference = 2 * Math.PI * 52;
-  const ringOffset = circumference - (Math.max(0, ringPct) / 100) * circumference;
-
   return (
     <div style={styles.page}>
       <style>{`
@@ -106,12 +97,16 @@ export default function HisaabApp() {
       `}</style>
 
       <div style={styles.phoneFrame}>
-        <div style={styles.statusBar}>
-          <span style={{ fontWeight: 800 }}>9:41</span>
-          <span style={{ display: "flex", gap: 6, alignItems: "center" }}>
-            <span style={{ fontSize: 11 }}>५G</span>
-            <span>🔋</span>
-          </span>
+        <div style={styles.appHeader}>
+          <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+            <div style={{ width: 38, height: 38, borderRadius: 12, background: "linear-gradient(135deg, #6B59B3 0%, #4C3F8A 100%)", display: "flex", alignItems: "center", justifyContent: "center", boxShadow: "0 4px 10px rgba(107, 89, 179, 0.3)" }}>
+              <span style={{ fontSize: 18, color: "#FFF" }}>🕉️</span>
+            </div>
+            <div>
+              <div style={{ fontFamily: "Baloo 2, sans-serif", fontSize: 20, fontWeight: 800, color: "#1E1638", lineHeight: 1.1 }}>गणेश उत्सव</div>
+              <div style={{ fontSize: 11, color: "#7A849C", fontFamily: "Hind, sans-serif", fontWeight: 700 }}>हिसाब किताब 2026</div>
+            </div>
+          </div>
         </div>
 
         <div className="hb-scroll" style={styles.screen}>
@@ -120,9 +115,8 @@ export default function HisaabApp() {
               totals={totals}
               transactions={transactions.slice(0, 5)}
               memberName={memberName}
-              ringOffset={ringOffset}
-              circumference={circumference}
               setTab={setTab}
+              setModal={setModal}
             />
           )}
           {tab === "members" && (
@@ -185,115 +179,141 @@ function NavItem({ icon, label, active, onClick }) {
         flexDirection: "column",
         alignItems: "center",
         gap: 3,
-        color: active ? "#A78BFA" : "#8E7FBE",
+        color: active ? "#6B59B3" : "#A0AABF",
         cursor: "pointer",
         flex: 1,
         padding: "6px 0",
       }}
     >
       {icon}
-      <span style={{ fontSize: 10.5, fontFamily: "Hind, sans-serif", fontWeight: active ? 600 : 500 }}>{label}</span>
+      <span style={{ fontSize: 10.5, fontFamily: "Hind, sans-serif", fontWeight: active ? 700 : 600 }}>{label}</span>
     </button>
   );
 }
 
-function HomeScreen({ totals, transactions, memberName, ringOffset, circumference, setTab }) {
+function HomeScreen({ totals, transactions, memberName, setTab, setModal }) {
+  const greeting = useMemo(() => {
+    const h = new Date().getHours();
+    if (h < 12) return "शुभ प्रभात ☀️";
+    if (h < 17) return "शुभ दोपहर 🌤️";
+    return "शुभ संध्या 🌙";
+  }, []);
+
+  const ringPct = totals.totalJama > 0 ? Math.min(100, Math.round((totals.balance / totals.totalJama) * 100)) : 0;
+  const circumference = 2 * Math.PI * 54;
+  const ringOffset = circumference - (Math.max(0, ringPct) / 100) * circumference;
+
   return (
-    <div className="hb-fadein" style={{ padding: "18px 16px 12px" }}>
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 18 }}>
-        <div>
-          <div style={{ fontFamily: "Baloo 2, sans-serif", fontSize: 21, fontWeight: 800, color: "#EFEAFB" }}>हिसाब</div>
-          <div style={{ fontSize: 12, color: "#8E7FBE", fontFamily: "Hind, sans-serif" }}>आपका ग्रुप, आपका हिसाब</div>
-        </div>
-        <div style={{ width: 38, height: 38, borderRadius: "50%", background: "#382C63", display: "flex", alignItems: "center", justifyContent: "center", border: "1px solid #4C3F8A" }}>
-          <Users size={17} color="#A78BFA" />
-        </div>
+    <div className="hb-fadein" style={{ padding: "14px 16px 24px" }}>
+      <div style={{ fontSize: 14, color: "#1E1638", fontFamily: "Hind, sans-serif", fontWeight: 800, marginBottom: 14 }}>
+        {greeting}
       </div>
 
-      <div style={styles.heroCard}>
-        <div style={{ position: "relative", width: 118, height: 118, margin: "0 auto" }}>
-          <svg width="118" height="118" viewBox="0 0 118 118">
-            <circle cx="59" cy="59" r="52" fill="none" stroke="#4C3F8A" strokeWidth="9" />
+      {/* Hero Wallet Card */}
+      <div style={{ ...styles.heroCard, background: "linear-gradient(135deg, #6B59B3 0%, #4C3F8A 100%)", border: "none", padding: "20px 16px", boxShadow: "0 10px 24px rgba(76, 63, 138, 0.25)" }}>
+        <div style={{ position: "relative", width: 124, height: 124, margin: "0 auto" }}>
+          <svg width="124" height="124" viewBox="0 0 124 124">
+            <circle cx="62" cy="62" r="54" fill="none" stroke="rgba(255,255,255,0.15)" strokeWidth="8" />
             <circle
-              cx="59"
-              cy="59"
-              r="52"
+              cx="62"
+              cy="62"
+              r="54"
               fill="none"
-              stroke="#A78BFA"
-              strokeWidth="9"
+              stroke="#FFFFFF"
+              strokeWidth="8"
               strokeLinecap="round"
               strokeDasharray={circumference}
               strokeDashoffset={ringOffset}
-              transform="rotate(-90 59 59)"
+              transform="rotate(-90 62 62)"
             />
           </svg>
           <div style={{ position: "absolute", inset: 0, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" }}>
-            <span style={{ fontSize: 9.5, color: "#B7A9E0", fontFamily: "Hind, sans-serif" }}>बैलेंस</span>
-            <span style={{ fontFamily: "JetBrains Mono, monospace", fontSize: 15, fontWeight: 800, color: "#EFEAFB" }}>{fmt(totals.balance)}</span>
+            <span style={{ fontSize: 10.5, color: "#D6CCF0", fontFamily: "Hind, sans-serif" }}>कुल उपलब्ध बैलेंस</span>
+            <span style={{ fontFamily: "JetBrains Mono, monospace", fontSize: 18, fontWeight: 800, color: "#FFFFFF" }}>{fmt(totals.balance)}</span>
           </div>
         </div>
-        <div style={{ display: "flex", justifyContent: "space-around", marginTop: 16, paddingTop: 14, borderTop: "1px solid #4C3F8A" }}>
-          <div style={{ textAlign: "center" }}>
-            <div style={{ fontSize: 11, color: "#B7A9E0", fontFamily: "Hind, sans-serif" }}>कुल जमा</div>
-            <div style={{ fontFamily: "JetBrains Mono, monospace", fontSize: 13.5, fontWeight: 800, color: "#C4B5FD" }}>{fmt(totals.totalJama)}</div>
+        <div style={{ display: "flex", justifyContent: "space-between", marginTop: 22, paddingTop: 16, borderTop: "1px solid rgba(255,255,255,0.15)" }}>
+          <div style={{ flex: 1, textAlign: "center" }}>
+            <div style={{ fontSize: 11.5, color: "#D6CCF0", fontFamily: "Hind, sans-serif" }}>कुल जमा</div>
+            <div style={{ fontFamily: "JetBrains Mono, monospace", fontSize: 14.5, fontWeight: 800, color: "#E2F6E2" }}>{fmt(totals.totalJama)}</div>
           </div>
-          <div style={{ width: 1, background: "#4C3F8A" }} />
-          <div style={{ textAlign: "center" }}>
-            <div style={{ fontSize: 11, color: "#B7A9E0", fontFamily: "Hind, sans-serif" }}>कुल खर्च</div>
-            <div style={{ fontFamily: "JetBrains Mono, monospace", fontSize: 13.5, fontWeight: 800, color: "#E4877F" }}>{fmt(totals.totalExpense)}</div>
+          <div style={{ width: 1, background: "rgba(255,255,255,0.15)" }} />
+          <div style={{ flex: 1, textAlign: "center" }}>
+            <div style={{ fontSize: 11.5, color: "#D6CCF0", fontFamily: "Hind, sans-serif" }}>कुल खर्च</div>
+            <div style={{ fontFamily: "JetBrains Mono, monospace", fontSize: 14.5, fontWeight: 800, color: "#FDE2E2" }}>{fmt(totals.totalExpense)}</div>
           </div>
         </div>
       </div>
 
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10, marginTop: 14 }}>
-        <StatBox label="कुल जमा" value={fmt(totals.totalJama)} tint="#332764" accent="#C4B5FD" onClick={() => setTab("jama")} />
-        <StatBox label="कुल खर्च" value={fmt(totals.totalExpense)} tint="#3D2350" accent="#E4877F" onClick={() => setTab("expense")} />
-        <StatBox label="कुल सदस्य" value={totals.members} tint="#382C63" accent="#A78BFA" onClick={() => setTab("members")} />
-        <StatBox label="बैलेंस" value={fmt(totals.balance)} tint="#382C63" accent="#EFEAFB" onClick={() => setTab("transactions")} />
+      {/* Quick Actions */}
+      <div style={{ display: "flex", gap: 12, marginTop: 20 }}>
+        <QuickAction icon={<PiggyBank size={20} color="#4C3F8A" />} label="नई जमा" bg="#F0F4FF" onClick={() => setModal("jama")} />
+        <QuickAction icon={<Receipt size={20} color="#D95F5F" />} label="नया खर्च" bg="#FFF0F0" onClick={() => setModal("expense")} />
+        <QuickAction icon={<Users size={20} color="#6B59B3" />} label="नया सदस्य" bg="#F3F0FA" onClick={() => setModal("member")} />
       </div>
 
-      <div style={{ marginTop: 18 }}>
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 8 }}>
-          <span style={{ fontSize: 13.5, fontWeight: 800, color: "#EFEAFB", fontFamily: "Hind, sans-serif" }}>हाल की लेन-देन</span>
+      {/* Mini Stats */}
+      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12, marginTop: 16 }}>
+        <StatBox label="कुल सदस्य" value={totals.members + " लोग"} tint="#FFFFFF" accent="#1E1638" onClick={() => setTab("members")} />
+        <StatBox label="लेन-देन" value={transactions.length + " एंट्री"} tint="#FFFFFF" accent="#1E1638" onClick={() => setTab("transactions")} />
+      </div>
+
+      {/* Recent Txns */}
+      <div style={{ marginTop: 24 }}>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 12 }}>
+          <span style={{ fontSize: 14, fontWeight: 800, color: "#1E1638", fontFamily: "Hind, sans-serif" }}>हाल की लेन-देन</span>
           <button className="hb-btn" onClick={() => setTab("transactions")} style={styles.linkBtn}>
-            सभी देखें <ChevronRight size={13} />
+            सभी देखें <ChevronRight size={14} />
           </button>
         </div>
         {transactions.length === 0 ? (
-          <EmptyNote text="अभी कोई लेन-देन नहीं है। जमा या खर्च जोड़ें।" />
+          <EmptyNote text="अभी कोई लेन-देन नहीं है।" />
         ) : (
-          transactions.map((t) => (
-            <TxnRow key={t.id} t={t} memberName={memberName} />
-          ))
+          <div style={styles.cardContainer}>
+            {transactions.map((t, i) => (
+              <TxnRow key={t.id} t={t} memberName={memberName} isLast={i === transactions.length - 1} />
+            ))}
+          </div>
         )}
       </div>
     </div>
   );
 }
 
+function QuickAction({ icon, label, bg, onClick }) {
+  return (
+    <button className="hb-card hb-btn" onClick={onClick} style={{ flex: 1, background: "#FFFFFF", border: "1px solid #E2E8F0", borderRadius: 16, padding: "14px 4px", display: "flex", flexDirection: "column", alignItems: "center", cursor: "pointer", gap: 10, boxShadow: "0 2px 8px rgba(0,0,0,0.02)" }}>
+      <div style={{ width: 44, height: 44, borderRadius: "50%", background: bg, display: "flex", alignItems: "center", justifyContent: "center" }}>
+        {icon}
+      </div>
+      <span style={{ fontSize: 12, fontWeight: 700, color: "#1E1638", fontFamily: "Hind, sans-serif" }}>{label}</span>
+    </button>
+  );
+}
+
 function StatBox({ label, value, tint, accent, onClick }) {
   return (
     <button className="hb-card hb-btn" onClick={onClick} style={{ ...styles.statBox, background: tint, cursor: "pointer" }}>
-      <div style={{ fontSize: 11, color: "#B7A9E0", fontFamily: "Hind, sans-serif", marginBottom: 4 }}>{label}</div>
+      <div style={{ fontSize: 11.5, color: "#7A849C", fontFamily: "Hind, sans-serif", marginBottom: 4 }}>{label}</div>
       <div style={{ fontFamily: "JetBrains Mono, monospace", fontSize: 16, fontWeight: 800, color: accent }}>{value}</div>
     </button>
   );
 }
 
-function TxnRow({ t, memberName }) {
+function TxnRow({ t, memberName, isLast }) {
   const isJama = t.type === "jama";
   return (
-    <div style={styles.txnRow}>
-      <div style={{ ...styles.txnIcon, background: isJama ? "#332764" : "#3D2350" }}>
-        {isJama ? <PiggyBank size={15} color="#C4B5FD" /> : <Receipt size={15} color="#E4877F" />}
+    <div style={{ ...styles.txnRow, borderBottom: isLast ? "none" : "1px solid #E2E8F0" }}>
+      <div style={{ ...styles.txnIcon, background: isJama ? "#F0F4FF" : "#FFF0F0" }}>
+        {isJama ? <PiggyBank size={15} color="#4C3F8A" /> : <Receipt size={15} color="#D95F5F" />}
       </div>
       <div style={{ flex: 1, minWidth: 0 }}>
-        <div style={{ fontSize: 13, color: "#EFEAFB", fontFamily: "Hind, sans-serif", fontWeight: 700, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
+        <div style={{ fontSize: 13.5, color: "#1E1638", fontFamily: "Hind, sans-serif", fontWeight: 700, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
           {isJama ? memberName(t.memberId) : t.desc}
         </div>
-        <div style={{ fontSize: 10.5, color: "#8E7FBE", fontFamily: "Hind, sans-serif" }}>{dispDate(t.date)}</div>
+        <div style={{ fontSize: 11, color: "#7A849C", fontFamily: "Hind, sans-serif" }}>{dispDate(t.date)}</div>
       </div>
-      <div style={{ fontFamily: "JetBrains Mono, monospace", fontSize: 13, fontWeight: 800, color: isJama ? "#C4B5FD" : "#E4877F" }}>
+      <div style={{ fontFamily: "JetBrains Mono, monospace", fontSize: 14, fontWeight: 800, color: isJama ? "#4C3F8A" : "#D95F5F" }}>
         {isJama ? "+" : "-"}{fmt(t.amount)}
       </div>
     </div>
@@ -303,23 +323,25 @@ function TxnRow({ t, memberName }) {
 function MembersScreen({ members, jama, onAdd, onRemove }) {
   const memberTotal = (id) => jama.filter((j) => j.memberId === id).reduce((s, j) => s + Number(j.amount), 0);
   return (
-    <div className="hb-fadein" style={{ padding: "18px 16px" }}>
+    <div className="hb-fadein" style={{ padding: "18px 16px 24px" }}>
       <ScreenHeader title="सदस्य" subtitle={`${members.length} सदस्य जुड़े हैं`} onAdd={onAdd} addLabel="सदस्य जोड़ें" />
       {members.length === 0 ? (
         <EmptyNote text="कोई सदस्य नहीं है। नया सदस्य जोड़ें।" />
       ) : (
-        members.map((m) => (
-          <div key={m.id} style={styles.listRow}>
-            <div style={{ ...styles.avatar, background: colorFor(m.name) }}>{m.name.trim().slice(0, 1).toUpperCase()}</div>
-            <div style={{ flex: 1, minWidth: 0 }}>
-              <div style={{ fontSize: 13.5, color: "#EFEAFB", fontFamily: "Hind, sans-serif", fontWeight: 700 }}>{m.name}</div>
-              <div style={{ fontSize: 11, color: "#8E7FBE", fontFamily: "Hind, sans-serif" }}>कुल जमा: {fmt(memberTotal(m.id))}</div>
+        <div style={styles.cardContainer}>
+          {members.map((m, i) => (
+            <div key={m.id} style={{ ...styles.listRow, borderBottom: i === members.length - 1 ? "none" : "1px solid #E2E8F0" }}>
+              <div style={{ ...styles.avatar, background: colorFor(m.name) }}>{m.name.trim().slice(0, 1).toUpperCase()}</div>
+              <div style={{ flex: 1, minWidth: 0 }}>
+                <div style={{ fontSize: 14, color: "#1E1638", fontFamily: "Hind, sans-serif", fontWeight: 700 }}>{m.name}</div>
+                <div style={{ fontSize: 11.5, color: "#7A849C", fontFamily: "Hind, sans-serif" }}>कुल जमा: {fmt(memberTotal(m.id))}</div>
+              </div>
+              <button className="hb-btn" onClick={() => onRemove(m.id)} style={styles.trashBtn} aria-label="हटाएं">
+                <Trash2 size={16} color="#D95F5F" />
+              </button>
             </div>
-            <button className="hb-btn" onClick={() => onRemove(m.id)} style={styles.trashBtn} aria-label="हटाएं">
-              <Trash2 size={15} color="#E4877F" />
-            </button>
-          </div>
-        ))
+          ))}
+        </div>
       )}
     </div>
   );
@@ -328,30 +350,32 @@ function MembersScreen({ members, jama, onAdd, onRemove }) {
 function JamaScreen({ jama, total, memberName, onAdd, onRemove }) {
   const sorted = [...jama].sort((a, b) => new Date(b.date) - new Date(a.date));
   return (
-    <div className="hb-fadein" style={{ padding: "18px 16px" }}>
-      <ScreenHeader title="जमा शीट" subtitle={`कुल जमा: ${fmt(total)}`} onAdd={onAdd} addLabel="जमा जोड़ें" accent="#C4B5FD" />
+    <div className="hb-fadein" style={{ padding: "18px 16px 24px" }}>
+      <ScreenHeader title="जमा शीट" subtitle={`कुल जमा: ${fmt(total)}`} onAdd={onAdd} addLabel="जमा जोड़ें" accent="#4C3F8A" />
       {sorted.length === 0 ? (
         <EmptyNote text="अभी कोई जमा दर्ज नहीं है।" />
       ) : (
-        sorted.map((j) => (
-          <div key={j.id} style={styles.listRow}>
-            <div style={{ ...styles.avatar, background: colorFor(memberName(j.memberId)) }}>
-              {memberName(j.memberId).trim().slice(0, 1).toUpperCase()}
-            </div>
-            <div style={{ flex: 1, minWidth: 0 }}>
-              <div style={{ fontSize: 13.5, color: "#EFEAFB", fontFamily: "Hind, sans-serif", fontWeight: 700 }}>{memberName(j.memberId)}</div>
-              <div style={{ fontSize: 11, color: "#8E7FBE", fontFamily: "Hind, sans-serif" }}>
-                {dispDate(j.date)}{j.note ? ` · ${j.note}` : ""}
+        <div style={styles.cardContainer}>
+          {sorted.map((j, i) => (
+            <div key={j.id} style={{ ...styles.listRow, borderBottom: i === sorted.length - 1 ? "none" : "1px solid #E2E8F0" }}>
+              <div style={{ ...styles.avatar, background: colorFor(memberName(j.memberId)) }}>
+                {memberName(j.memberId).trim().slice(0, 1).toUpperCase()}
               </div>
+              <div style={{ flex: 1, minWidth: 0 }}>
+                <div style={{ fontSize: 14, color: "#1E1638", fontFamily: "Hind, sans-serif", fontWeight: 700 }}>{memberName(j.memberId)}</div>
+                <div style={{ fontSize: 11.5, color: "#7A849C", fontFamily: "Hind, sans-serif" }}>
+                  {dispDate(j.date)}{j.note ? ` · ${j.note}` : ""}
+                </div>
+              </div>
+              <div style={{ fontFamily: "JetBrains Mono, monospace", fontSize: 14, fontWeight: 800, color: "#4C3F8A", marginRight: 8 }}>
+                +{fmt(j.amount)}
+              </div>
+              <button className="hb-btn" onClick={() => onRemove(j.id)} style={styles.trashBtn} aria-label="हटाएं">
+                <Trash2 size={15} color="#A0AABF" />
+              </button>
             </div>
-            <div style={{ fontFamily: "JetBrains Mono, monospace", fontSize: 13.5, fontWeight: 800, color: "#C4B5FD", marginRight: 8 }}>
-              +{fmt(j.amount)}
-            </div>
-            <button className="hb-btn" onClick={() => onRemove(j.id)} style={styles.trashBtn} aria-label="हटाएं">
-              <Trash2 size={14} color="#8E7FBE" />
-            </button>
-          </div>
-        ))
+          ))}
+        </div>
       )}
     </div>
   );
@@ -360,28 +384,30 @@ function JamaScreen({ jama, total, memberName, onAdd, onRemove }) {
 function ExpenseScreen({ expenses, total, onAdd, onRemove }) {
   const sorted = [...expenses].sort((a, b) => new Date(b.date) - new Date(a.date));
   return (
-    <div className="hb-fadein" style={{ padding: "18px 16px" }}>
-      <ScreenHeader title="खर्च शीट" subtitle={`कुल खर्च: ${fmt(total)}`} onAdd={onAdd} addLabel="खर्च जोड़ें" accent="#E4877F" />
+    <div className="hb-fadein" style={{ padding: "18px 16px 24px" }}>
+      <ScreenHeader title="खर्च शीट" subtitle={`कुल खर्च: ${fmt(total)}`} onAdd={onAdd} addLabel="खर्च जोड़ें" accent="#D95F5F" />
       {sorted.length === 0 ? (
         <EmptyNote text="अभी कोई खर्च दर्ज नहीं है।" />
       ) : (
-        sorted.map((e) => (
-          <div key={e.id} style={styles.listRow}>
-            <div style={{ ...styles.avatar, background: "#3D2350" }}>
-              <Receipt size={15} color="#E4877F" />
+        <div style={styles.cardContainer}>
+          {sorted.map((e, i) => (
+            <div key={e.id} style={{ ...styles.listRow, borderBottom: i === sorted.length - 1 ? "none" : "1px solid #E2E8F0" }}>
+              <div style={{ ...styles.avatar, background: "#FFF0F0" }}>
+                <Receipt size={16} color="#D95F5F" />
+              </div>
+              <div style={{ flex: 1, minWidth: 0 }}>
+                <div style={{ fontSize: 14, color: "#1E1638", fontFamily: "Hind, sans-serif", fontWeight: 700 }}>{e.desc}</div>
+                <div style={{ fontSize: 11.5, color: "#7A849C", fontFamily: "Hind, sans-serif" }}>{dispDate(e.date)}</div>
+              </div>
+              <div style={{ fontFamily: "JetBrains Mono, monospace", fontSize: 14, fontWeight: 800, color: "#D95F5F", marginRight: 8 }}>
+                -{fmt(e.amount)}
+              </div>
+              <button className="hb-btn" onClick={() => onRemove(e.id)} style={styles.trashBtn} aria-label="हटाएं">
+                <Trash2 size={15} color="#A0AABF" />
+              </button>
             </div>
-            <div style={{ flex: 1, minWidth: 0 }}>
-              <div style={{ fontSize: 13.5, color: "#EFEAFB", fontFamily: "Hind, sans-serif", fontWeight: 700 }}>{e.desc}</div>
-              <div style={{ fontSize: 11, color: "#8E7FBE", fontFamily: "Hind, sans-serif" }}>{dispDate(e.date)}</div>
-            </div>
-            <div style={{ fontFamily: "JetBrains Mono, monospace", fontSize: 13.5, fontWeight: 800, color: "#E4877F", marginRight: 8 }}>
-              -{fmt(e.amount)}
-            </div>
-            <button className="hb-btn" onClick={() => onRemove(e.id)} style={styles.trashBtn} aria-label="हटाएं">
-              <Trash2 size={14} color="#8E7FBE" />
-            </button>
-          </div>
-        ))
+          ))}
+        </div>
       )}
     </div>
   );
@@ -395,45 +421,47 @@ function TransactionsScreen({ transactions, memberName, balance }) {
     return row;
   });
   return (
-    <div className="hb-fadein" style={{ padding: "18px 16px" }}>
+    <div className="hb-fadein" style={{ padding: "18px 16px 24px" }}>
       <ScreenHeader title="लेन-देन" subtitle={`कुल ${transactions.length} एंट्री · पासबुक स्टाइल`} />
       {rows.length === 0 ? (
         <EmptyNote text="अभी कोई लेन-देन नहीं है।" />
       ) : (
-        rows.map((t) => (
-          <div key={t.id} style={styles.txnRow}>
-            <div style={{ ...styles.txnIcon, background: t.type === "jama" ? "#332764" : "#3D2350" }}>
-              {t.type === "jama" ? <PiggyBank size={15} color="#C4B5FD" /> : <Receipt size={15} color="#E4877F" />}
-            </div>
-            <div style={{ flex: 1, minWidth: 0 }}>
-              <div style={{ fontSize: 13, color: "#EFEAFB", fontFamily: "Hind, sans-serif", fontWeight: 700, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
-                {t.type === "jama" ? memberName(t.memberId) : t.desc}
+        <div style={styles.cardContainer}>
+          {rows.map((t, i) => (
+            <div key={t.id} style={{ ...styles.txnRow, borderBottom: i === rows.length - 1 ? "none" : "1px solid #E2E8F0" }}>
+              <div style={{ ...styles.txnIcon, background: t.type === "jama" ? "#F0F4FF" : "#FFF0F0" }}>
+                {t.type === "jama" ? <PiggyBank size={15} color="#4C3F8A" /> : <Receipt size={15} color="#D95F5F" />}
               </div>
-              <div style={{ fontSize: 10.5, color: "#8E7FBE", fontFamily: "Hind, sans-serif" }}>{dispDate(t.date)}</div>
-            </div>
-            <div style={{ textAlign: "right" }}>
-              <div style={{ fontFamily: "JetBrains Mono, monospace", fontSize: 13, fontWeight: 800, color: t.type === "jama" ? "#C4B5FD" : "#E4877F" }}>
-                {t.type === "jama" ? "+" : "-"}{fmt(t.amount)}
+              <div style={{ flex: 1, minWidth: 0 }}>
+                <div style={{ fontSize: 13.5, color: "#1E1638", fontFamily: "Hind, sans-serif", fontWeight: 700, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
+                  {t.type === "jama" ? memberName(t.memberId) : t.desc}
+                </div>
+                <div style={{ fontSize: 11, color: "#7A849C", fontFamily: "Hind, sans-serif" }}>{dispDate(t.date)}</div>
               </div>
-              <div style={{ fontFamily: "JetBrains Mono, monospace", fontSize: 10, color: "#8E7FBE" }}>शेष {fmt(t.runningBalance)}</div>
+              <div style={{ textAlign: "right" }}>
+                <div style={{ fontFamily: "JetBrains Mono, monospace", fontSize: 14, fontWeight: 800, color: t.type === "jama" ? "#4C3F8A" : "#D95F5F" }}>
+                  {t.type === "jama" ? "+" : "-"}{fmt(t.amount)}
+                </div>
+                <div style={{ fontFamily: "JetBrains Mono, monospace", fontSize: 10.5, color: "#7A849C" }}>शेष {fmt(t.runningBalance)}</div>
+              </div>
             </div>
-          </div>
-        ))
+          ))}
+        </div>
       )}
     </div>
   );
 }
 
-function ScreenHeader({ title, subtitle, onAdd, addLabel, accent = "#A78BFA" }) {
+function ScreenHeader({ title, subtitle, onAdd, addLabel, accent = "#6B59B3" }) {
   return (
-    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", marginBottom: 16 }}>
+    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", marginBottom: 18 }}>
       <div>
-        <div style={{ fontFamily: "Baloo 2, sans-serif", fontSize: 19, fontWeight: 800, color: "#EFEAFB" }}>{title}</div>
-        <div style={{ fontSize: 12, color: "#B7A9E0", fontFamily: "Hind, sans-serif", marginTop: 2 }}>{subtitle}</div>
+        <div style={{ fontFamily: "Baloo 2, sans-serif", fontSize: 22, fontWeight: 800, color: "#1E1638" }}>{title}</div>
+        <div style={{ fontSize: 12.5, color: "#7A849C", fontFamily: "Hind, sans-serif", marginTop: 2 }}>{subtitle}</div>
       </div>
       {onAdd && (
         <button className="hb-btn" onClick={onAdd} style={{ ...styles.addBtn, background: accent }}>
-          <Plus size={15} color="#1E1638" />
+          <Plus size={16} color="#FFFFFF" />
         </button>
       )}
     </div>
@@ -442,7 +470,7 @@ function ScreenHeader({ title, subtitle, onAdd, addLabel, accent = "#A78BFA" }) 
 
 function EmptyNote({ text }) {
   return (
-    <div style={{ textAlign: "center", padding: "36px 12px", color: "#8E7FBE", fontSize: 12.5, fontFamily: "Hind, sans-serif" }}>
+    <div style={{ textAlign: "center", padding: "40px 16px", color: "#A0AABF", fontSize: 13.5, fontFamily: "Hind, sans-serif" }}>
       {text}
     </div>
   );
@@ -452,10 +480,10 @@ function ModalShell({ title, onClose, children }) {
   return (
     <div style={styles.modalOverlay} onClick={onClose}>
       <div style={styles.modalCard} onClick={(e) => e.stopPropagation()}>
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 16 }}>
-          <span style={{ fontFamily: "Baloo 2, sans-serif", fontSize: 16, fontWeight: 800, color: "#EFEAFB" }}>{title}</span>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 20 }}>
+          <span style={{ fontFamily: "Baloo 2, sans-serif", fontSize: 18, fontWeight: 800, color: "#1E1638" }}>{title}</span>
           <button className="hb-btn" onClick={onClose} style={styles.closeBtn} aria-label="बंद करें">
-            <X size={16} color="#B7A9E0" />
+            <X size={18} color="#7A849C" />
           </button>
         </div>
         {children}
@@ -553,26 +581,27 @@ const styles = {
     justifyContent: "center",
     height: "100dvh",
     width: "100%",
-    background: "#1E1638",
+    background: "#F8F9FA",
     fontFamily: "Hind, sans-serif",
     overflow: "hidden",
   },
   phoneFrame: {
     width: "100%",
     height: "100%",
-    maxWidth: "1080px", // Optional, keeps it readable if viewed on a very wide screen
-    background: "#1E1638",
+    maxWidth: "1080px",
+    background: "#F8F9FA",
     display: "flex",
     flexDirection: "column",
     overflow: "hidden",
   },
-  statusBar: {
+  appHeader: {
     display: "flex",
     justifyContent: "space-between",
-    padding: "10px 22px 4px",
-    fontSize: 12,
-    color: "#EFEAFB",
-    fontFamily: "Hind, sans-serif",
+    alignItems: "center",
+    padding: "16px 20px 12px",
+    background: "#FFFFFF",
+    borderBottom: "1px solid #E2E8F0",
+    zIndex: 10,
   },
   screen: {
     flex: 1,
@@ -580,29 +609,28 @@ const styles = {
   },
   bottomNav: {
     display: "flex",
-    background: "#241D42",
-    borderTop: "1px solid #382C63",
+    background: "#FFFFFF",
+    borderTop: "1px solid #E2E8F0",
     padding: "6px 4px 10px",
   },
   heroCard: {
-    background: "#2B2354",
-    border: "1px solid #4C3F8A",
-    borderRadius: 16,
-    padding: "18px 16px",
+    borderRadius: 20,
   },
   statBox: {
-    border: "none",
-    borderRadius: 12,
-    padding: "12px 14px",
+    border: "1px solid #E2E8F0",
+    borderRadius: 16,
+    padding: "14px 16px",
     textAlign: "left",
     display: "block",
     width: "100%",
+    boxShadow: "0 2px 8px rgba(0,0,0,0.02)",
   },
   linkBtn: {
     background: "none",
     border: "none",
-    color: "#A78BFA",
-    fontSize: 11.5,
+    color: "#6B59B3",
+    fontSize: 12.5,
+    fontWeight: 700,
     fontFamily: "Hind, sans-serif",
     display: "flex",
     alignItems: "center",
@@ -610,16 +638,22 @@ const styles = {
     cursor: "pointer",
     padding: 0,
   },
+  cardContainer: {
+    background: "#FFFFFF",
+    borderRadius: 18,
+    border: "1px solid #E2E8F0",
+    padding: "4px 14px",
+    boxShadow: "0 2px 8px rgba(0,0,0,0.02)",
+  },
   txnRow: {
     display: "flex",
     alignItems: "center",
-    gap: 10,
-    padding: "9px 0",
-    borderBottom: "1px solid #382C63",
+    gap: 12,
+    padding: "12px 0",
   },
   txnIcon: {
-    width: 32,
-    height: 32,
+    width: 36,
+    height: 36,
     borderRadius: "50%",
     display: "flex",
     alignItems: "center",
@@ -629,19 +663,18 @@ const styles = {
   listRow: {
     display: "flex",
     alignItems: "center",
-    gap: 10,
-    padding: "10px 0",
-    borderBottom: "1px solid #382C63",
+    gap: 12,
+    padding: "12px 0",
   },
   avatar: {
-    width: 34,
-    height: 34,
+    width: 36,
+    height: 36,
     borderRadius: "50%",
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
-    color: "#EFEAFB",
-    fontSize: 13,
+    color: "#FFFFFF",
+    fontSize: 14,
     fontWeight: 800,
     flexShrink: 0,
     fontFamily: "Hind, sans-serif",
@@ -650,18 +683,25 @@ const styles = {
     background: "none",
     border: "none",
     cursor: "pointer",
-    padding: 6,
+    padding: 8,
     flexShrink: 0,
   },
   addBtn: {
-    width: 32,
-    height: 32,
+    width: 34,
+    height: 34,
     borderRadius: "50%",
     border: "none",
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
     cursor: "pointer",
+    boxShadow: "0 4px 12px rgba(107, 89, 179, 0.3)",
+  },
+  closeBtn: {
+    background: "none",
+    border: "none",
+    cursor: "pointer",
+    padding: 4,
   },
   modalOverlay: {
     position: "fixed",
@@ -675,63 +715,65 @@ const styles = {
   modalCard: {
     width: "100%",
     maxWidth: "1080px",
-    background: "#2B2354",
-    borderRadius: "20px 20px 0 0",
-    border: "1px solid #4C3F8A",
-    borderBottom: "none",
-    padding: "20px 18px 26px",
+    background: "#FFFFFF",
+    borderRadius: "24px 24px 0 0",
+    padding: "24px 20px 30px",
+    boxShadow: "0 -4px 20px rgba(0,0,0,0.1)",
   },
   label: {
     display: "block",
-    fontSize: 11.5,
-    color: "#B7A9E0",
+    fontSize: 12,
+    fontWeight: 700,
+    color: "#7A849C",
     fontFamily: "Hind, sans-serif",
-    marginBottom: 5,
-    marginTop: 12,
+    marginBottom: 6,
+    marginTop: 14,
   },
   input: {
     width: "100%",
     boxSizing: "border-box",
-    background: "#1E1638",
-    border: "1px solid #4C3F8A",
-    borderRadius: 10,
-    padding: "10px 12px",
-    color: "#EFEAFB",
-    fontSize: 13.5,
+    background: "#F8F9FA",
+    border: "1px solid #E2E8F0",
+    borderRadius: 12,
+    padding: "12px 14px",
+    color: "#1E1638",
+    fontSize: 14,
     outline: "none",
+    transition: "border 0.2s ease",
   },
   errText: {
-    color: "#E4877F",
-    fontSize: 11.5,
+    color: "#D95F5F",
+    fontSize: 12,
     fontFamily: "Hind, sans-serif",
-    marginTop: 6,
+    marginTop: 8,
   },
   submitBtn: {
     width: "100%",
-    background: "#A78BFA",
-    color: "#1E1638",
+    background: "#6B59B3",
+    color: "#FFFFFF",
     border: "none",
-    borderRadius: 10,
-    padding: "12px 0",
-    fontSize: 14,
+    borderRadius: 12,
+    padding: "14px 0",
+    fontSize: 15,
     fontWeight: 800,
-    marginTop: 18,
+    marginTop: 22,
     cursor: "pointer",
     fontFamily: "Hind, sans-serif",
+    boxShadow: "0 4px 12px rgba(107, 89, 179, 0.25)",
   },
   toast: {
     position: "absolute",
-    bottom: 78,
+    bottom: 84,
     left: "50%",
     transform: "translateX(-50%)",
-    background: "#EFEAFB",
-    color: "#2B2354",
-    padding: "8px 16px",
-    borderRadius: 20,
-    fontSize: 12,
+    background: "#1E1638",
+    color: "#FFFFFF",
+    padding: "10px 20px",
+    borderRadius: 24,
+    fontSize: 13,
     fontFamily: "Hind, sans-serif",
     fontWeight: 700,
-    boxShadow: "0 4px 14px rgba(0,0,0,0.3)",
+    boxShadow: "0 8px 24px rgba(0,0,0,0.2)",
     zIndex: 60,
   },
 };
