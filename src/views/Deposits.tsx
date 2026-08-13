@@ -64,7 +64,7 @@ export function Deposits({ onOpenSidebar }: { onOpenSidebar?: () => void }) {
       <div className="flex-1 flex flex-col overflow-hidden">
         
         {/* Filters Area */}
-        <div className="flex-shrink-0 bg-white border-b border-gray-200 px-4 py-3 space-y-3 z-0">
+        <div className="flex-shrink-0 bg-white border-b border-gray-100 px-4 py-3 space-y-3 z-10">
           
           {/* Pills */}
           <div className="flex overflow-x-auto hide-scrollbar gap-2 pb-1">
@@ -95,8 +95,20 @@ export function Deposits({ onOpenSidebar }: { onOpenSidebar?: () => void }) {
           </div>
         </div>
 
+        {/* Sticky Summary Header */}
+        <div className="flex-shrink-0 bg-white border-b border-gray-200 px-5 py-3 flex justify-between items-center shadow-sm z-10 relative">
+           <div>
+              <p className="text-xs font-semibold text-gray-500">कुल प्रविष्टि</p>
+              <p className="text-base font-bold text-gray-900">{filteredJamas.length}</p>
+           </div>
+           <div className="text-right">
+              <p className="text-xs font-semibold text-gray-500">कुल राशि</p>
+              <p className="text-xl font-black text-[#3A1499] leading-tight">{formatCurrency(totalAmount)}</p>
+           </div>
+        </div>
+
         {/* Transaction Cards List */}
-        <div className="flex-1 overflow-y-auto px-4 py-4 space-y-3 pb-24">
+        <div className="flex-1 overflow-y-auto px-4 py-4 space-y-3 pb-6">
           {filteredJamas.length === 0 ? (
             <div className="text-center py-12 text-gray-400 text-sm font-medium bg-white rounded-2xl border border-gray-100">
               <p>कोई जमा प्रविष्टि नहीं मिली।</p>
@@ -150,19 +162,6 @@ export function Deposits({ onOpenSidebar }: { onOpenSidebar?: () => void }) {
             })
           )}
         </div>
-        
-        {/* Sticky Summary Footer */}
-        <div className="flex-shrink-0 bg-white border-t border-gray-200 px-5 py-4 flex justify-between items-center shadow-[0_-4px_15px_rgba(0,0,0,0.03)] z-10">
-           <div>
-              <p className="text-xs font-semibold text-gray-500">कुल प्रविष्टि</p>
-              <p className="text-base font-bold text-gray-900">{filteredJamas.length}</p>
-           </div>
-           <div className="text-right">
-              <p className="text-xs font-semibold text-gray-500">कुल राशि</p>
-              <p className="text-xl font-black text-[#3A1499] leading-tight">{formatCurrency(totalAmount)}</p>
-           </div>
-        </div>
-
       </div>
 
       {/* Edit Modal */}

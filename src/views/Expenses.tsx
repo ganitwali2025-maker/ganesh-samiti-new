@@ -70,7 +70,7 @@ export function Expenses({ onOpenSidebar }: { onOpenSidebar?: () => void }) {
       <div className="flex-1 flex flex-col overflow-hidden">
         
         {/* Filters Area */}
-        <div className="flex-shrink-0 bg-white border-b border-gray-200 px-4 py-3 space-y-3 z-0">
+        <div className="flex-shrink-0 bg-white border-b border-gray-100 px-4 py-3 space-y-3 z-10">
           
           {/* Pills */}
           <div className="flex overflow-x-auto hide-scrollbar gap-2 pb-1">
@@ -101,8 +101,38 @@ export function Expenses({ onOpenSidebar }: { onOpenSidebar?: () => void }) {
           </div>
         </div>
 
+        {/* Sticky Summary Header */}
+        <div className="flex-shrink-0 bg-white shadow-sm z-10 border-b border-gray-200 overflow-hidden relative">
+           <div className="px-5 py-4 flex justify-between items-center bg-gray-50/50 border-b border-gray-100">
+             <div>
+                <p className="text-[11px] font-bold text-gray-500 tracking-wide uppercase">कुल प्रविष्टि</p>
+                <p className="text-xl font-black text-gray-900 leading-none mt-1">{filteredKharchas.length}</p>
+             </div>
+             <div className="text-right">
+                <p className="text-[11px] font-bold text-gray-500 tracking-wide uppercase">कुल खर्च</p>
+                <p className="text-2xl font-black text-red-600 leading-none mt-1">{formatCurrency(totalAmount)}</p>
+             </div>
+           </div>
+           
+           {/* Category breakdown */}
+           <div className="grid grid-cols-3 divide-x divide-gray-100 bg-white">
+              <div className="px-3 py-3 text-center">
+                 <p className="text-[10px] font-bold text-orange-600 mb-1">पूजा सामग्री</p>
+                 <p className="text-xs font-bold text-gray-900">{formatCurrency(poojaTotal)}</p>
+              </div>
+              <div className="px-3 py-3 text-center">
+                 <p className="text-[10px] font-bold text-blue-600 mb-1">गणेश उत्सव</p>
+                 <p className="text-xs font-bold text-gray-900">{formatCurrency(utsavTotal)}</p>
+              </div>
+              <div className="px-3 py-3 text-center">
+                 <p className="text-[10px] font-bold text-purple-600 mb-1">अन्य खर्च</p>
+                 <p className="text-xs font-bold text-gray-900">{formatCurrency(otherTotal)}</p>
+              </div>
+           </div>
+        </div>
+
         {/* Transaction Cards List */}
-        <div className="flex-1 overflow-y-auto px-4 py-4 space-y-3 pb-36">
+        <div className="flex-1 overflow-y-auto px-4 py-4 space-y-3 pb-6">
           {filteredKharchas.length === 0 ? (
             <div className="text-center py-12 text-gray-400 text-sm font-medium bg-white rounded-2xl border border-gray-100">
               <p>कोई खर्चा प्रविष्टि नहीं मिली।</p>
@@ -155,37 +185,6 @@ export function Expenses({ onOpenSidebar }: { onOpenSidebar?: () => void }) {
             })
           )}
         </div>
-        
-        {/* Sticky Summary Footer */}
-        <div className="flex-shrink-0 bg-white shadow-[0_-4px_25px_rgba(0,0,0,0.06)] z-10 rounded-t-3xl border-t border-gray-100 overflow-hidden">
-           <div className="px-5 py-4 flex justify-between items-center bg-gray-50/50 border-b border-gray-100">
-             <div>
-                <p className="text-[11px] font-bold text-gray-500 tracking-wide uppercase">कुल प्रविष्टि</p>
-                <p className="text-xl font-black text-gray-900 leading-none mt-1">{filteredKharchas.length}</p>
-             </div>
-             <div className="text-right">
-                <p className="text-[11px] font-bold text-gray-500 tracking-wide uppercase">कुल खर्च</p>
-                <p className="text-2xl font-black text-red-600 leading-none mt-1">{formatCurrency(totalAmount)}</p>
-             </div>
-           </div>
-           
-           {/* Category breakdown */}
-           <div className="grid grid-cols-3 divide-x divide-gray-100 bg-white">
-              <div className="px-3 py-3 text-center">
-                 <p className="text-[10px] font-bold text-orange-600 mb-1">पूजा सामग्री</p>
-                 <p className="text-xs font-bold text-gray-900">{formatCurrency(poojaTotal)}</p>
-              </div>
-              <div className="px-3 py-3 text-center">
-                 <p className="text-[10px] font-bold text-blue-600 mb-1">गणेश उत्सव</p>
-                 <p className="text-xs font-bold text-gray-900">{formatCurrency(utsavTotal)}</p>
-              </div>
-              <div className="px-3 py-3 text-center">
-                 <p className="text-[10px] font-bold text-purple-600 mb-1">अन्य खर्च</p>
-                 <p className="text-xs font-bold text-gray-900">{formatCurrency(otherTotal)}</p>
-              </div>
-           </div>
-        </div>
-
       </div>
 
       {/* Edit Modal */}
