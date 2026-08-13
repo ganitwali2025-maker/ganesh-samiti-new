@@ -3,6 +3,16 @@
 @layer base {
   body {
     @apply bg-gray-50 text-gray-800 font-sans antialiased;
+    margin: 0;
+    overflow: hidden;
+    height: 100dvh;
+    min-height: 100dvh;
+    width: 100%;
+  }
+  #root {
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
   }
 }
 

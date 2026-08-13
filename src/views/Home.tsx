@@ -20,8 +20,8 @@ export function Home({ onOpenSidebar }: { onOpenSidebar?: () => void }) {
   return (
     <div className="h-full flex flex-col bg-gray-50 relative">
       {/* Top Header - Fixed/Shrink-0 */}
-      <div className="flex-shrink-0 bg-gradient-to-r from-[#3A1499] to-[#5B2ACF] pt-safe px-4 pb-24 text-white relative z-0 rounded-b-3xl">
-        <div className="flex justify-between items-center h-14 mt-2">
+      <div className="flex-shrink-0 bg-gradient-to-r from-[#3A1499] to-[#5B2ACF] pt-safe px-4 text-white relative z-20 shadow-sm">
+        <div className="flex justify-between items-center h-14 mt-2 pb-2">
           <button className="p-2 -ml-2" onClick={onOpenSidebar}>
             <Menu size={28} />
           </button>
@@ -34,10 +34,13 @@ export function Home({ onOpenSidebar }: { onOpenSidebar?: () => void }) {
       </div>
 
       {/* Scrollable Content */}
-      <div className="flex-1 overflow-y-auto px-4 pb-6 -mt-20 z-10 relative space-y-5">
+      <div className="flex-1 overflow-y-auto z-10 relative">
+        {/* Purple curve extension */}
+        <div className="absolute top-0 left-0 w-full h-24 bg-gradient-to-r from-[#3A1499] to-[#5B2ACF] rounded-b-[2rem] -z-10"></div>
         
-        {/* Welcome Card */}
-        <div className="bg-gradient-to-br from-white to-purple-50 rounded-[24px] p-4 shadow-sm border border-purple-100 flex justify-between items-center">
+        <div className="px-4 pb-6 pt-4 space-y-5">
+          {/* Welcome Card */}
+          <div className="bg-gradient-to-br from-white to-purple-50 rounded-[24px] p-4 shadow-sm border border-purple-100 flex justify-between items-center relative">
           <div className="flex items-center gap-4">
             {/* Ganesha Placeholder Image */}
             <div className="w-16 h-16 rounded-full bg-orange-100 flex items-center justify-center overflow-hidden flex-shrink-0 border-2 border-white shadow-sm">
@@ -171,6 +174,7 @@ export function Home({ onOpenSidebar }: { onOpenSidebar?: () => void }) {
             <span className="text-[11px] font-medium text-[#4B20B5]">और देखने के लिए ऊपर खींचें</span>
             <div className="h-px w-6 bg-gray-400"></div>
           </div>
+        </div>
         </div>
       </div>
     </div>

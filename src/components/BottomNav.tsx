@@ -9,7 +9,7 @@ interface BottomNavProps {
 
 export function BottomNav({ currentView, onChangeView, onOpenQuickAdd }: BottomNavProps) {
   return (
-    <div className="w-full bg-white border-t border-gray-100 z-50 px-2 pb-safe pt-2 flex-shrink-0 shadow-[0_-4px_20px_rgba(0,0,0,0.05)]">
+    <div className="fixed left-0 right-0 bottom-0 w-full bg-white border-t border-gray-100 z-50 px-2 pt-2 pb-safe shadow-[0_-4px_20px_rgba(0,0,0,0.05)]">
       <div className="flex justify-between items-end h-16 relative pb-1 max-w-md mx-auto px-2">
         <NavItem
           icon={<HomeIcon size={24} />}

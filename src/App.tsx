@@ -42,7 +42,7 @@ export default function App() {
     <div className="bg-gray-50 text-gray-900 font-sans selection:bg-[#4B20B5] selection:text-white h-[100dvh] w-full overflow-hidden flex flex-col relative">
       
       {/* Main Content Area */}
-      <main className="flex-1 w-full overflow-hidden flex flex-col relative">
+      <main className="flex-1 w-full overflow-hidden flex flex-col relative pb-[100px]">
         {renderView()}
       </main>
 
