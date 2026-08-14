@@ -1,13 +1,1230 @@
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-    <title>Ganesh Samiti App</title>
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
-  </body>
-</html>
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Ganesh Samiti App</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap');
 
+:root{
+  --bg:#FFF9F2;
+  --card:#FFFFFF;
+  --orange:#FF7A1A;
+  --orange-dark:#E85D04;
+  --orange-light:#FFEBD6;
+  --blue:#3E7BFA;
+  --blue-light:#E4ECFF;
+  --green:#1DA96C;
+  --green-light:#DEF6EA;
+  --purple:#8B5CF6;
+  --purple-light:#EFE6FE;
+  --red:#F0483E;
+  --red-light:#FDE7E5;
+  --text:#2B2118;
+  --soft:#8C8078;
+  --border:#F1E4D5;
+  --r-lg:22px;
+  --r-md:16px;
+  --r-sm:11px;
+}
+*{box-sizing:border-box; margin:0; padding:0;}
+body{
+  background:var(--bg);
+  font-family:'Inter',sans-serif;
+  min-height:100vh;
+  color:var(--text);
+}
+.icon{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0;}
+.phone{
+  width:390px;
+  max-width:100%;
+  height:844px;
+  background:#111;
+  border-radius:46px;
+  padding:12px;
+  box-shadow:0 30px 60px -20px rgba(0,0,0,.35);
+}
+.app{
+  position:relative;
+  width:100%;
+  height:100%;
+  background:var(--bg);
+  border-radius:36px;
+  overflow:hidden;
+}
+.notch{
+  position:absolute;top:10px;left:50%;transform:translateX(-50%);
+  width:120px;height:22px;background:#111;border-radius:14px;z-index:50;
+}
+.screen{
+  position:absolute; inset:0;
+  overflow-y:auto;
+  display:none;
+  padding-bottom:96px;
+  -ms-overflow-style:none; scrollbar-width:none;
+}
+.screen::-webkit-scrollbar{display:none;}
+.screen.active{display:block;}
+
+/* ---------- HOME HEADER ---------- */
+.top-header{
+  background:linear-gradient(135deg,var(--orange) 0%,var(--orange-dark) 100%);
+  padding:46px 18px 26px;
+  border-radius:0 0 28px 28px;
+  color:#fff;
+  position:relative;
+}
+.top-row{display:flex;justify-content:space-between;align-items:center;}
+.brand{display:flex;align-items:center;gap:10px;}
+.brand-mark{
+  width:42px;height:42px;border-radius:14px;background:rgba(255,255,255,.22);
+  display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:800;
+  font-family:'Poppins',sans-serif;
+}
+.brand-title{font-family:'Poppins',sans-serif;font-weight:700;font-size:18px;line-height:1.1;}
+.brand-sub{font-size:12.5px;opacity:.9;margin-top:2px;}
+.head-icons{display:flex;gap:10px;}
+.icon-btn{
+  width:38px;height:38px;border-radius:12px;background:rgba(255,255,255,.2);
+  display:flex;align-items:center;justify-content:center;color:#fff;border:none;cursor:pointer;
+}
+.event-pill{
+  margin-top:18px;background:rgba(255,255,255,.18);display:inline-flex;align-items:center;gap:8px;
+  padding:7px 12px;border-radius:100px;font-size:12.5px;font-weight:500;
+}
+.event-pill b{font-family:'Poppins',sans-serif;}
+
+/* ---------- PAGE HEADER (non-home) ---------- */
+.page-header{
+  display:flex;align-items:center;gap:12px;padding:20px 16px 14px;
+  background:var(--bg);position:sticky;top:0;z-index:20;
+}
+.back-btn{
+  width:36px;height:36px;border-radius:11px;background:var(--card);border:1px solid var(--border);
+  display:flex;align-items:center;justify-content:center;color:var(--text);cursor:pointer;
+}
+.page-title{font-family:'Poppins',sans-serif;font-weight:700;font-size:19px;flex:1;}
+.page-right{color:var(--orange);font-size:13px;font-weight:600;cursor:pointer;white-space:nowrap;}
+
+.section{padding:16px;}
+.section-title{
+  font-family:'Poppins',sans-serif;font-weight:700;font-size:15.5px;margin-bottom:10px;
+  display:flex;justify-content:space-between;align-items:center;
+}
+.link-sm{color:var(--orange);font-size:12.5px;font-weight:600;cursor:pointer;}
+
+/* ---------- STAT CARDS ---------- */
+.stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.stat-card{
+  background:var(--card);border-radius:var(--r-md);padding:14px;
+  box-shadow:0 4px 14px rgba(40,20,0,.05);border:1px solid var(--border);
+}
+.stat-icon{
+  width:34px;height:34px;border-radius:10px;display:flex;align-items:center;justify-content:center;margin-bottom:10px;
+}
+.stat-label{font-size:12px;color:var(--soft);font-weight:500;}
+.stat-value{font-family:'Poppins',sans-serif;font-weight:700;font-size:18px;margin-top:2px;}
+
+.month-card{
+  background:var(--card);border-radius:var(--r-lg);padding:18px;margin-top:14px;
+  display:flex;align-items:center;gap:16px;box-shadow:0 4px 14px rgba(40,20,0,.05);border:1px solid var(--border);
+}
+.ring{width:78px;height:78px;flex-shrink:0;}
+.month-info .m-label{font-size:12.5px;color:var(--soft);font-weight:500;}
+.month-info .m-value{font-family:'Poppins',sans-serif;font-weight:800;font-size:22px;margin:2px 0 4px;color:var(--orange-dark);}
+.m-target{font-size:11.5px;color:var(--soft);}
+
+/* ---------- TRANSACTION LIST ---------- */
+.card{background:var(--card);border-radius:var(--r-md);border:1px solid var(--border);box-shadow:0 4px 14px rgba(40,20,0,.05);}
+.txn-item{display:flex;align-items:center;gap:12px;padding:12px 14px;border-bottom:1px solid var(--border);}
+.txn-item:last-child{border-bottom:none;}
+.txn-icon{width:42px;height:42px;border-radius:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.txn-info{flex:1;min-width:0;}
+.txn-name{font-size:14px;font-weight:600;}
+.txn-sub{font-size:11.5px;color:var(--soft);margin-top:2px;display:flex;align-items:center;gap:6px;}
+.mode-tag{background:var(--bg);border:1px solid var(--border);padding:1px 7px;border-radius:6px;font-size:10.5px;font-weight:600;color:var(--soft);}
+.txn-amt{font-family:'Poppins',sans-serif;font-weight:700;font-size:14.5px;white-space:nowrap;}
+.pos{color:var(--green);}
+.neg{color:var(--red);}
+
+/* ---------- BOTTOM NAV ---------- */
+.bottomnav{
+  position:absolute;bottom:0;left:0;right:0;height:78px;background:#fff;
+  border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-around;
+  padding-bottom:8px;z-index:40;
+}
+.nav-item{display:flex;flex-direction:column;align-items:center;gap:4px;color:var(--soft);background:none;border:none;font-family:'Inter';font-size:10.5px;font-weight:600;cursor:pointer;}
+.nav-item.active{color:var(--orange);}
+.nav-plus{
+  width:56px;height:56px;border-radius:18px;background:linear-gradient(135deg,var(--orange),var(--orange-dark));
+  display:flex;align-items:center;justify-content:center;color:#fff;transform:translateY(-16px);
+  box-shadow:0 10px 20px -6px rgba(232,93,4,.55);border:4px solid #fff;cursor:pointer;
+}
+
+/* ---------- SHEET ---------- */
+.sheet-overlay{
+  position:absolute;inset:0;background:rgba(30,20,10,.35);z-index:60;display:none;align-items:flex-end;
+}
+.sheet-overlay.open{display:flex;}
+.sheet{
+  background:#fff;width:100%;border-radius:24px 24px 0 0;padding:10px 18px 26px;
+  animation:slideup .22s ease;
+}
+@keyframes slideup{from{transform:translateY(30px);opacity:0;}to{transform:translateY(0);opacity:1;}}
+.sheet-handle{width:38px;height:4px;background:var(--border);border-radius:10px;margin:6px auto 14px;}
+.sheet-title{font-family:'Poppins',sans-serif;font-weight:700;font-size:16px;margin-bottom:14px;}
+.sheet-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.sheet-action{
+  display:flex;flex-direction:column;align-items:flex-start;gap:10px;padding:14px;border-radius:16px;
+  border:1px solid var(--border);cursor:pointer;background:var(--bg);
+}
+.sheet-action .sa-icon{width:38px;height:38px;border-radius:11px;display:flex;align-items:center;justify-content:center;}
+.sheet-action span{font-size:13px;font-weight:600;}
+
+/* ---------- FORMS ---------- */
+.field{margin-bottom:14px;}
+.field label{display:block;font-size:12.5px;font-weight:600;color:var(--soft);margin-bottom:6px;}
+.field input, .field select, .field textarea{
+  width:100%;padding:13px 14px;border-radius:13px;border:1px solid var(--border);
+  background:#FFFCF8;font-size:14.5px;font-family:'Inter';color:var(--text);outline:none;
+}
+.field input:focus, .field textarea:focus{border-color:var(--orange);}
+.field textarea{resize:none;min-height:70px;}
+.rupee-input{position:relative;}
+.rupee-input span{position:absolute;left:14px;top:50%;transform:translateY(-50%);font-weight:700;color:var(--soft);}
+.rupee-input input{padding-left:30px;font-weight:700;}
+
+.segmented{display:flex;background:var(--orange-light);border-radius:13px;padding:4px;gap:4px;margin-bottom:14px;}
+.segmented button{
+  flex:1;padding:9px 4px;border-radius:10px;border:none;background:transparent;font-size:12.5px;
+  font-weight:600;color:var(--orange-dark);cursor:pointer;font-family:'Inter';
+}
+.segmented button.active{background:#fff;box-shadow:0 2px 6px rgba(0,0,0,.08);}
+
+.mode-row{display:flex;gap:10px;margin-bottom:14px;}
+.mode-opt{
+  flex:1;border:1.5px solid var(--border);border-radius:13px;padding:10px 4px;display:flex;flex-direction:column;
+  align-items:center;gap:6px;font-size:12px;font-weight:600;color:var(--soft);cursor:pointer;background:#FFFCF8;
+}
+.mode-opt.active{border-color:var(--orange);color:var(--orange-dark);background:var(--orange-light);}
+
+.btn-primary{
+  width:100%;padding:15px;border:none;border-radius:15px;background:linear-gradient(135deg,var(--orange),var(--orange-dark));
+  color:#fff;font-family:'Poppins',sans-serif;font-weight:700;font-size:15px;cursor:pointer;
+  box-shadow:0 10px 18px -8px rgba(232,93,4,.5);margin-top:6px;
+}
+.btn-outline{
+  width:100%;padding:14px;border:1.5px solid var(--orange);border-radius:15px;background:#fff;
+  color:var(--orange-dark);font-weight:700;font-size:14.5px;cursor:pointer;margin-top:10px;font-family:'Inter';
+}
+
+.photo-upload{
+  width:88px;height:88px;border-radius:50%;background:var(--orange-light);border:2px dashed var(--orange);
+  display:flex;align-items:center;justify-content:center;margin:4px auto 20px;color:var(--orange-dark);position:relative;cursor:pointer;
+}
+
+/* ---------- MEMBERS ---------- */
+.search-bar{
+  display:flex;align-items:center;gap:8px;background:#fff;border:1px solid var(--border);
+  border-radius:13px;padding:11px 14px;color:var(--soft);
+}
+.search-bar input{border:none;outline:none;font-size:14px;flex:1;font-family:'Inter';background:transparent;}
+.filter-btn{width:40px;height:40px;border-radius:12px;background:#fff;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;color:var(--orange);flex-shrink:0;}
+.mini-count{font-size:12.5px;color:var(--soft);margin:12px 2px 10px;font-weight:500;}
+
+.member-row{display:flex;align-items:center;gap:12px;padding:13px 14px;border-bottom:1px solid var(--border);cursor:pointer;}
+.member-row:last-child{border-bottom:none;}
+.avatar{width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Poppins';font-weight:700;font-size:14.5px;color:#fff;flex-shrink:0;}
+.member-info{flex:1;min-width:0;}
+.member-name{font-size:14.5px;font-weight:600;}
+.member-phone{font-size:11.5px;color:var(--soft);margin-top:2px;display:flex;align-items:center;gap:5px;}
+.due-chip{padding:4px 10px;border-radius:100px;font-size:11px;font-weight:700;white-space:nowrap;}
+.due-chip.clear{background:var(--green-light);color:var(--green);}
+.due-chip.pending{background:var(--red-light);color:var(--red);}
+
+/* ---------- CHIPS ---------- */
+.chip-row{display:flex;gap:8px;overflow-x:auto;padding:2px 0 4px;}
+.chip{
+  padding:8px 15px;border-radius:100px;border:1px solid var(--border);background:#fff;font-size:12.5px;
+  font-weight:600;color:var(--soft);white-space:nowrap;cursor:pointer;flex-shrink:0;
+}
+.chip.active{background:var(--orange);color:#fff;border-color:var(--orange);}
+
+/* ---------- PROFILE ---------- */
+.profile-hero{background:var(--card);margin:0 16px;border-radius:var(--r-lg);padding:20px;text-align:center;border:1px solid var(--border);box-shadow:0 4px 14px rgba(40,20,0,.05);}
+.profile-hero .avatar{width:70px;height:70px;font-size:22px;margin:0 auto 10px;}
+.profile-hero h3{font-family:'Poppins';font-size:17px;}
+.profile-hero .pid{font-size:12px;color:var(--soft);margin-top:3px;}
+.profile-meta{display:flex;justify-content:center;gap:18px;margin-top:14px;}
+.pm-item{display:flex;align-items:center;gap:6px;font-size:12.5px;color:var(--soft);font-weight:500;}
+.trio{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:16px;}
+.trio-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:12px 8px;text-align:center;}
+.trio-card .tv{font-family:'Poppins';font-weight:700;font-size:15px;margin-top:2px;}
+.trio-card .tl{font-size:10.5px;color:var(--soft);font-weight:600;}
+
+.progress-bar{width:100%;height:8px;background:var(--orange-light);border-radius:10px;overflow:hidden;margin-top:8px;}
+.progress-bar > div{height:100%;background:linear-gradient(90deg,var(--orange),var(--orange-dark));border-radius:10px;}
+
+/* ---------- REPORTS ---------- */
+.report-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.report-card{
+  background:var(--card);border:1px solid var(--border);border-radius:16px;padding:14px;display:flex;flex-direction:column;gap:22px;
+  box-shadow:0 4px 14px rgba(40,20,0,.05);cursor:pointer;
+}
+.report-card .rc-top{display:flex;justify-content:space-between;align-items:flex-start;}
+.report-card .rc-icon{width:34px;height:34px;border-radius:10px;display:flex;align-items:center;justify-content:center;}
+.report-card .rc-name{font-size:13px;font-weight:700;}
+
+.balance-card{
+  background:linear-gradient(135deg,var(--green) 0%,#0E8C57 100%);border-radius:var(--r-lg);padding:20px;color:#fff;margin-top:14px;
+}
+.balance-card .bl{font-size:12.5px;opacity:.9;}
+.balance-card .bv{font-family:'Poppins';font-weight:800;font-size:26px;margin-top:4px;}
+
+.bar-chart{display:flex;align-items:flex-end;justify-content:space-between;height:130px;padding:10px 6px 0;}
+.bar-col{display:flex;flex-direction:column;align-items:center;gap:6px;width:14%;}
+.bar-val{font-size:9.5px;color:var(--soft);font-weight:700;}
+.bar{width:20px;border-radius:7px 7px 3px 3px;background:linear-gradient(180deg,var(--orange),var(--orange-dark));}
+.bar-month{font-size:10px;color:var(--soft);font-weight:600;}
+
+.compare-row{display:flex;flex-direction:column;gap:14px;margin-top:6px;}
+.compare-item .ci-top{display:flex;justify-content:space-between;font-size:12px;font-weight:600;margin-bottom:6px;}
+.compare-track{display:flex;gap:4px;height:9px;}
+.compare-track div{border-radius:6px;}
+
+/* ---------- CLOUD ---------- */
+.cloud-hero{
+  background:var(--blue-light);border-radius:var(--r-lg);padding:26px 20px;text-align:center;margin:0 16px 16px;
+}
+.cloud-hero .ci{width:60px;height:60px;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;margin:0 auto 12px;color:var(--blue);box-shadow:0 6px 14px rgba(62,123,250,.2);}
+.cloud-hero h3{font-family:'Poppins';font-size:16px;}
+.cloud-hero p{font-size:12px;color:var(--soft);margin-top:4px;}
+.sync-status{display:inline-flex;align-items:center;gap:6px;background:var(--green-light);color:var(--green);font-size:11.5px;font-weight:700;padding:5px 12px;border-radius:100px;margin-top:10px;}
+
+.setting-row{display:flex;align-items:center;justify-content:space-between;padding:14px;border-bottom:1px solid var(--border);}
+.setting-row:last-child{border-bottom:none;}
+.setting-left{display:flex;align-items:center;gap:12px;}
+.setting-icon{width:36px;height:36px;border-radius:11px;display:flex;align-items:center;justify-content:center;}
+.setting-name{font-size:13.5px;font-weight:600;}
+.setting-sub{font-size:11px;color:var(--soft);margin-top:2px;}
+
+.switch{position:relative;width:42px;height:24px;flex-shrink:0;}
+.switch input{opacity:0;width:0;height:0;}
+.slider{position:absolute;cursor:pointer;inset:0;background:var(--border);border-radius:100px;transition:.2s;}
+.slider:before{content:"";position:absolute;width:18px;height:18px;left:3px;top:3px;background:#fff;border-radius:50%;transition:.2s;}
+.switch input:checked + .slider{background:var(--orange);}
+.switch input:checked + .slider:before{transform:translateX(18px);}
+
+.security-note{margin:14px 16px 0;background:var(--card);border:1px solid var(--border);border-radius:14px;padding:14px;display:flex;gap:10px;align-items:flex-start;font-size:12px;color:var(--soft);}
+.security-note .icon{color:var(--green);flex-shrink:0;margin-top:1px;}
+
+/* ---------- ID CARD STYLE MEMBER LIST ---------- */
+.id-member-card{background:var(--card);border:1px solid var(--border);border-radius:18px;padding:14px;margin-bottom:12px;box-shadow:0 4px 14px rgba(40,20,0,.05);cursor:pointer;}
+.imc-top{display:flex;align-items:center;gap:12px;}
+.imc-info{flex:1;min-width:0;}
+.imc-id{font-size:11px;color:var(--soft);font-weight:700;margin-top:2px;letter-spacing:.3px;}
+.status-badge{padding:4px 10px;border-radius:100px;font-size:10px;font-weight:700;white-space:nowrap;display:inline-flex;align-items:center;gap:4px;}
+.status-badge.active{background:var(--green-light);color:var(--green);}
+.status-badge.inactive{background:var(--red-light);color:var(--red);}
+.status-dot{width:6px;height:6px;border-radius:50%;background:currentColor;}
+.imc-divider{height:1px;background:var(--border);margin:12px 0;border:none;border-top:1px dashed var(--border);}
+.imc-details{display:flex;flex-wrap:wrap;gap:6px 16px;margin-bottom:12px;}
+.imc-detail{display:flex;align-items:center;gap:6px;font-size:11.5px;color:var(--soft);font-weight:500;}
+.imc-stats{display:flex;gap:10px;}
+.imc-stat{flex:1;background:var(--bg);border-radius:12px;padding:9px 12px;}
+.imc-stat .lbl{display:block;font-size:10px;color:var(--soft);font-weight:600;}
+.imc-stat .val{display:block;font-size:14.5px;font-weight:700;margin-top:2px;font-family:'Poppins',sans-serif;}
+.val.green{color:var(--green);}
+.val.red{color:var(--red);}
+
+/* ---------- PROFILE STAT GRID ---------- */
+.profile-stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:16px;}
+.profile-stat-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:13px;}
+.profile-stat-card.full{grid-column:span 2;display:flex;align-items:center;justify-content:space-between;background:linear-gradient(135deg,var(--green) 0%,#0E8C57 100%);border:none;}
+.profile-stat-card.full .stat-label, .profile-stat-card.full .stat-value{color:#fff;}
+.profile-stat-card.full .stat-label{opacity:.9;}
+.profile-stat-card .stat-icon{width:30px;height:30px;border-radius:9px;margin-bottom:8px;}
+
+/* ---------- DIGITAL ID CARD ---------- */
+.idcard-wrap{padding:20px;display:flex;flex-direction:column;align-items:center;}
+.idcard{width:100%;max-width:310px;background:#fff;border-radius:20px;overflow:hidden;border:1px solid var(--border);box-shadow:0 14px 34px rgba(40,20,0,.1);}
+.idcard-head{background:linear-gradient(135deg,var(--orange) 0%,var(--orange-dark) 100%);padding:16px;text-align:center;color:#fff;}
+.idcard-head .om{width:32px;height:32px;border-radius:9px;background:rgba(255,255,255,.22);display:flex;align-items:center;justify-content:center;margin:0 auto 6px;font-weight:800;font-family:'Poppins',sans-serif;font-size:15px;}
+.idcard-head h4{font-family:'Poppins',sans-serif;font-weight:700;font-size:14.5px;letter-spacing:.6px;}
+.idcard-head p{font-size:10px;opacity:.88;margin-top:2px;letter-spacing:.3px;}
+.idcard-body{padding:0 20px 18px;text-align:center;}
+.idcard-photo{width:82px;height:82px;border-radius:50%;margin:-46px auto 10px;border:4px solid #fff;box-shadow:0 4px 12px rgba(0,0,0,.15);display:flex;align-items:center;justify-content:center;font-family:'Poppins',sans-serif;font-weight:700;font-size:24px;color:#fff;}
+.idcard-name{font-family:'Poppins',sans-serif;font-weight:700;font-size:17px;}
+.idcard-role{font-size:11px;color:var(--soft);margin-top:2px;}
+.idcard-status{display:inline-flex;align-items:center;gap:6px;background:var(--green-light);color:var(--green);padding:5px 13px;border-radius:100px;font-size:11px;font-weight:700;margin-top:10px;}
+.idcard-rows{margin-top:16px;text-align:left;display:flex;flex-direction:column;gap:9px;}
+.idcard-row{display:flex;justify-content:space-between;align-items:center;font-size:12.5px;padding-bottom:9px;border-bottom:1px dashed var(--border);}
+.idcard-row:last-child{border-bottom:none;padding-bottom:0;}
+.idcard-row span:first-child{color:var(--soft);font-weight:500;display:flex;align-items:center;gap:6px;}
+.idcard-row span:last-child{font-weight:700;}
+.idcard-barcode{height:32px;background:repeating-linear-gradient(90deg,#2B2118 0 2px,transparent 2px 5px);margin:18px 20px 0;border-radius:4px;opacity:.85;}
+.idcard-footer{padding:10px 20px 16px;text-align:center;font-size:9.5px;color:var(--soft);letter-spacing:.4px;}
+.idcard-actions{display:flex;gap:10px;width:100%;max-width:310px;margin-top:18px;}
+.idcard-actions .btn-outline, .idcard-actions .btn-primary{margin-top:0;display:flex;align-items:center;justify-content:center;gap:7px;}
+
+/* ---------- ID CARD STYLE 2 (landscape / reference style) ---------- */
+.idcard2{width:100%;max-width:340px;border-radius:20px;overflow:hidden;background:#fff;border:1px solid var(--border);box-shadow:0 14px 34px rgba(40,20,0,.1);}
+.idcard2-head{background:linear-gradient(120deg,#FFA640 0%,var(--orange-dark) 100%);padding:16px 14px;display:flex;align-items:center;gap:12px;color:#fff;}
+.idcard2-logo{width:50px;height:50px;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-family:'Poppins',sans-serif;font-weight:800;font-size:22px;color:var(--orange-dark);}
+.idcard2-headtext h4{font-family:'Poppins',sans-serif;font-weight:700;font-size:13.5px;line-height:1.3;}
+.idcard2-headtext p{font-size:9.5px;opacity:.92;margin-top:5px;letter-spacing:.3px;}
+.idcard2-body{display:flex;gap:14px;padding:18px 14px;align-items:flex-start;}
+.idcard2-photo{width:80px;height:80px;border-radius:50%;border:3px solid var(--orange);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-family:'Poppins',sans-serif;font-weight:700;font-size:22px;color:#fff;}
+.idcard2-rows{flex:1;min-width:0;display:flex;flex-direction:column;gap:9px;}
+.idcard2-row{display:flex;align-items:center;gap:9px;padding-bottom:9px;border-bottom:1px dashed var(--border);}
+.idcard2-row:last-child{border-bottom:none;padding-bottom:0;}
+.idcard2-row .ic{width:26px;height:26px;border-radius:8px;background:linear-gradient(135deg,var(--orange),var(--orange-dark));color:#fff;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.idcard2-row .lbl{font-size:10.5px;color:var(--soft);font-weight:700;width:44px;flex-shrink:0;}
+.idcard2-row .val{font-size:13px;font-weight:700;color:var(--text);word-break:break-word;}
+.idcard2-row .val.highlight{color:var(--orange-dark);}
+.idcard2-foot{background:linear-gradient(120deg,#FFA640 0%,var(--orange-dark) 100%);color:#fff;padding:12px 14px;display:flex;align-items:center;gap:7px;font-size:10.5px;font-weight:600;text-align:center;justify-content:center;}
+</style>
+</head>
+<body>
+
+
+
+<!-- ================= ICON SPRITE ================= -->
+<svg style="display:none">
+<symbol id="i-home" viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></symbol>
+<symbol id="i-users" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></symbol>
+<symbol id="i-user" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></symbol>
+<symbol id="i-plus" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></symbol>
+<symbol id="i-repeat" viewBox="0 0 24 24"><polyline points="17 1 21 5 17 9"></polyline><path d="M3 11V9a4 4 0 0 1 4-4h14"></path><polyline points="7 23 3 19 7 15"></polyline><path d="M21 13v2a4 4 0 0 1-4 4H3"></path></symbol>
+<symbol id="i-bar" viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></symbol>
+<symbol id="i-phone" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"></path></symbol>
+<symbol id="i-camera" viewBox="0 0 24 24"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path><circle cx="12" cy="13" r="4"></circle></symbol>
+<symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></symbol>
+<symbol id="i-filter" viewBox="0 0 24 24"><line x1="4" y1="21" x2="4" y2="14"></line><line x1="4" y1="10" x2="4" y2="3"></line><line x1="12" y1="21" x2="12" y2="12"></line><line x1="12" y1="8" x2="12" y2="3"></line><line x1="20" y1="21" x2="20" y2="16"></line><line x1="20" y1="12" x2="20" y2="3"></line><line x1="1" y1="14" x2="7" y2="14"></line><line x1="9" y1="8" x2="15" y2="8"></line><line x1="17" y1="16" x2="23" y2="16"></line></symbol>
+<symbol id="i-chevleft" viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"></polyline></symbol>
+<symbol id="i-chevright" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></symbol>
+<symbol id="i-bell" viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></symbol>
+<symbol id="i-cloud" viewBox="0 0 24 24"><path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"></path></symbol>
+<symbol id="i-check" viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></symbol>
+<symbol id="i-wallet" viewBox="0 0 24 24"><path d="M21 12V7H5a2 2 0 0 1 0-4h14v4"></path><path d="M3 5v14a2 2 0 0 0 2 2h16v-5"></path><path d="M18 12a2 2 0 0 0 0 4h4v-4z"></path></symbol>
+<symbol id="i-down" viewBox="0 0 24 24"><polyline points="23 18 13.5 8.5 8.5 13.5 1 6"></polyline><polyline points="17 18 23 18 23 12"></polyline></symbol>
+<symbol id="i-up" viewBox="0 0 24 24"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline><polyline points="17 6 23 6 23 12"></polyline></symbol>
+<symbol id="i-coins" viewBox="0 0 24 24"><circle cx="9" cy="9" r="6"></circle><path d="M14.5 9a6 6 0 1 1 0 6"></path></symbol>
+<symbol id="i-cal" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="3"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></symbol>
+<symbol id="i-edit" viewBox="0 0 24 24"><path d="M17 3a2.83 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5z"></path></symbol>
+<symbol id="i-refresh" viewBox="0 0 24 24"><polyline points="23 4 23 10 17 10"></polyline><polyline points="1 20 1 14 7 14"></polyline><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path></symbol>
+<symbol id="i-lock" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></symbol>
+<symbol id="i-gift" viewBox="0 0 24 24"><polyline points="20 12 20 22 4 22 4 12"></polyline><rect x="2" y="7" width="20" height="5"></rect><line x1="12" y1="22" x2="12" y2="7"></line><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"></path><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"></path></symbol>
+<symbol id="i-x" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></symbol>
+<symbol id="i-alert" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></symbol>
+<symbol id="i-smartphone" viewBox="0 0 24 24"><rect x="5" y="2" width="14" height="20" rx="2"></rect><line x1="12" y1="18" x2="12.01" y2="18"></line></symbol>
+<symbol id="i-history" viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 3-6.7"></path><polyline points="3 3 3 8 8 8"></polyline><polyline points="12 7 12 12 16 14"></polyline></symbol>
+<symbol id="i-upload" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></symbol>
+<symbol id="i-award" viewBox="0 0 24 24"><circle cx="12" cy="8" r="7"></circle><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"></polyline></symbol>
+<symbol id="i-pin" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></symbol>
+</svg>
+
+<!-- ================= HOME ================= -->
+<div id="screen-home" class="screen active">
+  <div class="top-header">
+    <div class="top-row">
+      <div class="brand">
+        <div class="brand-mark">ॐ</div>
+        <div>
+          <div class="brand-title">Ganesh Samiti</div>
+          <div class="brand-sub">जय गणेश 🙏</div>
+        </div>
+      </div>
+      <div class="head-icons">
+        <button class="icon-btn" onclick="showScreen('cloud')"><svg class="icon"><use href="#i-cloud"></use></svg></button>
+        <button class="icon-btn"><svg class="icon"><use href="#i-bell"></use></svg></button>
+      </div>
+    </div>
+    <div class="event-pill"><svg class="icon" style="width:15px;height:15px"><use href="#i-cal"></use></svg> गणेश चतुर्थी 2026 तक <b>45 दिन शेष</b></div>
+  </div>
+
+  <div class="section">
+    <div class="stat-grid">
+      <div class="stat-card">
+        <div class="stat-icon" style="background:var(--blue-light);color:var(--blue)"><svg class="icon"><use href="#i-users"></use></svg></div>
+        <div class="stat-label">Total Members</div>
+        <div class="stat-value">128</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon" style="background:var(--green-light);color:var(--green)"><svg class="icon"><use href="#i-wallet"></use></svg></div>
+        <div class="stat-label">Total Jama / Collection</div>
+        <div class="stat-value">₹2,45,000</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon" style="background:var(--purple-light);color:var(--purple)"><svg class="icon"><use href="#i-gift"></use></svg></div>
+        <div class="stat-label">Chanda / Chadhava</div>
+        <div class="stat-value">₹1,10,500</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon" style="background:var(--red-light);color:var(--red)"><svg class="icon"><use href="#i-down"></use></svg></div>
+        <div class="stat-label">Total Expense</div>
+        <div class="stat-value">₹85,200</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon" style="background:var(--orange-light);color:var(--orange-dark)"><svg class="icon"><use href="#i-coins"></use></svg></div>
+        <div class="stat-label">Total Loan</div>
+        <div class="stat-value">₹32,000</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon" style="background:var(--red-light);color:var(--red)"><svg class="icon"><use href="#i-alert"></use></svg></div>
+        <div class="stat-label">Pending / Due</div>
+        <div class="stat-value">₹18,400</div>
+      </div>
+    </div>
+
+    <div class="month-card">
+      <svg class="ring" viewBox="0 0 36 36">
+        <circle cx="18" cy="18" r="15.5" fill="none" stroke="#FFEBD6" stroke-width="4"></circle>
+        <circle cx="18" cy="18" r="15.5" fill="none" stroke="#FF7A1A" stroke-width="4" stroke-linecap="round"
+          stroke-dasharray="97" stroke-dashoffset="16" transform="rotate(-90 18 18)"></circle>
+        <text x="18" y="21" text-anchor="middle" font-size="9" font-weight="700" fill="#E85D04" font-family="Poppins">84%</text>
+      </svg>
+      <div class="month-info">
+        <div class="m-label">Current Month Collection</div>
+        <div class="m-value">₹42,300</div>
+        <div class="m-target">Target ₹50,000 में से 84% पूरा</div>
+      </div>
+    </div>
+
+    <div class="section-title" style="margin-top:18px;">हाल की लेन-देन <span class="link-sm" onclick="showScreen('lenden')">सभी देखें</span></div>
+    <div class="card">
+      <div class="txn-item">
+        <div class="txn-icon" style="background:var(--green-light);color:var(--green)"><svg class="icon"><use href="#i-up"></use></svg></div>
+        <div class="txn-info"><div class="txn-name">राजेश शर्मा</div><div class="txn-sub">Monthly Jama · आज <span class="mode-tag">UPI</span></div></div>
+        <div class="txn-amt pos">+₹500</div>
+      </div>
+      <div class="txn-item">
+        <div class="txn-icon" style="background:var(--purple-light);color:var(--purple)"><svg class="icon"><use href="#i-gift"></use></svg></div>
+        <div class="txn-info"><div class="txn-name">सुनीता वर्मा</div><div class="txn-sub">Chanda · आज <span class="mode-tag">Cash</span></div></div>
+        <div class="txn-amt pos">+₹1,100</div>
+      </div>
+      <div class="txn-item">
+        <div class="txn-icon" style="background:var(--red-light);color:var(--red)"><svg class="icon"><use href="#i-down"></use></svg></div>
+        <div class="txn-info"><div class="txn-name">Pandal Decoration</div><div class="txn-sub">Expense · कल <span class="mode-tag">Bank</span></div></div>
+        <div class="txn-amt neg">-₹5,000</div>
+      </div>
+      <div class="txn-item">
+        <div class="txn-icon" style="background:var(--orange-light);color:var(--orange-dark)"><svg class="icon"><use href="#i-coins"></use></svg></div>
+        <div class="txn-info"><div class="txn-name">अमित पटेल</div><div class="txn-sub">Loan EMI · कल <span class="mode-tag">Cash</span></div></div>
+        <div class="txn-amt pos">+₹500</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ================= MEMBERS ================= -->
+<div id="screen-members" class="screen">
+  <div class="page-header">
+    <div class="page-title">Members</div>
+    <div class="page-right" onclick="showScreen('add-member')">+ सदस्य जोड़ें</div>
+  </div>
+  <div class="section" style="padding-top:0;">
+    <div style="display:flex;gap:10px;">
+      <div class="search-bar" style="flex:1;"><svg class="icon" style="width:17px;height:17px"><use href="#i-search"></use></svg><input placeholder="नाम / मोबाइल खोजें"></div>
+      <div class="filter-btn"><svg class="icon"><use href="#i-filter"></use></svg></div>
+    </div>
+    <div class="mini-count">कुल 128 सदस्य · ID Card पर tap करके पूरी profile देखें</div>
+
+    <div class="id-member-card" onclick="showScreen('member-profile')">
+      <div class="imc-top">
+        <div class="avatar" style="background:var(--blue)">RS</div>
+        <div class="imc-info">
+          <div class="member-name">राजेश शर्मा</div>
+          <div class="imc-id">Member ID: GS-045</div>
+        </div>
+        <div class="status-badge active"><span class="status-dot"></span>Active</div>
+      </div>
+      <div class="imc-divider"></div>
+      <div class="imc-details">
+        <div class="imc-detail"><svg class="icon" style="width:13px;height:13px"><use href="#i-phone"></use></svg> 98765 43210</div>
+        <div class="imc-detail"><svg class="icon" style="width:13px;height:13px"><use href="#i-cal"></use></svg> जुड़े: जन 2024</div>
+      </div>
+      <div class="imc-stats">
+        <div class="imc-stat"><span class="lbl">Total Jama</span><span class="val green">₹6,000</span></div>
+        <div class="imc-stat"><span class="lbl">Pending Amount</span><span class="val green">₹0</span></div>
+      </div>
+    </div>
+
+    <div class="id-member-card" onclick="showScreen('member-profile')">
+      <div class="imc-top">
+        <div class="avatar" style="background:var(--purple)">SV</div>
+        <div class="imc-info">
+          <div class="member-name">सुनीता वर्मा</div>
+          <div class="imc-id">Member ID: GS-046</div>
+        </div>
+        <div class="status-badge active"><span class="status-dot"></span>Active</div>
+      </div>
+      <div class="imc-divider"></div>
+      <div class="imc-details">
+        <div class="imc-detail"><svg class="icon" style="width:13px;height:13px"><use href="#i-phone"></use></svg> 91234 56780</div>
+        <div class="imc-detail"><svg class="icon" style="width:13px;height:13px"><use href="#i-cal"></use></svg> जुड़े: मार्च 2024</div>
+      </div>
+      <div class="imc-stats">
+        <div class="imc-stat"><span class="lbl">Total Jama</span><span class="val green">₹4,800</span></div>
+        <div class="imc-stat"><span class="lbl">Pending Amount</span><span class="val red">₹200</span></div>
+      </div>
+    </div>
+
+    <div class="id-member-card" onclick="showScreen('member-profile')">
+      <div class="imc-top">
+        <div class="avatar" style="background:var(--green)">AP</div>
+        <div class="imc-info">
+          <div class="member-name">अमित पटेल</div>
+          <div class="imc-id">Member ID: GS-047</div>
+        </div>
+        <div class="status-badge active"><span class="status-dot"></span>Active</div>
+      </div>
+      <div class="imc-divider"></div>
+      <div class="imc-details">
+        <div class="imc-detail"><svg class="icon" style="width:13px;height:13px"><use href="#i-phone"></use></svg> 99887 66554</div>
+        <div class="imc-detail"><svg class="icon" style="width:13px;height:13px"><use href="#i-cal"></use></svg> जुड़े: जन 2024</div>
+      </div>
+      <div class="imc-stats">
+        <div class="imc-stat"><span class="lbl">Total Jama</span><span class="val green">₹5,500</span></div>
+        <div class="imc-stat"><span class="lbl">Pending Amount</span><span class="val red">₹500</span></div>
+      </div>
+    </div>
+
+    <div class="id-member-card" onclick="showScreen('member-profile')">
+      <div class="imc-top">
+        <div class="avatar" style="background:var(--orange-dark)">VS</div>
+        <div class="imc-info">
+          <div class="member-name">विकास सिंह</div>
+          <div class="imc-id">Member ID: GS-048</div>
+        </div>
+        <div class="status-badge active"><span class="status-dot"></span>Active</div>
+      </div>
+      <div class="imc-divider"></div>
+      <div class="imc-details">
+        <div class="imc-detail"><svg class="icon" style="width:13px;height:13px"><use href="#i-phone"></use></svg> 90909 80808</div>
+        <div class="imc-detail"><svg class="icon" style="width:13px;height:13px"><use href="#i-cal"></use></svg> जुड़े: फ़र 2023</div>
+      </div>
+      <div class="imc-stats">
+        <div class="imc-stat"><span class="lbl">Total Jama</span><span class="val green">₹9,200</span></div>
+        <div class="imc-stat"><span class="lbl">Pending Amount</span><span class="val green">₹0</span></div>
+      </div>
+    </div>
+
+    <div class="id-member-card" onclick="showScreen('member-profile')">
+      <div class="imc-top">
+        <div class="avatar" style="background:var(--blue)">PG</div>
+        <div class="imc-info">
+          <div class="member-name">पूजा गुप्ता</div>
+          <div class="imc-id">Member ID: GS-049</div>
+        </div>
+        <div class="status-badge active"><span class="status-dot"></span>Active</div>
+      </div>
+      <div class="imc-divider"></div>
+      <div class="imc-details">
+        <div class="imc-detail"><svg class="icon" style="width:13px;height:13px"><use href="#i-phone"></use></svg> 88990 11223</div>
+        <div class="imc-detail"><svg class="icon" style="width:13px;height:13px"><use href="#i-cal"></use></svg> जुड़े: जून 2024</div>
+      </div>
+      <div class="imc-stats">
+        <div class="imc-stat"><span class="lbl">Total Jama</span><span class="val green">₹3,000</span></div>
+        <div class="imc-stat"><span class="lbl">Pending Amount</span><span class="val red">₹150</span></div>
+      </div>
+    </div>
+
+    <div class="id-member-card" onclick="showScreen('member-profile')">
+      <div class="imc-top">
+        <div class="avatar" style="background:var(--purple)">SY</div>
+        <div class="imc-info">
+          <div class="member-name">संदीप यादव</div>
+          <div class="imc-id">Member ID: GS-050</div>
+        </div>
+        <div class="status-badge inactive"><span class="status-dot"></span>Inactive</div>
+      </div>
+      <div class="imc-divider"></div>
+      <div class="imc-details">
+        <div class="imc-detail"><svg class="icon" style="width:13px;height:13px"><use href="#i-phone"></use></svg> 77889 90011</div>
+        <div class="imc-detail"><svg class="icon" style="width:13px;height:13px"><use href="#i-cal"></use></svg> जुड़े: अगस्त 2023</div>
+      </div>
+      <div class="imc-stats">
+        <div class="imc-stat"><span class="lbl">Total Jama</span><span class="val green">₹7,400</span></div>
+        <div class="imc-stat"><span class="lbl">Pending Amount</span><span class="val green">₹0</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ================= ADD MEMBER ================= -->
+<div id="screen-add-member" class="screen">
+  <div class="page-header">
+    <div class="back-btn" onclick="showScreen('members')"><svg class="icon"><use href="#i-chevleft"></use></svg></div>
+    <div class="page-title">नया सदस्य जोड़ें</div>
+  </div>
+  <div class="section" style="padding-top:4px;">
+    <div class="photo-upload">
+      <svg class="icon" style="width:26px;height:26px"><use href="#i-camera"></use></svg>
+    </div>
+    <div class="field"><label>Member Name</label><input placeholder="जैसे: राजेश शर्मा"></div>
+    <div class="field"><label>Mobile Number</label><input placeholder="10 अंकों का मोबाइल नंबर"></div>
+    <div class="field"><label>Member ID</label><input value="GS-129" disabled style="color:var(--soft)"></div>
+    <div class="field"><label>Address (वैकल्पिक)</label><input placeholder="पता दर्ज करें"></div>
+    <div class="field"><label>Monthly Jama Amount</label>
+      <div class="rupee-input"><span>₹</span><input placeholder="500"></div>
+    </div>
+    <button class="btn-primary" onclick="showScreen('members')">सदस्य सेव करें</button>
+  </div>
+</div>
+
+<!-- ================= MEMBER PROFILE ================= -->
+<div id="screen-member-profile" class="screen">
+  <div class="page-header">
+    <div class="back-btn" onclick="showScreen('members')"><svg class="icon"><use href="#i-chevleft"></use></svg></div>
+    <div class="page-title">Member Profile</div>
+    <div class="icon-btn" style="color:var(--orange);background:var(--orange-light)"><svg class="icon" style="width:17px;height:17px"><use href="#i-edit"></use></svg></div>
+  </div>
+  <div class="profile-hero">
+    <div class="avatar" style="background:var(--blue);margin:0 auto 10px;">RS</div>
+    <h3>राजेश शर्मा</h3>
+    <div class="pid">Member ID: GS-045</div>
+    <div class="status-badge active" style="margin-top:10px;"><span class="status-dot"></span>Active Member</div>
+    <div class="profile-meta" style="margin-top:14px;flex-wrap:wrap;row-gap:8px;">
+      <div class="pm-item"><svg class="icon" style="width:14px;height:14px"><use href="#i-phone"></use></svg> 98765 43210</div>
+      <div class="pm-item"><svg class="icon" style="width:14px;height:14px"><use href="#i-cal"></use></svg> जुड़े: जन 2024</div>
+    </div>
+    <div class="pm-item" style="justify-content:center;margin-top:8px;">
+      <svg class="icon" style="width:14px;height:14px"><use href="#i-home"></use></svg> 12, गांधी नगर, रायपुर (छत्तीसगढ़)
+    </div>
+    <button class="btn-outline" style="display:flex;align-items:center;justify-content:center;gap:8px;" onclick="showScreen('id-card')">
+      <svg class="icon" style="width:16px;height:16px"><use href="#i-smartphone"></use></svg>View ID Card
+    </button>
+  </div>
+
+  <div class="profile-stat-grid">
+    <div class="profile-stat-card">
+      <div class="stat-icon" style="background:var(--green-light);color:var(--green)"><svg class="icon" style="width:16px;height:16px"><use href="#i-wallet"></use></svg></div>
+      <div class="stat-label">Monthly Jama</div><div class="stat-value" style="font-size:16px;">₹500</div>
+    </div>
+    <div class="profile-stat-card">
+      <div class="stat-icon" style="background:var(--purple-light);color:var(--purple)"><svg class="icon" style="width:16px;height:16px"><use href="#i-gift"></use></svg></div>
+      <div class="stat-label">Chanda / Chadhava</div><div class="stat-value" style="font-size:16px;">₹1,200</div>
+    </div>
+    <div class="profile-stat-card">
+      <div class="stat-icon" style="background:var(--orange-light);color:var(--orange-dark)"><svg class="icon" style="width:16px;height:16px"><use href="#i-coins"></use></svg></div>
+      <div class="stat-label">Loan Amount</div><div class="stat-value" style="font-size:16px;">₹5,000</div>
+    </div>
+    <div class="profile-stat-card">
+      <div class="stat-icon" style="background:var(--blue-light);color:var(--blue)"><svg class="icon" style="width:16px;height:16px"><use href="#i-cal"></use></svg></div>
+      <div class="stat-label">EMI / महीना</div><div class="stat-value" style="font-size:16px;">₹500</div>
+    </div>
+    <div class="profile-stat-card">
+      <div class="stat-icon" style="background:var(--red-light);color:var(--red)"><svg class="icon" style="width:16px;height:16px"><use href="#i-alert"></use></svg></div>
+      <div class="stat-label">Pending Due</div><div class="stat-value" style="font-size:16px;color:var(--red)">₹0</div>
+    </div>
+    <div class="profile-stat-card">
+      <div class="stat-icon" style="background:var(--green-light);color:var(--green)"><svg class="icon" style="width:16px;height:16px"><use href="#i-check"></use></svg></div>
+      <div class="stat-label">Total Paid</div><div class="stat-value" style="font-size:16px;">₹9,700</div>
+    </div>
+    <div class="profile-stat-card full">
+      <div><div class="stat-label">Current Balance</div><div class="stat-value" style="font-size:20px;">₹0 Due</div></div>
+      <svg class="icon" style="width:26px;height:26px;color:#fff"><use href="#i-check"></use></svg>
+    </div>
+  </div>
+
+  <div class="section" style="padding-top:0;">
+    <div class="card" style="padding:16px;">
+      <div style="display:flex;justify-content:space-between;align-items:center;">
+        <div style="font-weight:700;font-size:14px;">Loan / EMI Progress</div>
+        <div style="color:var(--orange-dark);font-weight:700;font-size:13px;">₹5,000</div>
+      </div>
+      <div style="display:flex;justify-content:space-between;margin-top:10px;font-size:12px;color:var(--soft);">
+        <span>EMI ₹500 / महीना</span><span>Paid 6/10</span><span>Pending 4</span>
+      </div>
+      <div class="progress-bar"><div style="width:60%"></div></div>
+      <div style="margin-top:8px;font-size:11.5px;color:var(--soft);">Outstanding Loan: <b style="color:var(--red)">₹2,000</b></div>
+    </div>
+
+    <div class="section-title" style="margin-top:18px;"><span>Complete Transaction History</span></div>
+    <div class="card">
+      <div class="txn-item">
+        <div class="txn-icon" style="background:var(--green-light);color:var(--green)"><svg class="icon"><use href="#i-up"></use></svg></div>
+        <div class="txn-info"><div class="txn-name">Monthly Jama</div><div class="txn-sub">10 अगस्त 2026 <span class="mode-tag">UPI</span></div></div>
+        <div class="txn-amt pos">+₹500</div>
+      </div>
+      <div class="txn-item">
+        <div class="txn-icon" style="background:var(--orange-light);color:var(--orange-dark)"><svg class="icon"><use href="#i-coins"></use></svg></div>
+        <div class="txn-info"><div class="txn-name">Loan EMI</div><div class="txn-sub">05 अगस्त 2026 <span class="mode-tag">Cash</span></div></div>
+        <div class="txn-amt pos">+₹500</div>
+      </div>
+      <div class="txn-item">
+        <div class="txn-icon" style="background:var(--purple-light);color:var(--purple)"><svg class="icon"><use href="#i-gift"></use></svg></div>
+        <div class="txn-info"><div class="txn-name">Chanda Jama</div><div class="txn-sub">01 अगस्त 2026 <span class="mode-tag">Bank</span></div></div>
+        <div class="txn-amt pos">+₹1,200</div>
+      </div>
+      <div class="txn-item">
+        <div class="txn-icon" style="background:var(--green-light);color:var(--green)"><svg class="icon"><use href="#i-up"></use></svg></div>
+        <div class="txn-info"><div class="txn-name">Monthly Jama</div><div class="txn-sub">10 जुलाई 2026 <span class="mode-tag">UPI</span></div></div>
+        <div class="txn-amt pos">+₹500</div>
+      </div>
+      <div class="txn-item">
+        <div class="txn-icon" style="background:var(--orange-light);color:var(--orange-dark)"><svg class="icon"><use href="#i-coins"></use></svg></div>
+        <div class="txn-info"><div class="txn-name">Loan Received</div><div class="txn-sub">02 जुलाई 2026 <span class="mode-tag">Cash</span></div></div>
+        <div class="txn-amt neg">-₹5,000</div>
+      </div>
+      <div class="txn-item">
+        <div class="txn-icon" style="background:var(--red-light);color:var(--red)"><svg class="icon"><use href="#i-down"></use></svg></div>
+        <div class="txn-info"><div class="txn-name">Expense / Adjustment</div><div class="txn-sub">28 जून 2026 <span class="mode-tag">Cash</span></div></div>
+        <div class="txn-amt neg">-₹100</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ================= MEMBER ID CARD ================= -->
+<div id="screen-id-card" class="screen">
+  <div class="page-header">
+    <div class="back-btn" onclick="showScreen('member-profile')"><svg class="icon"><use href="#i-chevleft"></use></svg></div>
+    <div class="page-title">Member ID Card</div>
+  </div>
+  <div class="idcard-wrap">
+    <div class="idcard">
+      <div class="idcard-head">
+        <div class="om">ॐ</div>
+        <h4>GANESH SAMITI</h4>
+        <p>Official Member Identity Card</p>
+      </div>
+      <div class="idcard-body">
+        <div class="idcard-photo" style="background:var(--blue)">RS</div>
+        <div class="idcard-name">राजेश शर्मा</div>
+        <div class="idcard-role">Rahul Sharma</div>
+        <div class="idcard-status"><svg class="icon" style="width:12px;height:12px"><use href="#i-check"></use></svg>Active Member</div>
+        <div class="idcard-rows">
+          <div class="idcard-row"><span><svg class="icon" style="width:13px;height:13px"><use href="#i-users"></use></svg>Member ID</span><span>GS-045</span></div>
+          <div class="idcard-row"><span><svg class="icon" style="width:13px;height:13px"><use href="#i-phone"></use></svg>Mobile</span><span>98765 43210</span></div>
+          <div class="idcard-row"><span><svg class="icon" style="width:13px;height:13px"><use href="#i-cal"></use></svg>Member Since</span><span>2024</span></div>
+          <div class="idcard-row"><span><svg class="icon" style="width:13px;height:13px"><use href="#i-home"></use></svg>Address</span><span style="text-align:right;max-width:150px;font-weight:600;">गांधी नगर, रायपुर</span></div>
+        </div>
+      </div>
+      <div class="idcard-barcode"></div>
+      <div class="idcard-footer">GS-045 &nbsp;•&nbsp; ganeshsamiti.app &nbsp;•&nbsp; Valid for Ganesh Chaturthi 2026</div>
+    </div>
+    <div class="idcard-actions">
+      <button class="btn-outline"><svg class="icon" style="width:16px;height:16px"><use href="#i-upload"></use></svg>Download</button>
+      <button class="btn-primary"><svg class="icon" style="width:16px;height:16px"><use href="#i-repeat"></use></svg>Share ID Card</button>
+    </div>
+  </div>
+</div>
+
+<!-- ================= LEN-DEN ================= -->
+<div id="screen-lenden" class="screen">
+  <div class="page-header"><div class="page-title">Len-Den</div></div>
+  <div class="section" style="padding-top:0;">
+    <div class="chip-row" id="lenden-chips">
+      <div class="chip active" onclick="filterLenden('all',this)">All</div>
+      <div class="chip" onclick="filterLenden('jama',this)">Jama</div>
+      <div class="chip" onclick="filterLenden('chanda',this)">Chanda</div>
+      <div class="chip" onclick="filterLenden('expense',this)">Expense</div>
+      <div class="chip" onclick="filterLenden('loan',this)">Loan</div>
+      <div class="chip" onclick="filterLenden('emi',this)">EMI</div>
+    </div>
+    <div class="chip-row" style="margin-top:6px;">
+      <div class="chip active">🏦 सभी Mode</div>
+      <div class="chip">💵 Cash</div>
+      <div class="chip">📱 UPI</div>
+      <div class="chip">🏛 Bank</div>
+    </div>
+
+    <div style="display:flex;gap:10px;margin:14px 0;">
+      <div class="stat-card" style="flex:1;padding:12px;">
+        <div class="stat-label">कुल आया (In)</div>
+        <div class="stat-value" style="color:var(--green);font-size:16px;">₹3,55,500</div>
+      </div>
+      <div class="stat-card" style="flex:1;padding:12px;">
+        <div class="stat-label">कुल गया (Out)</div>
+        <div class="stat-value" style="color:var(--red);font-size:16px;">₹1,17,200</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="txn-item" data-type="jama">
+        <div class="txn-icon" style="background:var(--green-light);color:var(--green)"><svg class="icon"><use href="#i-up"></use></svg></div>
+        <div class="txn-info"><div class="txn-name">राजेश शर्मा</div><div class="txn-sub">Monthly Jama · आज <span class="mode-tag">UPI</span></div></div>
+        <div class="txn-amt pos">+₹500</div>
+      </div>
+      <div class="txn-item" data-type="chanda">
+        <div class="txn-icon" style="background:var(--purple-light);color:var(--purple)"><svg class="icon"><use href="#i-gift"></use></svg></div>
+        <div class="txn-info"><div class="txn-name">सुनीता वर्मा</div><div class="txn-sub">Chanda · आज <span class="mode-tag">Cash</span></div></div>
+        <div class="txn-amt pos">+₹1,100</div>
+      </div>
+      <div class="txn-item" data-type="expense">
+        <div class="txn-icon" style="background:var(--red-light);color:var(--red)"><svg class="icon"><use href="#i-down"></use></svg></div>
+        <div class="txn-info"><div class="txn-name">Pandal Decoration</div><div class="txn-sub">Expense · कल <span class="mode-tag">Bank</span></div></div>
+        <div class="txn-amt neg">-₹5,000</div>
+      </div>
+      <div class="txn-item" data-type="emi">
+        <div class="txn-icon" style="background:var(--orange-light);color:var(--orange-dark)"><svg class="icon"><use href="#i-coins"></use></svg></div>
+        <div class="txn-info"><div class="txn-name">अमित पटेल</div><div class="txn-sub">Loan EMI · कल <span class="mode-tag">Cash</span></div></div>
+        <div class="txn-amt pos">+₹500</div>
+      </div>
+      <div class="txn-item" data-type="chanda">
+        <div class="txn-icon" style="background:var(--purple-light);color:var(--purple)"><svg class="icon"><use href="#i-gift"></use></svg></div>
+        <div class="txn-info"><div class="txn-name">विकास सिंह</div><div class="txn-sub">Chadhava · 2 दिन पहले <span class="mode-tag">UPI</span></div></div>
+        <div class="txn-amt pos">+₹2,100</div>
+      </div>
+      <div class="txn-item" data-type="loan">
+        <div class="txn-icon" style="background:var(--orange-light);color:var(--orange-dark)"><svg class="icon"><use href="#i-coins"></use></svg></div>
+        <div class="txn-info"><div class="txn-name">कमल जोशी</div><div class="txn-sub">Loan Given · 3 दिन पहले <span class="mode-tag">Cash</span></div></div>
+        <div class="txn-amt neg">-₹8,000</div>
+      </div>
+      <div class="txn-item" data-type="jama">
+        <div class="txn-icon" style="background:var(--green-light);color:var(--green)"><svg class="icon"><use href="#i-up"></use></svg></div>
+        <div class="txn-info"><div class="txn-name">पूजा गुप्ता</div><div class="txn-sub">Monthly Jama · 3 दिन पहले <span class="mode-tag">Bank</span></div></div>
+        <div class="txn-amt pos">+₹500</div>
+      </div>
+      <div class="txn-item" data-type="expense">
+        <div class="txn-icon" style="background:var(--red-light);color:var(--red)"><svg class="icon"><use href="#i-down"></use></svg></div>
+        <div class="txn-info"><div class="txn-name">Sound System</div><div class="txn-sub">Expense · 4 दिन पहले <span class="mode-tag">Bank</span></div></div>
+        <div class="txn-amt neg">-₹6,000</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ================= ADD JAMA / COLLECTION ================= -->
+<div id="screen-add-jama" class="screen">
+  <div class="page-header">
+    <div class="back-btn" onclick="showScreen('home')"><svg class="icon"><use href="#i-chevleft"></use></svg></div>
+    <div class="page-title">Collection जोड़ें</div>
+  </div>
+  <div class="section" style="padding-top:4px;">
+    <div class="segmented">
+      <button class="active" onclick="seg(this)">Monthly Jama</button>
+      <button onclick="seg(this)">Chanda Jama</button>
+      <button onclick="seg(this)">Chadhava</button>
+    </div>
+    <div class="field"><label>Member चुनें</label>
+      <div class="search-bar"><svg class="icon" style="width:17px;height:17px"><use href="#i-search"></use></svg><input placeholder="सदस्य का नाम खोजें"></div>
+    </div>
+    <div class="field"><label>Amount</label>
+      <div class="rupee-input"><span>₹</span><input placeholder="500"></div>
+    </div>
+    <div class="field"><label>Date</label><input type="date" value="2026-08-14"></div>
+    <div class="field"><label>Payment Mode</label>
+      <div class="mode-row">
+        <div class="mode-opt active" onclick="modeSel(this)"><svg class="icon" style="width:18px;height:18px"><use href="#i-wallet"></use></svg>Cash</div>
+        <div class="mode-opt" onclick="modeSel(this)"><svg class="icon" style="width:18px;height:18px"><use href="#i-smartphone"></use></svg>UPI</div>
+        <div class="mode-opt" onclick="modeSel(this)"><svg class="icon" style="width:18px;height:18px"><use href="#i-bar"></use></svg>Bank</div>
+      </div>
+    </div>
+    <button class="btn-primary" onclick="showScreen('lenden')">Collection Save करें</button>
+  </div>
+</div>
+
+<!-- ================= ADD EXPENSE ================= -->
+<div id="screen-add-expense" class="screen">
+  <div class="page-header">
+    <div class="back-btn" onclick="showScreen('home')"><svg class="icon"><use href="#i-chevleft"></use></svg></div>
+    <div class="page-title">Expense जोड़ें</div>
+  </div>
+  <div class="section" style="padding-top:4px;">
+    <div class="field"><label>Expense Name</label><input placeholder="जैसे: Pandal Booking"></div>
+    <div class="field"><label>Expense Category</label>
+      <div class="chip-row">
+        <div class="chip active">Pandal</div><div class="chip">Decoration</div><div class="chip">Prasad</div>
+        <div class="chip">Sound System</div><div class="chip">बिजली</div><div class="chip">पुजारी</div><div class="chip">अन्य</div>
+      </div>
+    </div>
+    <div class="field" style="margin-top:14px;"><label>Amount</label>
+      <div class="rupee-input"><span>₹</span><input placeholder="5000"></div>
+    </div>
+    <div class="field"><label>Date</label><input type="date" value="2026-08-14"></div>
+    <div class="field"><label>Payment Mode</label>
+      <div class="mode-row">
+        <div class="mode-opt" onclick="modeSel(this)"><svg class="icon" style="width:18px;height:18px"><use href="#i-wallet"></use></svg>Cash</div>
+        <div class="mode-opt" onclick="modeSel(this)"><svg class="icon" style="width:18px;height:18px"><use href="#i-smartphone"></use></svg>UPI</div>
+        <div class="mode-opt active" onclick="modeSel(this)"><svg class="icon" style="width:18px;height:18px"><use href="#i-bar"></use></svg>Bank</div>
+      </div>
+    </div>
+    <div class="field"><label>Remark (वैकल्पिक)</label><textarea placeholder="नोट लिखें..."></textarea></div>
+    <button class="btn-primary" onclick="showScreen('expense-history')">Expense Save करें</button>
+    <button class="btn-outline" onclick="showScreen('expense-history')">Expense History देखें</button>
+  </div>
+</div>
+
+<!-- ================= EXPENSE HISTORY ================= -->
+<div id="screen-expense-history" class="screen">
+  <div class="page-header">
+    <div class="back-btn" onclick="showScreen('add-expense')"><svg class="icon"><use href="#i-chevleft"></use></svg></div>
+    <div class="page-title">Expense History</div>
+  </div>
+  <div class="section" style="padding-top:4px;">
+    <div class="stat-card" style="margin-bottom:14px;">
+      <div class="stat-label">Total Expense (अब तक)</div>
+      <div class="stat-value" style="color:var(--red);font-size:22px;">₹85,200</div>
+    </div>
+    <div class="card">
+      <div class="txn-item">
+        <div class="txn-icon" style="background:var(--red-light);color:var(--red)"><svg class="icon"><use href="#i-down"></use></svg></div>
+        <div class="txn-info"><div class="txn-name">Pandal Booking</div><div class="txn-sub">10 अगस्त 2026 <span class="mode-tag">Bank</span></div></div>
+        <div class="txn-amt neg">-₹15,000</div>
+      </div>
+      <div class="txn-item">
+        <div class="txn-icon" style="background:var(--red-light);color:var(--red)"><svg class="icon"><use href="#i-down"></use></svg></div>
+        <div class="txn-info"><div class="txn-name">Decoration Lights</div><div class="txn-sub">11 अगस्त 2026 <span class="mode-tag">UPI</span></div></div>
+        <div class="txn-amt neg">-₹8,500</div>
+      </div>
+      <div class="txn-item">
+        <div class="txn-icon" style="background:var(--red-light);color:var(--red)"><svg class="icon"><use href="#i-down"></use></svg></div>
+        <div class="txn-info"><div class="txn-name">Prasad Material</div><div class="txn-sub">12 अगस्त 2026 <span class="mode-tag">Cash</span></div></div>
+        <div class="txn-amt neg">-₹3,200</div>
+      </div>
+      <div class="txn-item">
+        <div class="txn-icon" style="background:var(--red-light);color:var(--red)"><svg class="icon"><use href="#i-down"></use></svg></div>
+        <div class="txn-info"><div class="txn-name">Sound System</div><div class="txn-sub">12 अगस्त 2026 <span class="mode-tag">Bank</span></div></div>
+        <div class="txn-amt neg">-₹6,000</div>
+      </div>
+      <div class="txn-item">
+        <div class="txn-icon" style="background:var(--red-light);color:var(--red)"><svg class="icon"><use href="#i-down"></use></svg></div>
+        <div class="txn-info"><div class="txn-name">बिजली बिल</div><div class="txn-sub">13 अगस्त 2026 <span class="mode-tag">Cash</span></div></div>
+        <div class="txn-amt neg">-₹2,500</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ================= LOAN ================= -->
+<div id="screen-loan" class="screen">
+  <div class="page-header">
+    <div class="page-title">Loan / Lending</div>
+    <div class="page-right" onclick="showScreen('add-loan')">+ नया Loan</div>
+  </div>
+  <div class="section" style="padding-top:0;">
+    <div class="stat-grid">
+      <div class="stat-card"><div class="stat-label">Total Loan दिया</div><div class="stat-value" style="font-size:16px;">₹32,000</div></div>
+      <div class="stat-card"><div class="stat-label">Outstanding</div><div class="stat-value" style="font-size:16px;color:var(--red)">₹14,000</div></div>
+    </div>
+
+    <div class="section-title" style="margin-top:16px;">Loan History</div>
+    <div class="card" style="padding:14px;display:flex;flex-direction:column;gap:16px;">
+      <div>
+        <div style="display:flex;justify-content:space-between;">
+          <div style="font-weight:700;font-size:13.5px;">अमित पटेल</div>
+          <div style="font-weight:700;font-size:13.5px;color:var(--orange-dark)">₹5,000</div>
+        </div>
+        <div style="font-size:11.5px;color:var(--soft);margin-top:4px;">EMI ₹500 · Pending 4/10 · Due: 15 सितं</div>
+        <div class="progress-bar"><div style="width:60%"></div></div>
+      </div>
+      <div>
+        <div style="display:flex;justify-content:space-between;">
+          <div style="font-weight:700;font-size:13.5px;">कमल जोशी</div>
+          <div style="font-weight:700;font-size:13.5px;color:var(--orange-dark)">₹8,000</div>
+        </div>
+        <div style="font-size:11.5px;color:var(--soft);margin-top:4px;">EMI ₹800 · Pending 6/10 · Due: 20 सितं</div>
+        <div class="progress-bar"><div style="width:40%"></div></div>
+      </div>
+      <div>
+        <div style="display:flex;justify-content:space-between;">
+          <div style="font-weight:700;font-size:13.5px;">रवि मेहता</div>
+          <div style="font-weight:700;font-size:13.5px;color:var(--orange-dark)">₹3,000</div>
+        </div>
+        <div style="font-size:11.5px;color:var(--soft);margin-top:4px;">EMI ₹300 · Pending 2/10 · Due: 05 सितं</div>
+        <div class="progress-bar"><div style="width:80%"></div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ================= ADD LOAN ================= -->
+<div id="screen-add-loan" class="screen">
+  <div class="page-header">
+    <div class="back-btn" onclick="showScreen('loan')"><svg class="icon"><use href="#i-chevleft"></use></svg></div>
+    <div class="page-title">नया Loan जोड़ें</div>
+  </div>
+  <div class="section" style="padding-top:4px;">
+    <div class="field"><label>Member चुनें</label>
+      <div class="search-bar"><svg class="icon" style="width:17px;height:17px"><use href="#i-search"></use></svg><input placeholder="सदस्य का नाम खोजें"></div>
+    </div>
+    <div class="field"><label>Loan Amount</label><div class="rupee-input"><span>₹</span><input placeholder="5000"></div></div>
+    <div class="field"><label>Interest (%)</label><input placeholder="जैसे: 2"></div>
+    <div class="field"><label>EMI Amount</label><div class="rupee-input"><span>₹</span><input placeholder="500"></div></div>
+    <div class="field"><label>Due Date</label><input type="date"></div>
+    <button class="btn-primary" onclick="showScreen('loan')">Loan Save करें</button>
+  </div>
+</div>
+
+<!-- ================= REPORTS ================= -->
+<div id="screen-reports" class="screen">
+  <div class="page-header"><div class="page-title">Reports</div></div>
+  <div class="section" style="padding-top:0;">
+    <div class="report-grid">
+      <div class="report-card"><div class="rc-top"><div class="rc-icon" style="background:var(--green-light);color:var(--green)"><svg class="icon" style="width:18px;height:18px"><use href="#i-up"></use></svg></div><svg class="icon" style="width:16px;height:16px;color:var(--soft)"><use href="#i-chevright"></use></svg></div><div class="rc-name">Monthly Jama Report</div></div>
+      <div class="report-card"><div class="rc-top"><div class="rc-icon" style="background:var(--purple-light);color:var(--purple)"><svg class="icon" style="width:18px;height:18px"><use href="#i-gift"></use></svg></div><svg class="icon" style="width:16px;height:16px;color:var(--soft)"><use href="#i-chevright"></use></svg></div><div class="rc-name">Chanda Report</div></div>
+      <div class="report-card"><div class="rc-top"><div class="rc-icon" style="background:var(--red-light);color:var(--red)"><svg class="icon" style="width:18px;height:18px"><use href="#i-down"></use></svg></div><svg class="icon" style="width:16px;height:16px;color:var(--soft)"><use href="#i-chevright"></use></svg></div><div class="rc-name">Expense Report</div></div>
+      <div class="report-card"><div class="rc-top"><div class="rc-icon" style="background:var(--orange-light);color:var(--orange-dark)"><svg class="icon" style="width:18px;height:18px"><use href="#i-coins"></use></svg></div><svg class="icon" style="width:16px;height:16px;color:var(--soft)"><use href="#i-chevright"></use></svg></div><div class="rc-name">Loan Report</div></div>
+      <div class="report-card"><div class="rc-top"><div class="rc-icon" style="background:var(--blue-light);color:var(--blue)"><svg class="icon" style="width:18px;height:18px"><use href="#i-repeat"></use></svg></div><svg class="icon" style="width:16px;height:16px;color:var(--soft)"><use href="#i-chevright"></use></svg></div><div class="rc-name">Len-Den Report</div></div>
+      <div class="report-card" onclick="showScreen('cloud')"><div class="rc-top"><div class="rc-icon" style="background:var(--green-light);color:var(--green)"><svg class="icon" style="width:18px;height:18px"><use href="#i-wallet"></use></svg></div><svg class="icon" style="width:16px;height:16px;color:var(--soft)"><use href="#i-chevright"></use></svg></div><div class="rc-name">Total Balance</div></div>
+    </div>
+
+    <div class="balance-card">
+      <div class="bl">Total Balance (Samiti Fund)</div>
+      <div class="bv">₹2,38,300</div>
+    </div>
+
+    <div class="section-title" style="margin-top:20px;">Monthly Chart (Collection)</div>
+    <div class="card" style="padding:10px 14px;">
+      <div class="bar-chart">
+        <div class="bar-col"><div class="bar-val">36k</div><div class="bar" style="height:58%"></div><div class="bar-month">अप्रैल</div></div>
+        <div class="bar-col"><div class="bar-val">27k</div><div class="bar" style="height:44%"></div><div class="bar-month">मई</div></div>
+        <div class="bar-col"><div class="bar-val">42k</div><div class="bar" style="height:68%"></div><div class="bar-month">जून</div></div>
+        <div class="bar-col"><div class="bar-val">33k</div><div class="bar" style="height:53%"></div><div class="bar-month">जुलाई</div></div>
+        <div class="bar-col"><div class="bar-val">51k</div><div class="bar" style="height:85%"></div><div class="bar-month">अगस्त</div></div>
+        <div class="bar-col"><div class="bar-val">24k</div><div class="bar" style="height:38%"></div><div class="bar-month">सितं</div></div>
+      </div>
+    </div>
+
+    <div class="section-title" style="margin-top:20px;">Collection vs Expense</div>
+    <div class="card" style="padding:16px;">
+      <div class="compare-row">
+        <div class="compare-item">
+          <div class="ci-top"><span>जून</span><span style="color:var(--soft);font-weight:500;">₹42k / ₹18k</span></div>
+          <div class="compare-track"><div style="width:64%;background:var(--green);height:9px;"></div><div style="width:28%;background:var(--red);height:9px;"></div></div>
+        </div>
+        <div class="compare-item">
+          <div class="ci-top"><span>जुलाई</span><span style="color:var(--soft);font-weight:500;">₹33k / ₹15k</span></div>
+          <div class="compare-track"><div style="width:55%;background:var(--green);height:9px;"></div><div style="width:25%;background:var(--red);height:9px;"></div></div>
+        </div>
+        <div class="compare-item">
+          <div class="ci-top"><span>अगस्त</span><span style="color:var(--soft);font-weight:500;">₹51k / ₹22k</span></div>
+          <div class="compare-track"><div style="width:72%;background:var(--green);height:9px;"></div><div style="width:32%;background:var(--red);height:9px;"></div></div>
+        </div>
+      </div>
+      <div style="display:flex;gap:16px;margin-top:14px;">
+        <div style="display:flex;align-items:center;gap:6px;font-size:11.5px;color:var(--soft);"><span style="width:10px;height:10px;border-radius:3px;background:var(--green);display:inline-block;"></span>Collection</div>
+        <div style="display:flex;align-items:center;gap:6px;font-size:11.5px;color:var(--soft);"><span style="width:10px;height:10px;border-radius:3px;background:var(--red);display:inline-block;"></span>Expense</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ================= CLOUD ================= -->
+<div id="screen-cloud" class="screen">
+  <div class="page-header">
+    <div class="back-btn" onclick="showScreen('home')"><svg class="icon"><use href="#i-chevleft"></use></svg></div>
+    <div class="page-title">Cloud Backup</div>
+  </div>
+  <div class="cloud-hero" style="margin-top:8px;">
+    <div class="ci"><svg class="icon" style="width:28px;height:28px"><use href="#i-cloud"></use></svg></div>
+    <h3>Secure Data Backup</h3>
+    <p>आपका सारा Samiti data cloud पर सुरक्षित है</p>
+    <div class="sync-status"><svg class="icon" style="width:13px;height:13px"><use href="#i-check"></use></svg> Last synced: आज, 10:45 AM</div>
+  </div>
+
+  <div class="section" style="padding-top:0;">
+    <div class="card">
+      <div class="setting-row">
+        <div class="setting-left">
+          <div class="setting-icon" style="background:var(--blue-light);color:var(--blue)"><svg class="icon" style="width:18px;height:18px"><use href="#i-refresh"></use></svg></div>
+          <div><div class="setting-name">Automatic Sync</div><div class="setting-sub">डाटा अपने आप cloud में save होगा</div></div>
+        </div>
+        <label class="switch"><input type="checkbox" checked><span class="slider"></span></label>
+      </div>
+      <div class="setting-row">
+        <div class="setting-left">
+          <div class="setting-icon" style="background:var(--green-light);color:var(--green)"><svg class="icon" style="width:18px;height:18px"><use href="#i-lock"></use></svg></div>
+          <div><div class="setting-name">Secure Data</div><div class="setting-sub">End-to-end encrypted storage</div></div>
+        </div>
+        <label class="switch"><input type="checkbox" checked><span class="slider"></span></label>
+      </div>
+      <div class="setting-row">
+        <div class="setting-left">
+          <div class="setting-icon" style="background:var(--purple-light);color:var(--purple)"><svg class="icon" style="width:18px;height:18px"><use href="#i-smartphone"></use></svg></div>
+          <div><div class="setting-name">Linked Account</div><div class="setting-sub">+91 98765 43210</div></div>
+        </div>
+        <svg class="icon" style="width:16px;height:16px;color:var(--soft)"><use href="#i-chevright"></use></svg>
+      </div>
+    </div>
+
+    <button class="btn-primary" style="margin-top:16px;display:flex;align-items:center;justify-content:center;gap:8px;">
+      <svg class="icon" style="width:17px;height:17px"><use href="#i-upload"></use></svg>अभी Backup करें
+    </button>
+    <button class="btn-outline" style="display:flex;align-items:center;justify-content:center;gap:8px;">
+      <svg class="icon" style="width:17px;height:17px"><use href="#i-history"></use></svg>Restore Data
+    </button>
+
+    <div class="security-note">
+      <svg class="icon" style="width:18px;height:18px"><use href="#i-lock"></use></svg>
+      <div>🔒 आपका data पूरी तरह encrypted और सुरक्षित है। किसी भी नए फ़ोन में login करके पूरा Samiti record तुरंत access करें।</div>
+    </div>
+  </div>
+</div>
+
+<!-- ================= QUICK ADD SHEET ================= -->
+<div class="sheet-overlay" id="sheet-overlay" onclick="if(event.target===this)closeSheet()">
+  <div class="sheet">
+    <div class="sheet-handle"></div>
+    <div class="sheet-title">क्या जोड़ना है?</div>
+    <div class="sheet-grid">
+      <div class="sheet-action" onclick="showScreen('add-member')">
+        <div class="sa-icon" style="background:var(--blue-light);color:var(--blue)"><svg class="icon"><use href="#i-user"></use></svg></div>
+        <span>नया Member</span>
+      </div>
+      <div class="sheet-action" onclick="showScreen('add-jama')">
+        <div class="sa-icon" style="background:var(--green-light);color:var(--green)"><svg class="icon"><use href="#i-wallet"></use></svg></div>
+        <span>Jama / Collection</span>
+      </div>
+      <div class="sheet-action" onclick="showScreen('add-expense')">
+        <div class="sa-icon" style="background:var(--red-light);color:var(--red)"><svg class="icon"><use href="#i-down"></use></svg></div>
+        <span>Expense</span>
+      </div>
+      <div class="sheet-action" onclick="showScreen('add-loan')">
+        <div class="sa-icon" style="background:var(--orange-light);color:var(--orange-dark)"><svg class="icon"><use href="#i-coins"></use></svg></div>
+        <span>Loan दें</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ================= BOTTOM NAV ================= -->
+<div class="bottomnav">
+  <button class="nav-item active" id="nav-home" onclick="showScreen('home')"><svg class="icon"><use href="#i-home"></use></svg>Home</button>
+  <button class="nav-item" id="nav-members" onclick="showScreen('members')"><svg class="icon"><use href="#i-users"></use></svg>Members</button>
+  <div class="nav-plus" onclick="openSheet()"><svg class="icon" style="width:24px;height:24px"><use href="#i-plus"></use></svg></div>
+  <button class="nav-item" id="nav-lenden" onclick="showScreen('lenden')"><svg class="icon"><use href="#i-repeat"></use></svg>Len-Den</button>
+  <button class="nav-item" id="nav-reports" onclick="showScreen('reports')"><svg class="icon"><use href="#i-bar"></use></svg>Reports</button>
+</div>
+
+
+<script>
+function showScreen(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  var el = document.getElementById('screen-'+id);
+  el.classList.add('active');
+  el.scrollTop = 0;
+  updateNav(id);
+  closeSheet();
+}
+function updateNav(id){
+  var map = {home:'nav-home', members:'nav-members', lenden:'nav-lenden', reports:'nav-reports'};
+  document.querySelectorAll('.nav-item').forEach(function(n){ n.classList.remove('active'); });
+  if(map[id]) document.getElementById(map[id]).classList.add('active');
+}
+function openSheet(){ document.getElementById('sheet-overlay').classList.add('open'); }
+function closeSheet(){ document.getElementById('sheet-overlay').classList.remove('open'); }
+function seg(btn){
+  var parent = btn.parentElement;
+  parent.querySelectorAll('button').forEach(function(b){ b.classList.remove('active'); });
+  btn.classList.add('active');
+}
+function modeSel(el){
+  var parent = el.parentElement;
+  parent.querySelectorAll('.mode-opt').forEach(function(b){ b.classList.remove('active'); });
+  el.classList.add('active');
+}
+function filterLenden(type, btn){
+  document.querySelectorAll('#lenden-chips .chip').forEach(function(c){ c.classList.remove('active'); });
+  btn.classList.add('active');
+  document.querySelectorAll('#screen-lenden .txn-item[data-type]').forEach(function(item){
+    item.style.display = (type==='all' || item.dataset.type===type) ? 'flex' : 'none';
+  });
+}
+</script>
+</body>
+</html>
