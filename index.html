@@ -155,6 +155,53 @@
 
   .err-msg { color: var(--red-600); font-size: 12px; margin: -10px 0 12px; display: none; font-weight: 500; }
 
+  /* JAMA FORM NEW */
+  #screen-jama { background: #f4f6f8; overflow-y: auto; padding-bottom: 80px; }
+  .jama-header { background: linear-gradient(135deg, var(--blue-600), var(--blue-800)); padding: 40px 20px 20px; color: #fff; display: flex; align-items: center; gap: 16px; border-radius: 0 0 20px 20px; box-shadow: 0 4px 12px rgba(13, 111, 199, 0.2); }
+  .jama-back { width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; font-size: 24px; cursor: pointer; border-radius: 50%; transition: background 0.2s; margin-left: -8px; }
+  .jama-back:active { background: rgba(255,255,255,0.1); }
+  .jama-title-wrap { flex: 1; }
+  .jama-title { font-size: 20px; font-weight: 700; margin: 0; font-family: var(--font-hi); }
+  .jama-subtitle { font-size: 13px; opacity: 0.85; margin-top: 2px; }
+  .jama-profile-icon { width: 40px; height: 40px; border-radius: 50%; background: var(--amber-400); color: var(--amber-800); display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 16px; border: 2px solid rgba(255,255,255,0.2); cursor: pointer; }
+
+  .jama-body { padding: 20px; display: flex; flex-direction: column; gap: 16px; }
+  .jama-card { background: #fff; border-radius: 16px; padding: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.02); }
+  .jama-card-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+  .jama-label { font-size: 13px; font-weight: 600; color: var(--ink-soft); font-family: var(--font-hi); margin-bottom: 8px; display: block; }
+  .jama-add-member { font-size: 13px; color: var(--blue-600); font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 4px; }
+  
+  .jama-input-icon { position: relative; }
+  .jama-input-icon i { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); font-size: 18px; color: var(--blue-600); pointer-events: none; }
+  .jama-input-icon input, .jama-input-icon select { padding-left: 40px; width: 100%; height: 48px; border-radius: 12px; border: 1px solid var(--line-strong); font-size: 15px; background: #fff; font-family: var(--font-en); color: var(--ink); }
+  .jama-input-icon select { appearance: none; cursor: pointer; }
+  .jama-input-icon input:focus, .jama-input-icon select:focus { outline: none; border-color: var(--blue-400); box-shadow: 0 0 0 3px var(--blue-50); }
+  .jama-input-icon .right-icon { left: auto; right: 14px; color: var(--ink-mute); }
+  
+  .jama-or-divider { text-align: center; font-size: 12px; color: var(--ink-mute); margin: 16px 0; position: relative; }
+  .jama-or-divider::before, .jama-or-divider::after { content: ''; position: absolute; top: 50%; width: 25%; height: 1px; background: var(--line); }
+  .jama-or-divider::before { left: 0; }
+  .jama-or-divider::after { right: 0; }
+  
+  .jama-type-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .jama-type-card { border: 1px solid var(--line-strong); border-radius: 12px; padding: 14px 12px; display: flex; align-items: center; gap: 10px; font-size: 13px; font-weight: 600; color: var(--ink); cursor: pointer; transition: all 0.2s; background: #fff; }
+  .jama-type-card i { font-size: 22px; flex-shrink: 0; }
+  .jama-type-card .radio-dot { width: 18px; height: 18px; border: 2px solid var(--line-strong); border-radius: 50%; margin-left: auto; display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: all 0.2s; }
+  .jama-type-card.active { border-color: var(--blue-600); background: var(--blue-50); color: var(--blue-800); }
+  .jama-type-card.active .radio-dot { border-color: var(--blue-600); }
+  .jama-type-card.active .radio-dot::after { content: ''; width: 10px; height: 10px; background: var(--blue-600); border-radius: 50%; }
+  
+  .jama-row { display: flex; gap: 12px; }
+  .jama-row .jama-card.half { flex: 1; margin: 0; padding: 16px 12px; }
+  
+  .udhaari-card { background: #fff8e1; border: 1px solid #ffe0b2; }
+  .udhaari-head { font-size: 12px; color: #f57c00; font-weight: 700; display: flex; align-items: center; gap: 4px; margin-bottom: 4px; }
+  .udhaari-val { font-size: 18px; font-weight: 700; color: #e65100; margin-bottom: 4px; }
+  .udhaari-note { font-size: 10px; color: #f57c00; line-height: 1.3; }
+  
+  .jama-info-note { background: #f0f7ff; border-radius: 12px; padding: 14px; font-size: 12px; color: #0d6fc7; display: flex; gap: 10px; align-items: flex-start; line-height: 1.5; border: 1px solid #cce4ff; margin-bottom: 8px; }
+  .jama-info-note i { font-size: 20px; flex-shrink: 0; margin-top: 2px; }
+
   /* REPORTS */
   table.data-sheet { width: 100%; border-collapse: collapse; font-size: 13px; background: var(--card); border-radius: 14px; overflow: hidden; border: 1px solid var(--line); box-shadow: 0 2px 6px rgba(0,0,0,0.02); }
   table.data-sheet th { background: var(--blue-50); color: var(--blue-800); font-weight: 600; text-align: left; padding: 12px 14px; font-size: 12px; }
@@ -402,6 +449,115 @@
     </div>
 
     <!-- REPORT SCREEN -->
+    <!-- JAMA FORM NEW SCREEN -->
+    <div class="screen" id="screen-jama">
+      <div class="jama-header">
+        <div class="jama-back" onclick="navigateTo('home')"><i class="ti ti-arrow-left"></i></div>
+        <div class="jama-title-wrap">
+          <div class="jama-title">जमा करें</div>
+          <div class="jama-subtitle">नया जमा जोड़ें</div>
+        </div>
+        <div class="jama-profile-icon" id="jamaTopSettingsBtn">SS</div>
+      </div>
+
+      <div class="jama-body">
+        <div class="jama-card">
+          <div class="jama-card-head">
+            <label class="jama-label" style="margin:0;">सदस्य चुनें</label>
+            <span class="jama-add-member" id="jamaToggleNewMemberBtn"><i class="ti ti-plus"></i> नया सदस्य</span>
+          </div>
+          <div id="jamaExistingMemberWrap">
+            <div class="jama-input-icon">
+              <i class="ti ti-user"></i>
+              <select id="jamaMemberSelect">
+                <option value="">सदस्य चुनें...</option>
+              </select>
+              <i class="ti ti-chevron-down right-icon"></i>
+            </div>
+            <div class="jama-or-divider">या नया नाम लिखें</div>
+            <div class="jama-input-icon">
+              <i class="ti ti-user"></i>
+              <input type="text" id="jamaExistingNewName" placeholder="नाम लिखें">
+            </div>
+          </div>
+          <div id="jamaNewMemberWrap" style="display:none;">
+            <div class="jama-input-icon">
+              <i class="ti ti-user"></i>
+              <input type="text" id="jamaNewMemberName" placeholder="नाम लिखें">
+            </div>
+          </div>
+        </div>
+
+        <div class="jama-card">
+          <label class="jama-label">जमा का प्रकार</label>
+          <div class="jama-type-grid">
+            <div class="jama-type-card active" data-type="masik">
+              <i class="ti ti-calendar" style="color:var(--blue-600);"></i> मासिक जमा
+              <div class="radio-dot"></div>
+            </div>
+            <div class="jama-type-card" data-type="chanda">
+              <i class="ti ti-users" style="color:var(--green-600);"></i> चंदा जमा
+              <div class="radio-dot"></div>
+            </div>
+            <div class="jama-type-card" data-type="ganesh">
+              <i class="ti ti-flame" style="color:var(--amber-500);"></i> गणेश चतुर्थी जमा
+              <div class="radio-dot"></div>
+            </div>
+            <div class="jama-type-card" data-type="sahyog">
+              <i class="ti ti-heart-handshake" style="color:var(--purple-500);"></i> सहयोग जमा
+              <div class="radio-dot"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="jama-row">
+          <div class="jama-card half">
+            <label class="jama-label">भुगतान माध्यम</label>
+            <div class="jama-input-icon">
+              <i class="ti ti-wallet"></i>
+              <select id="jamaPaymentMethod">
+                <option value="cash">नकद (Cash)</option>
+                <option value="upi">UPI</option>
+                <option value="bank">Bank</option>
+              </select>
+              <i class="ti ti-chevron-down right-icon"></i>
+            </div>
+          </div>
+          <div class="jama-card half">
+            <label class="jama-label">रकम (₹)</label>
+            <div class="jama-input-icon">
+              <i class="ti ti-currency-rupee"></i>
+              <input type="number" id="jamaAmountNew" placeholder="रकम दर्ज करें">
+            </div>
+          </div>
+        </div>
+
+        <div class="jama-row">
+          <div class="jama-card half">
+            <label class="jama-label">तारीख</label>
+            <div class="jama-input-icon">
+              <i class="ti ti-calendar-event"></i>
+              <input type="date" id="jamaDateNew">
+            </div>
+          </div>
+          <div class="jama-card half udhaari-card">
+            <div class="udhaari-head">चंदा (उधारी) <i class="ti ti-help-circle" style="font-size:14px;"></i></div>
+            <div class="udhaari-val" id="jamaUdhaariVal">₹0</div>
+            <div class="udhaari-note">यह राशि कुल जमा में नहीं जोड़ी जाएगी</div>
+          </div>
+        </div>
+
+        <div class="jama-info-note">
+          <i class="ti ti-info-circle"></i>
+          <span>नोट: मासिक जमा, गणेश चतुर्थी जमा और सहयोग जमा की राशि कुल जमा में जोड़ी जाएगी।<br>चंदा (उधारी) की राशि कुल में शामिल नहीं होगी।</span>
+        </div>
+
+        <button class="primary-btn green" id="jamaSubmitBtnNew" style="height:54px; font-size:16px; border-radius:16px; margin-top:8px;">
+          <i class="ti ti-device-floppy" style="font-size:22px;"></i> जमा करें
+        </button>
+      </div>
+    </div>
+
     <div class="screen" id="screen-report">
       <div class="report-head">
         <h2 class="report-title">लेन-देन रिपोर्ट</h2>
@@ -534,7 +690,9 @@ function renderMembers(filter){
 
 function populateMemberSelect(){
   const sel = document.getElementById('jamaMember');
-  sel.innerHTML = members.map(m => `<option value="${m.id}">${m.name} — ${m.village}</option>`).join('');
+  if(sel) sel.innerHTML = members.map(m => `<option value="${m.id}">${m.name} — ${m.village}</option>`).join('');
+  const selNew = document.getElementById('jamaMemberSelect');
+  if(selNew) selNew.innerHTML = '<option value="">सदस्य चुनें...</option>' + members.map(m => `<option value="${m.id}">${m.name} — ${m.village}</option>`).join('');
 }
 
 function renderReportTable(){
@@ -630,7 +788,7 @@ function setLendeenMode(mode){
 document.getElementById('ldJamaTab').addEventListener('click', ()=>setLendeenMode('jama'));
 document.getElementById('ldExpenseTab').addEventListener('click', ()=>setLendeenMode('expense'));
 
-document.getElementById('qbJama').addEventListener('click', ()=>{ navigateTo('collection'); setLendeenMode('jama'); });
+document.getElementById('qbJama').addEventListener('click', ()=>{ navigateTo('jama'); });
 document.getElementById('qbExpense').addEventListener('click', ()=>{ navigateTo('collection'); setLendeenMode('expense'); });
 document.getElementById('qbReport').addEventListener('click', ()=>navigateTo('report'));
 
@@ -759,6 +917,84 @@ document.getElementById('closeSettings').addEventListener('click', () => {
 document.getElementById('settingsOverlay').addEventListener('click', () => {
   document.getElementById('settingsSidebar').classList.remove('show');
   document.getElementById('settingsOverlay').classList.remove('show');
+});
+
+// Jama Form JS
+const jamaDateNew = document.getElementById('jamaDateNew');
+if(jamaDateNew) jamaDateNew.value = new Date().toISOString().split('T')[0];
+
+let selectedJamaType = 'masik';
+const jamaTypeCards = document.querySelectorAll('.jama-type-card');
+jamaTypeCards.forEach(card => {
+  card.addEventListener('click', () => {
+    jamaTypeCards.forEach(c => c.classList.remove('active'));
+    card.classList.add('active');
+    selectedJamaType = card.dataset.type;
+  });
+});
+
+let isNewMemberJama = false;
+const toggleBtn = document.getElementById('jamaToggleNewMemberBtn');
+if(toggleBtn){
+  toggleBtn.addEventListener('click', () => {
+    isNewMemberJama = !isNewMemberJama;
+    document.getElementById('jamaExistingMemberWrap').style.display = isNewMemberJama ? 'none' : 'block';
+    document.getElementById('jamaNewMemberWrap').style.display = isNewMemberJama ? 'block' : 'none';
+    toggleBtn.innerHTML = isNewMemberJama ? '<i class="ti ti-list"></i> लिस्ट से चुनें' : '<i class="ti ti-plus"></i> नया सदस्य';
+  });
+}
+
+const jamaAmountNew = document.getElementById('jamaAmountNew');
+if(jamaAmountNew) {
+  jamaAmountNew.addEventListener('input', (e) => {
+    // If chanda (udhaari) was a different type, we'd update value here. 
+    // We'll leave it as ₹0 for now per reference unless they toggle "Udhaari".
+    // Currently, there's no UI for "udhaari toggle", just "Chanda jama".
+  });
+}
+
+document.getElementById('jamaTopSettingsBtn')?.addEventListener('click', () => {
+  document.getElementById('settingsSidebar').classList.add('show');
+  document.getElementById('settingsOverlay').classList.add('show');
+});
+
+document.getElementById('jamaSubmitBtnNew')?.addEventListener('click', () => {
+  const amt = Number(jamaAmountNew.value);
+  if(!amt || amt <= 0) {
+    alert("कृपया सही रकम दर्ज करें!");
+    return;
+  }
+  
+  let memberName = "";
+  if(isNewMemberJama) {
+    memberName = document.getElementById('jamaNewMemberName').value.trim();
+  } else {
+    // Check if typed in the text field instead of select
+    const selVal = document.getElementById('jamaMemberSelect').value;
+    const txtVal = document.getElementById('jamaExistingNewName').value.trim();
+    if(selVal) {
+      const mem = members.find(m => String(m.id) === String(selVal));
+      memberName = mem ? mem.name : "";
+    } else if(txtVal) {
+      memberName = txtVal;
+    }
+  }
+  
+  if(!memberName) {
+    alert("कृपया सदस्य चुनें या नाम लिखें!");
+    return;
+  }
+  
+  // Real app logic would push to jamaEntries
+  // For demo, we just show alert and reset
+  alert(memberName + " का ₹" + amt + " (" + document.querySelector('.jama-type-card.active').textContent.trim() + ") सफलतापूर्वक जमा हो गया!");
+  jamaAmountNew.value = '';
+  if(isNewMemberJama) document.getElementById('jamaNewMemberName').value = '';
+  else {
+    document.getElementById('jamaMemberSelect').value = '';
+    document.getElementById('jamaExistingNewName').value = '';
+  }
+  navigateTo('home');
 });
 
 // init
