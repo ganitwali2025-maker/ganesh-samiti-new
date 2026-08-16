@@ -15,173 +15,254 @@
     --amber-50:#FBF3E6; --amber-400:#E0A63C; --amber-600:#A8791F; --amber-800:#6B4C12;
     --green-50:#EAF6EE; --green-400:#4CAF6E; --green-600:#2E7D46; --green-800:#1D4E2C;
     --red-50:#FCEEEE; --red-400:#DD6363; --red-600:#B23A3A; --red-800:#7A2323;
-    --paper:#F3F8FC; --card:#FFFFFF; --ink:#0C1B33; --ink-soft:#4C6482; --ink-mute:#8CA0B5;
-    --line:#DCEBF5; --line-strong:#B9D8EB; --radius:14px;
+    --paper:#F4F6F9; --card:#FFFFFF; --ink:#0C1B33; --ink-soft:#4C6482; --ink-mute:#8CA0B5;
+    --line:#E2E8F0; --line-strong:#CBD5E1; --radius:16px;
     --font-en:'Poppins',sans-serif; --font-hi:'Noto Sans Devanagari',sans-serif;
   }
-  *{box-sizing:border-box;}
-  body{margin:0;background:var(--paper);font-family:var(--font-en),var(--font-hi);color:var(--ink);width:100%;overflow-x:hidden;}
-  .app{width:100%;min-height:100dvh;background:var(--paper);display:flex;flex-direction:column;position:relative;}
-  @media (min-width: 480px) { .app { max-width:420px; margin:0 auto; box-shadow:0 0 20px rgba(0,0,0,0.05); } }
+  *{box-sizing:border-box; margin:0; padding:0; -webkit-tap-highlight-color: transparent;}
+  
+  body {
+    background: var(--paper);
+    font-family: var(--font-en), var(--font-hi);
+    color: var(--ink);
+    width: 100%;
+    height: 100dvh;
+    overflow: hidden; /* Lock body scrolling */
+  }
+  
+  .app {
+    width: 100%;
+    height: 100dvh;
+    background: var(--paper);
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    overflow: hidden;
+  }
+  @media (min-width: 480px) { 
+    .app { max-width: 420px; margin: 0 auto; box-shadow: 0 0 20px rgba(0,0,0,0.05); } 
+  }
 
-  .topbar{display:flex;align-items:center;justify-content:space-between;padding:18px 20px 14px;background:linear-gradient(120deg,var(--blue-400) 0%,var(--blue-700) 65%,var(--blue-900) 100%);border-radius:0 0 24px 24px;color:#fff;}
-  .topbar .brand{display:flex;align-items:center;gap:10px;}
-  .brand-mark{width:38px;height:38px;border-radius:10px;background:rgba(255,255,255,0.15);display:flex;align-items:center;justify-content:center;font-size:18px;}
-  .brand-name{font-weight:600;font-size:17px;line-height:1.1;}
-  .brand-sub{font-size:11px;opacity:0.8;font-family:var(--font-hi);margin-top:1px;}
-  .samiti-logo{width:36px;height:36px;border-radius:50%;background:var(--amber-400);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;color:var(--amber-800);border:2px solid rgba(255,255,255,0.6);}
+  /* TOPBAR */
+  .topbar {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 20px 16px;
+    background: linear-gradient(135deg, var(--blue-600) 0%, var(--blue-800) 100%);
+    border-radius: 0 0 20px 20px;
+    color: #fff;
+    box-shadow: 0 4px 15px rgba(3, 46, 122, 0.15);
+    z-index: 10;
+  }
+  .topbar .brand { display: flex; align-items: center; gap: 12px; }
+  .menu-icon { font-size: 28px; display: flex; align-items: center; justify-content: center; opacity: 0.9; }
+  .brand-name { font-weight: 600; font-size: 19px; line-height: 1.1; font-family: var(--font-hi); }
+  .brand-sub { font-size: 11px; opacity: 0.8; font-family: var(--font-hi); margin-top: 2px; }
+  .samiti-logo { width: 38px; height: 38px; border-radius: 50%; background: var(--amber-400); display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 14px; color: var(--amber-800); border: 2px solid rgba(255,255,255,0.2); }
 
-  .net-card{background:linear-gradient(120deg,var(--blue-700),var(--blue-900));border-radius:18px;padding:18px 20px;color:#fff;margin-bottom:12px;}
-  .net-label{font-size:12px;opacity:0.85;font-family:var(--font-hi);}
-  .net-val{font-size:28px;font-weight:700;margin-top:4px;}
+  /* CONTENT AREA */
+  .content { flex: 1; overflow-y: auto; padding: 20px 16px 24px; }
+  .content::-webkit-scrollbar { width: 4px; }
+  .content::-webkit-scrollbar-thumb { background: var(--line-strong); border-radius: 4px; }
+  .screen { display: none; }
+  .screen.active { display: block; }
+  h2.section-title { font-size: 16px; font-weight: 700; margin: 4px 0 14px; display: flex; align-items: center; gap: 8px; color: var(--ink); }
+  h2.section-title .hi { font-family: var(--font-hi); font-weight: 500; color: var(--ink-soft); font-size: 13px; }
 
-  .balance-row{display:flex;gap:10px;margin-bottom:16px;}
-  .balance-card{flex:1;background:var(--card);border-radius:var(--radius);padding:12px 14px;border:0.5px solid var(--line);}
-  .balance-icon{width:26px;height:26px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:14px;margin-bottom:6px;}
-  .balance-icon.in{background:var(--green-50);color:var(--green-600);}
-  .balance-icon.out{background:var(--red-50);color:var(--red-600);}
-  .balance-label{font-size:11px;color:var(--ink-mute);font-family:var(--font-hi);}
-  .balance-val{font-size:19px;font-weight:600;margin-top:2px;}
-  .balance-val.pos{color:var(--green-600);}
-  .balance-val.neg{color:var(--red-600);}
+  /* NET BALANCE CARD */
+  .net-card { background: linear-gradient(135deg, var(--blue-800), var(--blue-900)); border-radius: var(--radius); padding: 20px; color: #fff; margin-bottom: 16px; box-shadow: 0 8px 20px rgba(3, 46, 122, 0.15); }
+  .net-label { font-size: 12px; opacity: 0.85; font-family: var(--font-hi); }
+  .net-val { font-size: 32px; font-weight: 700; margin-top: 4px; letter-spacing: -0.5px; }
 
-  .quick-row{display:flex;gap:8px;margin-bottom:20px;}
-  .quick-btn{flex:1;background:var(--card);border:0.5px solid var(--line);border-radius:12px;padding:12px 6px;display:flex;flex-direction:column;align-items:center;gap:6px;cursor:pointer;color:var(--blue-700);}
-  .quick-btn:active{background:var(--blue-50);}
-  .quick-btn i{font-size:19px;color:var(--blue-600);}
-  .quick-btn span{font-size:11px;font-family:var(--font-hi);color:var(--ink);}
+  /* BALANCE ROW (IN / OUT) */
+  .balance-row { display: flex; gap: 12px; margin-bottom: 20px; }
+  .balance-card { flex: 1; background: var(--card); border-radius: var(--radius); padding: 16px; border: 1px solid var(--line); box-shadow: 0 2px 8px rgba(0,0,0,0.02); }
+  .balance-icon { width: 32px; height: 32px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 18px; margin-bottom: 10px; }
+  .balance-icon.in { background: var(--green-50); color: var(--green-600); }
+  .balance-icon.out { background: var(--red-50); color: var(--red-600); }
+  .balance-label { font-size: 12px; color: var(--ink-mute); font-family: var(--font-hi); }
+  .balance-val { font-size: 22px; font-weight: 600; margin-top: 4px; }
+  .balance-val.pos { color: var(--green-600); }
+  .balance-val.neg { color: var(--red-600); }
 
-  .activity-item{display:flex;align-items:center;gap:10px;background:var(--card);border:0.5px solid var(--line);border-radius:12px;padding:10px 12px;margin-bottom:8px;}
-  .activity-icon{width:34px;height:34px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0;}
-  .activity-icon.jama{background:var(--green-50);color:var(--green-600);}
-  .activity-icon.expense{background:var(--red-50);color:var(--red-600);}
-  .activity-mid{flex:1;min-width:0;}
-  .activity-title{font-size:13px;font-weight:500;margin:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-  .activity-sub{font-size:11px;color:var(--ink-mute);margin:1px 0 0;font-family:var(--font-hi);}
-  .activity-amt{font-size:13px;font-weight:600;flex-shrink:0;}
-  .activity-amt.pos{color:var(--green-600);}
-  .activity-amt.neg{color:var(--red-600);}
+  /* QUICK ACTIONS */
+  .quick-row { display: flex; gap: 12px; margin-bottom: 24px; }
+  .quick-btn { flex: 1; background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 14px 8px; display: flex; flex-direction: row; align-items: center; justify-content: center; gap: 8px; cursor: pointer; box-shadow: 0 2px 6px rgba(0,0,0,0.02); transition: all 0.15s; }
+  .quick-btn:active { transform: scale(0.97); background: var(--blue-50); border-color: var(--blue-100); }
+  .quick-btn i { font-size: 20px; color: var(--blue-800); }
+  .quick-btn span { font-size: 13px; font-weight: 500; font-family: var(--font-hi); color: var(--ink); }
 
-  .content{flex:1;padding:16px 16px 90px;overflow-y:auto;}
-  .screen{display:none;}
-  .screen.active{display:block;}
+  /* RECENT ACTIVITY */
+  .entries-title { font-size: 14px; font-weight: 700; margin: 0 0 12px; display: flex; align-items: center; justify-content: space-between; }
+  .entries-title span.hi { font-family: var(--font-hi); font-weight: 500; color: var(--blue-600); font-size: 12px; }
+  .activity-item { display: flex; align-items: center; gap: 12px; background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 12px 14px; margin-bottom: 10px; box-shadow: 0 2px 6px rgba(0,0,0,0.015); }
+  .activity-icon { width: 38px; height: 38px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; }
+  .activity-icon.jama { background: var(--green-50); color: var(--green-600); }
+  .activity-icon.expense { background: var(--red-50); color: var(--red-600); }
+  .activity-mid { flex: 1; min-width: 0; }
+  .activity-title { font-size: 14px; font-weight: 600; margin: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .activity-sub { font-size: 12px; color: var(--ink-soft); margin: 2px 0 0; font-family: var(--font-hi); }
+  .activity-amt { font-size: 15px; font-weight: 600; flex-shrink: 0; }
+  .activity-amt.pos { color: var(--green-600); }
+  .activity-amt.neg { color: var(--red-600); }
+  
+  .empty-state { background: var(--card); border: 1px solid var(--line); border-radius: 16px; padding: 32px 20px; display: flex; flex-direction: column; align-items: center; text-align: center; box-shadow: 0 2px 8px rgba(0,0,0,0.02); }
+  .empty-state i { font-size: 48px; color: var(--blue-100); margin-bottom: 12px; }
+  .empty-state p { font-size: 13px; color: var(--ink-soft); font-family: var(--font-hi); }
 
-  h2.section-title{font-size:15px;font-weight:600;margin:4px 0 12px;display:flex;align-items:center;gap:8px;}
-  h2.section-title .hi{font-family:var(--font-hi);font-weight:500;color:var(--ink-soft);font-size:12px;}
+  /* FORMS & OTHER SCREENS */
+  .search-row { display: flex; gap: 8px; margin-bottom: 16px; }
+  .search-row input { flex: 1; height: 44px; border-radius: 12px; border: 1px solid var(--line-strong); padding: 0 14px; font-size: 14px; background: var(--card); }
+  .search-row input:focus { outline: none; border-color: var(--blue-400); box-shadow: 0 0 0 3px var(--blue-50); }
+  
+  .member-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .member-card { background: var(--card); border-radius: 16px; border: 1px solid var(--line); padding: 16px; text-align: center; cursor: pointer; transition: all 0.15s; }
+  .member-card:active { transform: scale(0.97); }
+  .member-photo { width: 56px; height: 56px; border-radius: 50%; margin: 0 auto 10px; display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 18px; color: var(--blue-800); background: var(--blue-50); }
+  .member-name { font-size: 14px; font-weight: 600; margin: 0; }
+  .member-post { font-size: 12px; color: var(--blue-600); font-family: var(--font-hi); margin: 3px 0; }
+  .member-village { font-size: 11px; color: var(--ink-mute); margin: 0; display: flex; align-items: center; justify-content: center; gap: 3px; }
 
-  .search-row{display:flex;gap:8px;margin-bottom:14px;}
-  .search-row input{flex:1;height:38px;border-radius:10px;border:0.5px solid var(--line-strong);padding:0 12px;font-size:13px;background:var(--card);}
-  .search-row input:focus{outline:none;border-color:var(--blue-400);box-shadow:0 0 0 3px var(--blue-50);}
+  /* TOGGLES */
+  .toggle-wrap { display: flex; border: 1px solid var(--line-strong); border-radius: 999px; padding: 4px; background: var(--card); margin-bottom: 20px; }
+  .toggle-opt { flex: 1; text-align: center; padding: 10px 0; border-radius: 999px; font-size: 14px; font-weight: 600; cursor: pointer; transition: all 0.15s; color: var(--ink-soft); }
+  .toggle-opt.active-cash { background: var(--green-50); color: var(--green-800); }
+  .toggle-opt.active-credit { background: var(--amber-50); color: var(--amber-800); }
 
-  .member-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
-  .member-card{background:var(--card);border-radius:16px;border:0.5px solid var(--line);padding:12px;text-align:center;cursor:pointer;transition:transform .15s, box-shadow .15s;position:relative;}
-  .member-card:active{transform:scale(0.97);}
-  .member-card:hover{box-shadow:0 4px 14px rgba(29,68,104,0.08);border-color:var(--line-strong);}
-  .member-photo{width:52px;height:52px;border-radius:50%;margin:0 auto 8px;display:flex;align-items:center;justify-content:center;font-weight:600;font-size:15px;color:var(--blue-800);background:var(--blue-100);}
-  .member-name{font-size:13px;font-weight:600;margin:0;}
-  .member-post{font-size:11px;color:var(--blue-600);font-family:var(--font-hi);margin:2px 0;}
-  .member-village{font-size:11px;color:var(--ink-mute);margin:0;display:flex;align-items:center;justify-content:center;gap:3px;}
+  .field-group { margin-bottom: 16px; }
+  .field-label { font-size: 12px; color: var(--ink-soft); margin-bottom: 6px; display: block; font-family: var(--font-hi); font-weight: 500; }
+  .field-label .en { font-family: var(--font-en); color: var(--ink-mute); font-weight: 400; }
+  input[type=text], input[type=number], input[type=date], select { width: 100%; height: 44px; border-radius: 12px; border: 1px solid var(--line-strong); padding: 0 14px; font-size: 14px; background: var(--card); font-family: var(--font-en); }
+  input:focus, select:focus { outline: none; border-color: var(--blue-400); box-shadow: 0 0 0 3px var(--blue-50); }
 
-  .toggle-wrap{display:flex;border:0.5px solid var(--line-strong);border-radius:999px;padding:3px;background:var(--card);margin-bottom:16px;}
-  .toggle-opt{flex:1;text-align:center;padding:9px 0;border-radius:999px;font-size:13px;font-weight:500;cursor:pointer;transition:all .15s;color:var(--ink-soft);}
-  .toggle-opt.active-cash{background:var(--green-50);color:var(--green-800);}
-  .toggle-opt.active-credit{background:var(--amber-50);color:var(--amber-800);}
+  .credit-date-box { background: var(--amber-50); border-radius: 12px; padding: 16px; margin-bottom: 16px; border: 1px solid #F0DCB0; }
+  .credit-date-box .field-label { color: var(--amber-800); }
 
-  .field-group{margin-bottom:16px;}
-  .field-label{font-size:12px;color:var(--ink-soft);margin-bottom:6px;display:block;font-family:var(--font-hi);}
-  .field-label .en{font-family:var(--font-en);color:var(--ink-mute);}
-  input[type=text],input[type=number],input[type=date],select{width:100%;height:40px;border-radius:10px;border:0.5px solid var(--line-strong);padding:0 12px;font-size:14px;background:var(--card);font-family:var(--font-en);}
-  input:focus,select:focus{outline:none;border-color:var(--blue-400);box-shadow:0 0 0 3px var(--blue-50);}
+  .check-list { display: flex; flex-direction: column; gap: 8px; margin-bottom: 16px; }
+  .check-item { display: flex; align-items: center; gap: 10px; background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 12px 14px; font-size: 14px; cursor: pointer; font-weight: 500;}
+  .check-item input { width: 18px; height: 18px; accent-color: var(--blue-600); }
+  .check-item .hi { font-family: var(--font-hi); }
+  .check-item .en { color: var(--ink-mute); font-size: 12px; font-weight: 400; }
 
-  .credit-date-box{background:var(--amber-50);border-radius:12px;padding:12px;margin-bottom:16px;border:0.5px solid #F0DCB0;}
-  .credit-date-box .field-label{color:var(--amber-800);}
+  .cat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px; }
+  .cat-btn { border-radius: 12px; padding: 14px 8px; text-align: center; font-size: 13px; font-weight: 500; cursor: pointer; border: 1px solid var(--line); background: var(--card); color: var(--ink-soft); display: flex; flex-direction: column; align-items: center; gap: 6px; transition: all 0.15s; }
+  .cat-btn i { font-size: 22px; }
+  .cat-btn.sel { background: var(--blue-50); border-color: var(--blue-400); color: var(--blue-800); transform: scale(0.97); }
 
-  .check-list{display:flex;flex-direction:column;gap:8px;margin-bottom:16px;}
-  .check-item{display:flex;align-items:center;gap:10px;background:var(--card);border:0.5px solid var(--line);border-radius:10px;padding:10px 12px;font-size:13px;cursor:pointer;}
-  .check-item input{width:16px;height:16px;accent-color:var(--blue-600);}
-  .check-item .hi{font-family:var(--font-hi);}
-  .check-item .en{color:var(--ink-mute);font-size:11px;}
+  .primary-btn { width: 100%; height: 48px; border-radius: 14px; border: none; background: var(--blue-600); color: #fff; font-size: 15px; font-weight: 600; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; box-shadow: 0 4px 12px rgba(13, 111, 199, 0.2); }
+  .primary-btn:active { transform: scale(0.98); background: var(--blue-800); }
+  .primary-btn.green { background: var(--green-600); box-shadow: 0 4px 12px rgba(46, 125, 70, 0.2); }
+  .primary-btn.green:active { background: var(--green-800); }
 
-  .cat-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:16px;}
-  .cat-btn{border-radius:10px;padding:12px 8px;text-align:center;font-size:12px;font-weight:500;cursor:pointer;border:0.5px solid var(--line);background:var(--card);color:var(--ink-soft);display:flex;flex-direction:column;align-items:center;gap:4px;}
-  .cat-btn i{font-size:18px;}
-  .cat-btn.sel{background:var(--blue-50);border-color:var(--blue-400);color:var(--blue-800);}
+  .err-msg { color: var(--red-600); font-size: 12px; margin: -10px 0 12px; display: none; font-weight: 500; }
 
-  .primary-btn{width:100%;height:44px;border-radius:12px;border:none;background:var(--blue-400);color:#00243D;font-size:14px;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;}
-  .primary-btn:active{background:var(--blue-600);color:#fff;}
-  .primary-btn.green{background:var(--green-600);color:#fff;}
-  .primary-btn.green:active{background:var(--green-800);}
+  /* REPORTS */
+  table.data-sheet { width: 100%; border-collapse: collapse; font-size: 13px; background: var(--card); border-radius: 14px; overflow: hidden; border: 1px solid var(--line); box-shadow: 0 2px 6px rgba(0,0,0,0.02); }
+  table.data-sheet th { background: var(--blue-50); color: var(--blue-800); font-weight: 600; text-align: left; padding: 12px 14px; font-size: 12px; }
+  table.data-sheet td { padding: 12px 14px; border-top: 1px solid var(--line); }
+  table.data-sheet tr:hover td { background: var(--paper); }
+  .tag-pill { font-size: 11px; padding: 4px 10px; border-radius: 999px; font-weight: 500; }
+  .tag-cash { background: var(--green-50); color: var(--green-800); }
+  .tag-credit { background: var(--amber-50); color: var(--amber-800); }
+  .empty-note { text-align: center; color: var(--ink-mute); font-size: 13px; padding: 32px 0; }
 
-  .err-msg{color:var(--red-600);font-size:12px;margin:-10px 0 12px;display:none;}
+  .report-head { margin: 4px 0 20px; }
+  .report-title { font-size: 20px; font-weight: 700; margin: 0; }
+  .report-subtitle { font-size: 13px; color: var(--ink-soft); font-family: var(--font-hi); margin: 4px 0 0; }
 
-  .entries-title{font-size:13px;font-weight:600;margin:22px 0 10px;display:flex;align-items:center;justify-content:space-between;}
-  .entries-title span.hi{font-family:var(--font-hi);font-weight:500;color:var(--ink-soft);font-size:11px;}
+  .report-summary { display: flex; gap: 16px; background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 16px; margin-bottom: 16px; box-shadow: 0 2px 6px rgba(0,0,0,0.02); }
+  .rs-item { flex: 1; font-size: 12px; color: var(--ink-soft); display: flex; flex-direction: column; gap: 4px; }
+  .rs-item b { color: var(--ink); font-size: 16px; font-weight: 700; }
+  .rs-dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; margin-right: 6px; }
+  .rs-dot.in { background: var(--green-600); }
+  .rs-dot.out { background: var(--red-600); }
 
-  table.data-sheet{width:100%;border-collapse:collapse;font-size:12px;background:var(--card);border-radius:12px;overflow:hidden;border:0.5px solid var(--line);}
-  table.data-sheet th{background:var(--blue-50);color:var(--blue-800);font-weight:600;text-align:left;padding:8px 10px;font-size:11px;}
-  table.data-sheet td{padding:8px 10px;border-top:0.5px solid var(--line);}
-  table.data-sheet tr:hover td{background:var(--paper);}
-  .tag-pill{font-size:10px;padding:2px 8px;border-radius:999px;font-weight:500;}
-  .tag-cash{background:var(--green-50);color:var(--green-800);}
-  .tag-credit{background:var(--amber-50);color:var(--amber-800);}
-  .empty-note{text-align:center;color:var(--ink-mute);font-size:12px;padding:24px 0;}
+  .filter-row { display: flex; gap: 8px; margin-bottom: 16px; }
+  .filter-chip { flex: 1; text-align: center; padding: 10px 0; border-radius: 999px; font-size: 13px; font-weight: 600; border: 1px solid var(--line-strong); color: var(--ink-soft); cursor: pointer; background: var(--card); transition: all 0.15s; }
+  .filter-chip.active { background: var(--blue-600); color: #fff; border-color: var(--blue-600); }
 
-  .report-head{margin:4px 0 16px;}
-  .report-title{font-size:19px;font-weight:600;margin:0;}
-  .report-subtitle{font-size:12px;color:var(--ink-soft);font-family:var(--font-hi);margin:3px 0 0;}
+  .row-type-jama { color: var(--green-600); font-weight: 500; }
+  .row-type-expense { color: var(--red-600); font-weight: 500; }
 
-  .report-summary{display:flex;gap:16px;background:var(--card);border:0.5px solid var(--line);border-radius:12px;padding:12px 14px;margin-bottom:14px;}
-  .rs-item{font-size:12px;color:var(--ink-soft);display:flex;align-items:center;gap:6px;}
-  .rs-item b{color:var(--ink);font-size:13px;font-weight:600;}
-  .rs-dot{width:8px;height:8px;border-radius:50%;display:inline-block;}
-  .rs-dot.in{background:var(--green-600);}
-  .rs-dot.out{background:var(--red-600);}
+  /* BOTTOM NAVIGATION */
+  .bottom-nav {
+    flex-shrink: 0;
+    background: var(--card);
+    border-top: 1px solid var(--line);
+    display: flex;
+    justify-content: space-around;
+    padding: 0;
+    border-radius: 20px 20px 0 0;
+    box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.04);
+    z-index: 10;
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+  .nav-item {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    padding: 12px 0 10px;
+    cursor: pointer;
+    color: var(--ink-mute);
+    position: relative;
+    transition: color 0.2s;
+  }
+  .nav-item::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 32px;
+    height: 3px;
+    border-radius: 0 0 3px 3px;
+    background: var(--blue-600);
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+  .nav-item.active { color: var(--blue-600); }
+  .nav-item.active::before { opacity: 1; }
+  .nav-item i { font-size: 24px; }
+  .nav-item span { font-size: 12px; font-weight: 600; font-family: var(--font-hi); }
 
-  .filter-row{display:flex;gap:8px;margin-bottom:14px;}
-  .filter-chip{padding:7px 16px;border-radius:999px;font-size:12px;font-weight:500;border:0.5px solid var(--line-strong);color:var(--ink-soft);cursor:pointer;background:var(--card);}
-  .filter-chip.active{background:var(--blue-400);color:#00243D;border-color:var(--blue-400);}
-
-  .row-type-jama{color:var(--green-600);}
-  .row-type-expense{color:var(--red-600);}
-
-  .bottom-nav{position:absolute;bottom:0;left:0;right:0;background:var(--card);border-top:0.5px solid var(--line);display:flex;padding:8px 10px calc(8px + env(safe-area-inset-bottom));border-radius:20px 20px 0 0;box-shadow:0 -4px 14px rgba(29,68,104,0.06);}
-  .nav-item{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;padding:6px 0;border-radius:12px;cursor:pointer;color:var(--ink-mute);}
-  .nav-item i{font-size:20px;}
-  .nav-item span{font-size:10px;font-family:var(--font-hi);}
-  .nav-item.active{color:var(--blue-600);}
-
-  .modal-backdrop{position:fixed;inset:0;background:rgba(19,45,70,0.45);display:none;align-items:flex-end;justify-content:center;z-index:50;}
-  .modal-backdrop.show{display:flex;}
-  .profile-sheet{width:100%;max-width:420px;background:var(--paper);border-radius:22px 22px 0 0;padding:20px;max-height:82vh;overflow-y:auto;}
-  .sheet-handle{width:36px;height:4px;background:var(--line-strong);border-radius:2px;margin:0 auto 16px;}
-  .profile-head{display:flex;align-items:center;gap:14px;margin-bottom:18px;}
-  .profile-photo{width:64px;height:64px;border-radius:50%;background:var(--blue-100);display:flex;align-items:center;justify-content:center;font-weight:600;font-size:20px;color:var(--blue-800);}
-  .profile-name{font-size:17px;font-weight:600;margin:0;}
-  .profile-post{color:var(--blue-600);font-family:var(--font-hi);font-size:13px;margin:2px 0;}
-  .profile-village{color:var(--ink-mute);font-size:12px;}
-  .profile-stats{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px;}
-  .pstat{background:var(--card);border:0.5px solid var(--line);border-radius:12px;padding:10px 12px;}
-  .pstat-label{font-size:11px;color:var(--ink-mute);font-family:var(--font-hi);}
-  .pstat-val{font-size:16px;font-weight:600;margin-top:2px;}
-  .close-x{margin-left:auto;background:var(--paper);border:0.5px solid var(--line);width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;}
-  .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0;}
+  /* PROFILE MODAL */
+  .modal-backdrop { position: fixed; inset: 0; background: rgba(12, 27, 51, 0.6); display: none; align-items: flex-end; justify-content: center; z-index: 50; }
+  .modal-backdrop.show { display: flex; }
+  .profile-sheet { width: 100%; max-width: 420px; background: var(--paper); border-radius: 24px 24px 0 0; padding: 24px 20px; max-height: 85vh; overflow-y: auto; }
+  .sheet-handle { width: 40px; height: 5px; background: var(--line-strong); border-radius: 4px; margin: 0 auto 20px; }
+  .profile-head { display: flex; align-items: center; gap: 16px; margin-bottom: 20px; }
+  .profile-photo { width: 68px; height: 68px; border-radius: 50%; background: var(--blue-100); display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 22px; color: var(--blue-800); }
+  .profile-name { font-size: 18px; font-weight: 700; margin: 0; }
+  .profile-post { color: var(--blue-600); font-family: var(--font-hi); font-size: 13px; font-weight: 500; margin: 4px 0; }
+  .profile-village { color: var(--ink-mute); font-size: 12px; display: flex; align-items: center; gap: 4px; }
+  .profile-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 20px; }
+  .pstat { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 16px; box-shadow: 0 2px 6px rgba(0,0,0,0.015); }
+  .pstat-label { font-size: 12px; color: var(--ink-mute); font-family: var(--font-hi); margin-bottom: 4px; }
+  .pstat-val { font-size: 18px; font-weight: 700; }
+  .close-x { margin-left: auto; background: var(--paper); border: 1px solid var(--line-strong); width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; color: var(--ink-soft); font-size: 18px; }
 </style>
 </head>
 <body>
 <div class="app">
-  <h1 class="sr-only">खाता-बही: समिति सदस्यों का खाता एवं वित्तीय प्रबंधन ऐप</h1>
 
+  <!-- FIXED TOPBAR -->
   <div class="topbar">
     <div class="brand">
-      <div class="brand-mark"><i class="ti ti-book-2"></i></div>
+      <div class="menu-icon"><i class="ti ti-menu-2"></i></div>
       <div>
-        <p class="brand-name">खाता-बही</p>
-        <p class="brand-sub">खाता-बही · समिति लेखा</p>
+        <p class="brand-name">हमारी ऐप</p>
+        <p class="brand-sub">सहज रखें - नियमित रखें</p>
       </div>
     </div>
     <div class="samiti-logo">SS</div>
   </div>
 
+  <!-- SCROLLABLE CONTENT -->
   <div class="content">
 
     <!-- HOME SCREEN -->
@@ -195,12 +276,12 @@
 
       <div class="balance-row">
         <div class="balance-card">
-          <div class="balance-icon in"><i class="ti ti-arrow-down-left"></i></div>
+          <div class="balance-icon in"><i class="ti ti-arrow-down"></i></div>
           <div class="balance-label">कुल जमा · Total in</div>
           <div class="balance-val pos" id="totalIn">₹0</div>
         </div>
         <div class="balance-card">
-          <div class="balance-icon out"><i class="ti ti-arrow-up-right"></i></div>
+          <div class="balance-icon out"><i class="ti ti-arrow-up"></i></div>
           <div class="balance-label">कुल खर्च · Total out</div>
           <div class="balance-val neg" id="totalOut">₹0</div>
         </div>
@@ -208,8 +289,8 @@
 
       <div class="quick-row">
         <div class="quick-btn" id="qbJama"><i class="ti ti-wallet"></i><span>नई जमा</span></div>
-        <div class="quick-btn" id="qbExpense"><i class="ti ti-receipt"></i><span>नया खर्च</span></div>
-        <div class="quick-btn" id="qbReport"><i class="ti ti-report"></i><span>रिपोर्ट</span></div>
+        <div class="quick-btn" id="qbExpense"><i class="ti ti-hand-coins"></i><span>नया खर्च</span></div>
+        <div class="quick-btn" id="qbReport"><i class="ti ti-file-invoice"></i><span>रिपोर्ट</span></div>
       </div>
 
       <div class="entries-title">Haal ki gatividhi <span class="hi">हाल की गतिविधि</span></div>
@@ -225,13 +306,13 @@
       <div class="member-grid" id="memberGrid"></div>
     </div>
 
-    <!-- LEN-DEN (TRANSACTIONS) SCREEN -->
-    <div class="screen" id="screen-lendeen">
-      <h2 class="section-title">लेन-देन <span class="hi">Jama · Kharch</span></h2>
+    <!-- COLLECTION SCREEN (Transactions) -->
+    <div class="screen" id="screen-collection">
+      <h2 class="section-title">Collection <span class="hi">कलेक्शन · खर्च</span></h2>
 
       <div class="toggle-wrap" id="lendeenToggle">
-        <div class="toggle-opt active-cash" data-inner="jama" id="ldJamaTab"><i class="ti ti-arrow-down-left" style="font-size:13px; vertical-align:-2px; margin-right:4px;"></i>जमा</div>
-        <div class="toggle-opt" data-inner="expense" id="ldExpenseTab"><i class="ti ti-arrow-up-right" style="font-size:13px; vertical-align:-2px; margin-right:4px;"></i>खर्च</div>
+        <div class="toggle-opt active-cash" data-inner="jama" id="ldJamaTab"><i class="ti ti-arrow-down-left" style="font-size:14px; margin-right:4px;"></i>जमा</div>
+        <div class="toggle-opt" data-inner="expense" id="ldExpenseTab"><i class="ti ti-arrow-up-right" style="font-size:14px; margin-right:4px;"></i>खर्च</div>
       </div>
 
       <!-- JAMA FORM -->
@@ -242,7 +323,7 @@
         </div>
 
         <label class="field-label">भुगतान प्रकार <span class="en">Payment type</span></label>
-        <div class="toggle-wrap" id="jamaToggle">
+        <div class="toggle-wrap" id="jamaToggle" style="margin-bottom:16px;">
           <div class="toggle-opt active-cash" data-mode="cash" id="jamaCashOpt">नकद Cash</div>
           <div class="toggle-opt" data-mode="credit" id="jamaCreditOpt">उधार Credit</div>
         </div>
@@ -300,8 +381,8 @@
       </div>
 
       <div class="report-summary">
-        <div class="rs-item"><span class="rs-dot in"></span>कुल जमा <b id="repIn">₹0</b></div>
-        <div class="rs-item"><span class="rs-dot out"></span>कुल खर्च <b id="repOut">₹0</b></div>
+        <div class="rs-item"><span class="rs-label"><span class="rs-dot in"></span>कुल जमा</span><b id="repIn">₹0</b></div>
+        <div class="rs-item"><span class="rs-label"><span class="rs-dot out"></span>कुल खर्च</span><b id="repOut">₹0</b></div>
       </div>
 
       <div class="filter-row" id="reportFilter">
@@ -313,13 +394,26 @@
       <div id="reportTableWrap"></div>
     </div>
 
-  </div>
+  </div> <!-- End Content -->
 
+  <!-- FIXED BOTTOM NAVIGATION -->
   <div class="bottom-nav">
-    <div class="nav-item active" data-screen="home"><i class="ti ti-home"></i><span>होम</span></div>
-    <div class="nav-item" data-screen="members"><i class="ti ti-users"></i><span>सदस्य</span></div>
-    <div class="nav-item" data-screen="lendeen"><i class="ti ti-arrows-exchange"></i><span>लेन-देन</span></div>
-    <div class="nav-item" data-screen="report"><i class="ti ti-report"></i><span>रिपोर्ट</span></div>
+    <div class="nav-item active" data-screen="home">
+      <i class="ti ti-home-filled"></i>
+      <span>होम</span>
+    </div>
+    <div class="nav-item" data-screen="members">
+      <i class="ti ti-user"></i>
+      <span>सदस्य</span>
+    </div>
+    <div class="nav-item" data-screen="collection">
+      <i class="ti ti-users"></i>
+      <span>कलेक्शन</span>
+    </div>
+    <div class="nav-item" data-screen="report">
+      <i class="ti ti-chart-bar"></i>
+      <span>रिपोर्ट</span>
+    </div>
   </div>
 
   <div class="modal-backdrop" id="profileModal">
@@ -335,10 +429,10 @@
         <div class="close-x" id="pfClose"><i class="ti ti-x"></i></div>
       </div>
       <div class="profile-stats">
-        <div class="pstat"><div class="pstat-label">कुल जमा</div><div class="pstat-val pos" id="pfTotalJama">₹0</div></div>
-        <div class="pstat"><div class="pstat-label">उधार बकाया</div><div class="pstat-val" id="pfCredit">₹0</div></div>
+        <div class="pstat"><div class="pstat-label">कुल जमा</div><div class="pstat-val pos" style="color:var(--green-600);" id="pfTotalJama">₹0</div></div>
+        <div class="pstat"><div class="pstat-label">उधार बकाया</div><div class="pstat-val" style="color:var(--red-600);" id="pfCredit">₹0</div></div>
       </div>
-      <div class="entries-title">Jama history <span class="hi">जमा इतिहास</span></div>
+      <div class="entries-title" style="margin-top:20px;">Jama history <span class="hi">जमा इतिहास</span></div>
       <div id="pfHistory"></div>
     </div>
   </div>
@@ -377,7 +471,7 @@ function renderMembers(filter){
       <div class="member-photo">${m.init}</div>
       <p class="member-name">${m.name}</p>
       <p class="member-post">${m.post}</p>
-      <p class="member-village"><i class="ti ti-map-pin" style="font-size:11px;"></i>${m.village}</p>
+      <p class="member-village"><i class="ti ti-map-pin"></i> ${m.village}</p>
     </div>
   `).join('') || '<div class="empty-note" style="grid-column:1/-1;">कोई सदस्य नहीं मिला।</div>';
   grid.querySelectorAll('.member-card').forEach(c => {
@@ -400,7 +494,7 @@ function renderReportTable(){
     combined = combined.filter(e => e.type === reportFilter);
   }
   if(!combined.length){
-    wrap.innerHTML = '<div class="empty-note">इस श्रेणी में अभी तक कोई प्रविष्टि नहीं।</div>';
+    wrap.innerHTML = '<div class="empty-state"><i class="ti ti-report"></i><p>इस श्रेणी में अभी तक कोई प्रविष्टि नहीं।</p></div>';
     return;
   }
   wrap.innerHTML = `<table class="data-sheet"><tr><th>तारीख</th><th>प्रकार</th><th>विवरण</th><th>राशि</th></tr>${
@@ -433,7 +527,7 @@ function renderRecentActivity(){
     ...expenseEntries.map(e => ({type:'expense', title: e.cat, sub: e.desc, amount: e.amount}))
   ];
   if(!combined.length){
-    wrap.innerHTML = '<div class="empty-note">अभी तक कोई लेन-देन दर्ज नहीं हुआ।</div>';
+    wrap.innerHTML = '<div class="empty-state"><i class="ti ti-file-description"></i><p>अभी तक कोई लेन-देन दर्ज नहीं हुआ।</p></div>';
     return;
   }
   wrap.innerHTML = combined.slice(-6).reverse().map(a => `
@@ -452,8 +546,23 @@ function renderRecentActivity(){
 function navigateTo(screen){
   document.querySelectorAll('.nav-item').forEach(i=>i.classList.toggle('active', i.dataset.screen===screen));
   document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  
+  document.querySelectorAll('.nav-item').forEach(item => {
+    const icon = item.querySelector('i');
+    if (item.dataset.screen === 'home') {
+      icon.className = item.classList.contains('active') ? 'ti ti-home-filled' : 'ti ti-home';
+    }
+    if (item.dataset.screen === 'members') {
+      icon.className = item.classList.contains('active') ? 'ti ti-user-filled' : 'ti ti-user';
+    }
+    if (item.dataset.screen === 'collection') {
+      icon.className = item.classList.contains('active') ? 'ti ti-users-group' : 'ti ti-users';
+    }
+  });
+
   document.getElementById('screen-'+screen).classList.add('active');
 }
+
 document.querySelectorAll('.nav-item').forEach(item => {
   item.addEventListener('click', () => navigateTo(item.dataset.screen));
 });
@@ -468,8 +577,8 @@ function setLendeenMode(mode){
 document.getElementById('ldJamaTab').addEventListener('click', ()=>setLendeenMode('jama'));
 document.getElementById('ldExpenseTab').addEventListener('click', ()=>setLendeenMode('expense'));
 
-document.getElementById('qbJama').addEventListener('click', ()=>{ navigateTo('lendeen'); setLendeenMode('jama'); });
-document.getElementById('qbExpense').addEventListener('click', ()=>{ navigateTo('lendeen'); setLendeenMode('expense'); });
+document.getElementById('qbJama').addEventListener('click', ()=>{ navigateTo('collection'); setLendeenMode('jama'); });
+document.getElementById('qbExpense').addEventListener('click', ()=>{ navigateTo('collection'); setLendeenMode('expense'); });
 document.getElementById('qbReport').addEventListener('click', ()=>navigateTo('report'));
 
 // Report filter chips
@@ -549,7 +658,7 @@ function openProfile(id){
   document.getElementById('pfPhoto').textContent = m.init;
   document.getElementById('pfName').textContent = m.name;
   document.getElementById('pfPost').textContent = m.post;
-  document.getElementById('pfVillage').innerHTML = '<i class="ti ti-map-pin" style="font-size:11px;"></i> ' + m.village;
+  document.getElementById('pfVillage').innerHTML = '<i class="ti ti-map-pin" style="font-size:12px;"></i> ' + m.village;
 
   const myJama = jamaEntries.filter(e=>e.memberId===id);
   const totalJama = myJama.filter(e=>e.mode==='cash').reduce((s,e)=>s+e.amount,0);
