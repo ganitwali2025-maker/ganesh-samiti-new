@@ -2,7 +2,7 @@
 <html lang="hi">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>खाता-बही | समिति लेखा</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -20,8 +20,8 @@
     --font-en:'Poppins',sans-serif; --font-hi:'Noto Sans Devanagari',sans-serif;
   }
   *{box-sizing:border-box;}
-  body{margin:0;background:var(--paper);font-family:var(--font-en),var(--font-hi);color:var(--ink);}
-  .app{max-width:420px;margin:0 auto;min-height:100vh;background:var(--paper);display:flex;flex-direction:column;position:relative;}
+  body{margin:0;background:var(--paper);font-family:var(--font-en),var(--font-hi);color:var(--ink);width:100%;overflow-x:hidden;}
+  .app{width:100%;max-width:420px;margin:0 auto;min-height:100dvh;background:var(--paper);display:flex;flex-direction:column;position:relative;}
 
   .topbar{display:flex;align-items:center;justify-content:space-between;padding:18px 20px 14px;background:linear-gradient(120deg,var(--blue-400) 0%,var(--blue-700) 65%,var(--blue-900) 100%);border-radius:0 0 24px 24px;color:#fff;}
   .topbar .brand{display:flex;align-items:center;gap:10px;}
