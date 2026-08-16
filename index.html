@@ -463,6 +463,35 @@
     </div>
   </div>
 
+  <!-- SETTINGS MODAL -->
+  <div class="modal-backdrop" id="settingsModal">
+    <div class="profile-sheet" style="padding: 0; max-height: 80vh; display: flex; flex-direction: column;">
+      <div style="flex-shrink:0; padding: 20px 20px 10px; border-bottom: 1px solid var(--line);">
+        <div class="sheet-handle" style="margin-top:0;"></div>
+        <div style="display:flex; align-items:center; justify-content:space-between;">
+          <h3 style="margin:0; font-size:18px; font-weight:700;">Settings / सेटिंग्स</h3>
+          <i class="ti ti-x close-x" id="closeSettings" style="border:none; font-size:22px; width:auto; height:auto; background:none;"></i>
+        </div>
+      </div>
+      <div class="sidebar-menu" style="padding: 10px 0; overflow-y: auto;">
+        <div class="sidebar-item"><i class="ti ti-user"></i> Profile / समिति जानकारी</div>
+        <div class="sidebar-item"><i class="ti ti-lock"></i> Password / PIN</div>
+        <div class="sidebar-item"><i class="ti ti-bell"></i> Notification Settings</div>
+        <div class="sidebar-item"><i class="ti ti-cash"></i> Collection Settings</div>
+        <div class="sidebar-item"><i class="ti ti-calendar-event"></i> Monthly Deposit Date</div>
+        <div class="sidebar-item"><i class="ti ti-credit-card"></i> Payment Method — Cash / UPI / Bank</div>
+        <div class="sidebar-item"><i class="ti ti-receipt"></i> Receipt Settings</div>
+        <div class="sidebar-item"><i class="ti ti-chart-pie"></i> Report Settings</div>
+        <div class="sidebar-item"><i class="ti ti-brand-whatsapp"></i> WhatsApp Share</div>
+        <div class="sidebar-item"><i class="ti ti-brand-google-drive"></i> Google Sheet Backup</div>
+        <div class="sidebar-item"><i class="ti ti-refresh"></i> Data Sync / Refresh</div>
+        <div class="sidebar-item"><i class="ti ti-language"></i> Language — हिंदी / English</div>
+        <div class="sidebar-item"><i class="ti ti-info-circle"></i> About App</div>
+        <div class="sidebar-item" style="color:var(--red-600);"><i class="ti ti-logout" style="color:var(--red-600);"></i> Logout</div>
+      </div>
+    </div>
+  </div>
+
 </div>
 
 <script>
@@ -718,6 +747,17 @@ document.getElementById('closeSidebar').addEventListener('click', () => {
 document.getElementById('sidebarOverlay').addEventListener('click', () => {
   document.getElementById('sidebar').classList.remove('show');
   document.getElementById('sidebarOverlay').classList.remove('show');
+});
+
+// Settings Modal Logic
+document.getElementById('settingsBtn').addEventListener('click', () => {
+  document.getElementById('settingsModal').classList.add('show');
+});
+document.getElementById('closeSettings').addEventListener('click', () => {
+  document.getElementById('settingsModal').classList.remove('show');
+});
+document.getElementById('settingsModal').addEventListener('click', (e) => {
+  if(e.target.id === 'settingsModal') document.getElementById('settingsModal').classList.remove('show');
 });
 
 // init
