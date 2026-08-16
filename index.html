@@ -7,7 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari:wght@400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tabler-icons/2.47.0/iconfont/tabler-icons.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
 <style>
   :root{
     --blue-50:#E3F6FD; --blue-100:#C4EEFB; --blue-200:#8FDDF7; --blue-400:#00BAF2;
@@ -21,7 +21,8 @@
   }
   *{box-sizing:border-box;}
   body{margin:0;background:var(--paper);font-family:var(--font-en),var(--font-hi);color:var(--ink);width:100%;overflow-x:hidden;}
-  .app{width:100%;max-width:420px;margin:0 auto;min-height:100dvh;background:var(--paper);display:flex;flex-direction:column;position:relative;}
+  .app{width:100%;min-height:100dvh;background:var(--paper);display:flex;flex-direction:column;position:relative;}
+  @media (min-width: 480px) { .app { max-width:420px; margin:0 auto; box-shadow:0 0 20px rgba(0,0,0,0.05); } }
 
   .topbar{display:flex;align-items:center;justify-content:space-between;padding:18px 20px 14px;background:linear-gradient(120deg,var(--blue-400) 0%,var(--blue-700) 65%,var(--blue-900) 100%);border-radius:0 0 24px 24px;color:#fff;}
   .topbar .brand{display:flex;align-items:center;gap:10px;}
