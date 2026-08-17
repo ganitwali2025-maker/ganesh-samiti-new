@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo } from "react";
-import { Home, Users, PiggyBank, Receipt, ArrowLeftRight, Plus, X, Trash2, ChevronRight } from "lucide-react";
+import { Home, Users, PiggyBank, Receipt, Plus, Trash2, ChevronRight, ArrowLeft, BarChart3, List, Calendar, Coins, HeartHandshake } from "lucide-react";
 
 const uid = () => Math.random().toString(36).slice(2, 10);
 const fmt = (n) => "₹" + Number(n || 0).toLocaleString("en-IN");
@@ -28,7 +28,7 @@ export default function HisaabApp() {
     }
   });
   const [tab, setTab] = useState("home");
-  const [modal, setModal] = useState(null);
+  const [activePage, setActivePage] = useState(null);
   const [toast, setToast] = useState("");
 
   useEffect(() => {
@@ -62,10 +62,10 @@ export default function HisaabApp() {
   const removeMember = (id) => {
     setData((d) => ({ ...d, members: d.members.filter((m) => m.id !== id) }));
   };
-  const addJama = ({ memberId, amount, date, note }) => {
+  const addJama = ({ memberId, amount, date, note, category }) => {
     setData((d) => ({
       ...d,
-      jama: [...d.jama, { id: uid(), memberId, amount: Number(amount), date, note, createdAt: Date.now() }],
+      jama: [...d.jama, { id: uid(), memberId, amount: Number(amount), date, note, category: category || "chanda", createdAt: Date.now() }],
     }));
     showToast("जमा दर्ज हुई");
   };
@@ -97,72 +97,91 @@ export default function HisaabApp() {
       `}</style>
 
       <div style={styles.phoneFrame}>
-        <div style={styles.appHeader}>
-          <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-            <div style={{ width: 38, height: 38, borderRadius: 12, background: "linear-gradient(135deg, #6B59B3 0%, #4C3F8A 100%)", display: "flex", alignItems: "center", justifyContent: "center", boxShadow: "0 4px 10px rgba(107, 89, 179, 0.3)" }}>
-              <span style={{ fontSize: 18, color: "#FFF" }}>🕉️</span>
-            </div>
-            <div>
-              <div style={{ fontFamily: "Baloo 2, sans-serif", fontSize: 20, fontWeight: 800, color: "#1E1638", lineHeight: 1.1 }}>गणेश उत्सव</div>
-              <div style={{ fontSize: 11, color: "#7A849C", fontFamily: "Hind, sans-serif", fontWeight: 700 }}>हिसाब किताब 2026</div>
+        {/* Main Header (Hidden when on a full page) */}
+        {!activePage && (
+          <div style={styles.appHeader}>
+            <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+              <div style={{ width: 38, height: 38, borderRadius: 12, background: "linear-gradient(135deg, #6B59B3 0%, #4C3F8A 100%)", display: "flex", alignItems: "center", justifyContent: "center", boxShadow: "0 4px 10px rgba(107, 89, 179, 0.3)" }}>
+                <span style={{ fontSize: 18, color: "#FFF" }}>🕉️</span>
+              </div>
+              <div>
+                <div style={{ fontFamily: "Baloo 2, sans-serif", fontSize: 20, fontWeight: 800, color: "#1E1638", lineHeight: 1.1 }}>गणेश उत्सव</div>
+                <div style={{ fontSize: 11, color: "#7A849C", fontFamily: "Hind, sans-serif", fontWeight: 700 }}>हिसाब किताब 2026</div>
+              </div>
             </div>
           </div>
-        </div>
+        )}
 
-        <div className="hb-scroll" style={styles.screen}>
-          {tab === "home" && (
-            <HomeScreen
-              totals={totals}
-              transactions={transactions.slice(0, 5)}
-              memberName={memberName}
-              setTab={setTab}
-              setModal={setModal}
-            />
-          )}
-          {tab === "members" && (
-            <MembersScreen
-              members={data.members}
-              jama={data.jama}
-              onAdd={() => setModal("member")}
-              onRemove={removeMember}
-            />
-          )}
-          {tab === "jama" && (
-            <JamaScreen
-              jama={data.jama}
-              total={totals.totalJama}
-              memberName={memberName}
-              onAdd={() => setModal("jama")}
-              onRemove={removeJama}
-            />
-          )}
-          {tab === "expense" && (
-            <ExpenseScreen
-              expenses={data.expenses}
-              total={totals.totalExpense}
-              onAdd={() => setModal("expense")}
-              onRemove={removeExpense}
-            />
-          )}
-          {tab === "transactions" && (
-            <TransactionsScreen transactions={transactions} memberName={memberName} balance={totals.balance} />
-          )}
-        </div>
+        {/* Main Content Area */}
+        {!activePage && (
+          <div className="hb-scroll" style={styles.screen}>
+            {tab === "home" && (
+              <HomeScreen
+                totals={totals}
+                transactions={transactions.slice(0, 5)}
+                memberName={memberName}
+                setTab={setTab}
+                setActivePage={setActivePage}
+              />
+            )}
+            {tab === "collection" && (
+              <CollectionMenuScreen setActivePage={setActivePage} totals={totals} />
+            )}
+            {tab === "members" && (
+              <MembersScreen
+                members={data.members}
+                jama={data.jama}
+                onAdd={() => setActivePage("addMember")}
+                onRemove={removeMember}
+              />
+            )}
+            {tab === "expense" && (
+              <ExpenseScreen
+                expenses={data.expenses}
+                total={totals.totalExpense}
+                onAdd={() => setActivePage("addExpense")}
+                onRemove={removeExpense}
+              />
+            )}
+            {tab === "reports" && (
+              <ReportsScreen transactions={transactions} memberName={memberName} balance={totals.balance} />
+            )}
+          </div>
+        )}
 
-        <div style={styles.bottomNav}>
-          <NavItem icon={<Home size={20} />} label="होम" active={tab === "home"} onClick={() => setTab("home")} />
-          <NavItem icon={<Users size={20} />} label="सदस्य" active={tab === "members"} onClick={() => setTab("members")} />
-          <NavItem icon={<PiggyBank size={20} />} label="जमा शीट" active={tab === "jama"} onClick={() => setTab("jama")} />
-          <NavItem icon={<Receipt size={20} />} label="खर्च शीट" active={tab === "expense"} onClick={() => setTab("expense")} />
-          <NavItem icon={<ArrowLeftRight size={20} />} label="लेन-देन" active={tab === "transactions"} onClick={() => setTab("transactions")} />
-        </div>
+        {/* Bottom Navigation (Hidden when on a full page) */}
+        {!activePage && (
+          <div style={styles.bottomNav}>
+            <NavItem icon={<Home size={20} />} label="होम" active={tab === "home"} onClick={() => setTab("home")} />
+            <NavItem icon={<PiggyBank size={20} />} label="Collection" active={tab === "collection"} onClick={() => setTab("collection")} />
+            <NavItem icon={<Users size={20} />} label="सदस्य" active={tab === "members"} onClick={() => setTab("members")} />
+            <NavItem icon={<Receipt size={20} />} label="खर्च" active={tab === "expense"} onClick={() => setTab("expense")} />
+            <NavItem icon={<BarChart3 size={20} />} label="Reports" active={tab === "reports"} onClick={() => setTab("reports")} />
+          </div>
+        )}
 
+        {/* Full Page Modals/Screens */}
+        {activePage && activePage.startsWith("collection/") && (
+          <JamaCategoryScreen
+            category={activePage.split("/")[1]}
+            jama={data.jama}
+            members={data.members}
+            memberName={memberName}
+            onAdd={addJama}
+            onRemove={removeJama}
+            onClose={() => setActivePage(null)}
+          />
+        )}
+        {activePage === "addMember" && (
+          <AddMemberScreen onClose={() => setActivePage(null)} onSave={addMember} />
+        )}
+        {activePage === "addExpense" && (
+          <AddExpenseScreen onClose={() => setActivePage(null)} onSave={addExpense} />
+        )}
+
+        {/* Toast */}
         {toast && <div style={styles.toast}>{toast}</div>}
       </div>
-
-      {modal === "member" && <MemberModal onClose={() => setModal(null)} onSave={addMember} />}
-      {modal === "jama" && <JamaModal members={data.members} onClose={() => setModal(null)} onSave={addJama} />}
-      {modal === "expense" && <ExpenseModal onClose={() => setModal(null)} onSave={addExpense} />}
     </div>
   );
 }
@@ -191,7 +210,7 @@ function NavItem({ icon, label, active, onClick }) {
   );
 }
 
-function HomeScreen({ totals, transactions, memberName, setTab, setModal }) {
+function HomeScreen({ totals, transactions, memberName, setTab, setActivePage }) {
   const greeting = useMemo(() => {
     const h = new Date().getHours();
     if (h < 12) return "शुभ प्रभात ☀️";
@@ -245,24 +264,19 @@ function HomeScreen({ totals, transactions, memberName, setTab, setModal }) {
         </div>
       </div>
 
-      {/* Quick Actions */}
-      <div style={{ display: "flex", gap: 12, marginTop: 20 }}>
-        <QuickAction icon={<PiggyBank size={20} color="#4C3F8A" />} label="नई जमा" bg="#F0F4FF" onClick={() => setModal("jama")} />
-        <QuickAction icon={<Receipt size={20} color="#D95F5F" />} label="नया खर्च" bg="#FFF0F0" onClick={() => setModal("expense")} />
-        <QuickAction icon={<Users size={20} color="#6B59B3" />} label="नया सदस्य" bg="#F3F0FA" onClick={() => setModal("member")} />
-      </div>
+
 
       {/* Mini Stats */}
       <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12, marginTop: 16 }}>
         <StatBox label="कुल सदस्य" value={totals.members + " लोग"} tint="#FFFFFF" accent="#1E1638" onClick={() => setTab("members")} />
-        <StatBox label="लेन-देन" value={transactions.length + " एंट्री"} tint="#FFFFFF" accent="#1E1638" onClick={() => setTab("transactions")} />
+        <StatBox label="लेन-देन" value={transactions.length + " एंट्री"} tint="#FFFFFF" accent="#1E1638" onClick={() => setTab("reports")} />
       </div>
 
       {/* Recent Txns */}
       <div style={{ marginTop: 24 }}>
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 12 }}>
           <span style={{ fontSize: 14, fontWeight: 800, color: "#1E1638", fontFamily: "Hind, sans-serif" }}>हाल की लेन-देन</span>
-          <button className="hb-btn" onClick={() => setTab("transactions")} style={styles.linkBtn}>
+          <button className="hb-btn" onClick={() => setTab("reports")} style={styles.linkBtn}>
             सभी देखें <ChevronRight size={14} />
           </button>
         </div>
@@ -277,6 +291,79 @@ function HomeScreen({ totals, transactions, memberName, setTab, setModal }) {
         )}
       </div>
     </div>
+  );
+}
+
+function CollectionMenuScreen({ setActivePage, totals }) {
+  return (
+    <div className="hb-fadein" style={{ padding: "18px 16px 24px" }}>
+      <ScreenHeader title="Collection" subtitle={`कुल जमा: ${fmt(totals.totalJama)}`} accent="#4C3F8A" />
+      
+      <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+        <CollectionCard 
+          icon={<Calendar size={22} color="#1E1638" />}
+          title="Monthly Jama"
+          subtitle="मासिक जमा का हिसाब"
+          onClick={() => setActivePage("collection/monthly")}
+          bg="#F8F9FA"
+        />
+        <CollectionCard 
+          icon={<Coins size={22} color="#4C3F8A" />}
+          title="Chanda Jama"
+          subtitle="चंदा और दान"
+          onClick={() => setActivePage("collection/chanda")}
+          bg="#F0F4FF"
+        />
+        <CollectionCard 
+          icon={<span style={{fontSize: 22}}>🕉️</span>}
+          title="Ganesh Chaturthi Jama"
+          subtitle="गणेश उत्सव स्पेशल जमा"
+          onClick={() => setActivePage("collection/ganesh")}
+          bg="#FFF5E6"
+        />
+        <CollectionCard 
+          icon={<HeartHandshake size={22} color="#D95F5F" />}
+          title="Sahyog Jama"
+          subtitle="अन्य सहयोग राशि"
+          onClick={() => setActivePage("collection/sahyog")}
+          bg="#FFF0F0"
+        />
+        <div style={{height: 8}} />
+        <CollectionCard 
+          icon={<List size={22} color="#6B59B3" />}
+          title="Collection Data / History"
+          subtitle="सभी जमाओं की लिस्ट"
+          onClick={() => setActivePage("collection/history")}
+          bg="#F3F0FA"
+        />
+      </div>
+    </div>
+  );
+}
+
+function CollectionCard({ icon, title, subtitle, onClick, bg }) {
+  return (
+    <button className="hb-card hb-btn" onClick={onClick} style={{ 
+      display: "flex", 
+      alignItems: "center", 
+      gap: 16, 
+      padding: "16px", 
+      background: "#FFFFFF", 
+      border: "1px solid #E2E8F0", 
+      borderRadius: 16, 
+      cursor: "pointer",
+      boxShadow: "0 2px 8px rgba(0,0,0,0.02)",
+      textAlign: "left"
+    }}>
+      <div style={{ width: 48, height: 48, borderRadius: "50%", background: bg, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+        {icon}
+      </div>
+      <div style={{ flex: 1 }}>
+        <div style={{ fontSize: 15, fontWeight: 800, color: "#1E1638", fontFamily: "Hind, sans-serif" }}>{title}</div>
+        <div style={{ fontSize: 12, color: "#7A849C", fontFamily: "Hind, sans-serif", marginTop: 2 }}>{subtitle}</div>
+      </div>
+      <ChevronRight size={20} color="#A0AABF" />
+    </button>
   );
 }
 
@@ -347,40 +434,6 @@ function MembersScreen({ members, jama, onAdd, onRemove }) {
   );
 }
 
-function JamaScreen({ jama, total, memberName, onAdd, onRemove }) {
-  const sorted = [...jama].sort((a, b) => new Date(b.date) - new Date(a.date));
-  return (
-    <div className="hb-fadein" style={{ padding: "18px 16px 24px" }}>
-      <ScreenHeader title="जमा शीट" subtitle={`कुल जमा: ${fmt(total)}`} onAdd={onAdd} addLabel="जमा जोड़ें" accent="#4C3F8A" />
-      {sorted.length === 0 ? (
-        <EmptyNote text="अभी कोई जमा दर्ज नहीं है।" />
-      ) : (
-        <div style={styles.cardContainer}>
-          {sorted.map((j, i) => (
-            <div key={j.id} style={{ ...styles.listRow, borderBottom: i === sorted.length - 1 ? "none" : "1px solid #E2E8F0" }}>
-              <div style={{ ...styles.avatar, background: colorFor(memberName(j.memberId)) }}>
-                {memberName(j.memberId).trim().slice(0, 1).toUpperCase()}
-              </div>
-              <div style={{ flex: 1, minWidth: 0 }}>
-                <div style={{ fontSize: 14, color: "#1E1638", fontFamily: "Hind, sans-serif", fontWeight: 700 }}>{memberName(j.memberId)}</div>
-                <div style={{ fontSize: 11.5, color: "#7A849C", fontFamily: "Hind, sans-serif" }}>
-                  {dispDate(j.date)}{j.note ? ` · ${j.note}` : ""}
-                </div>
-              </div>
-              <div style={{ fontFamily: "JetBrains Mono, monospace", fontSize: 14, fontWeight: 800, color: "#4C3F8A", marginRight: 8 }}>
-                +{fmt(j.amount)}
-              </div>
-              <button className="hb-btn" onClick={() => onRemove(j.id)} style={styles.trashBtn} aria-label="हटाएं">
-                <Trash2 size={15} color="#A0AABF" />
-              </button>
-            </div>
-          ))}
-        </div>
-      )}
-    </div>
-  );
-}
-
 function ExpenseScreen({ expenses, total, onAdd, onRemove }) {
   const sorted = [...expenses].sort((a, b) => new Date(b.date) - new Date(a.date));
   return (
@@ -413,7 +466,7 @@ function ExpenseScreen({ expenses, total, onAdd, onRemove }) {
   );
 }
 
-function TransactionsScreen({ transactions, memberName, balance }) {
+function ReportsScreen({ transactions, memberName, balance }) {
   let running = balance;
   const rows = transactions.map((t) => {
     const row = { ...t, runningBalance: running };
@@ -422,7 +475,7 @@ function TransactionsScreen({ transactions, memberName, balance }) {
   });
   return (
     <div className="hb-fadein" style={{ padding: "18px 16px 24px" }}>
-      <ScreenHeader title="लेन-देन" subtitle={`कुल ${transactions.length} एंट्री · पासबुक स्टाइल`} />
+      <ScreenHeader title="Reports" subtitle={`कुल ${transactions.length} लेन-देन`} />
       {rows.length === 0 ? (
         <EmptyNote text="अभी कोई लेन-देन नहीं है।" />
       ) : (
@@ -476,23 +529,111 @@ function EmptyNote({ text }) {
   );
 }
 
-function ModalShell({ title, onClose, children }) {
+function FullPageScreen({ title, onClose, children }) {
   return (
-    <div style={styles.modalOverlay} onClick={onClose}>
-      <div style={styles.modalCard} onClick={(e) => e.stopPropagation()}>
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 20 }}>
-          <span style={{ fontFamily: "Baloo 2, sans-serif", fontSize: 18, fontWeight: 800, color: "#1E1638" }}>{title}</span>
-          <button className="hb-btn" onClick={onClose} style={styles.closeBtn} aria-label="बंद करें">
-            <X size={18} color="#7A849C" />
-          </button>
-        </div>
+    <div className="hb-fadein" style={{ position: "absolute", inset: 0, background: "#F8F9FA", zIndex: 100, display: "flex", flexDirection: "column" }}>
+      <div style={{ display: "flex", alignItems: "center", gap: 16, padding: "16px 20px 12px", background: "#FFFFFF", borderBottom: "1px solid #E2E8F0" }}>
+        <button className="hb-btn" onClick={onClose} style={{ background: "none", border: "none", cursor: "pointer", padding: "4px 4px 4px 0", display: "flex", alignItems: "center" }} aria-label="वापस जाएं">
+          <ArrowLeft size={24} color="#1E1638" />
+        </button>
+        <div style={{ fontFamily: "Baloo 2, sans-serif", fontSize: 20, fontWeight: 800, color: "#1E1638" }}>{title}</div>
+      </div>
+      <div className="hb-scroll" style={{ flex: 1, overflowY: "auto", padding: "20px 16px" }}>
         {children}
       </div>
     </div>
   );
 }
 
-function MemberModal({ onClose, onSave }) {
+function JamaCategoryScreen({ category, jama, members, memberName, onAdd, onRemove, onClose }) {
+  const isHistory = category === "history";
+  
+  const titleMap = {
+    monthly: "Monthly Jama",
+    chanda: "Chanda Jama",
+    ganesh: "Ganesh Chaturthi Jama",
+    sahyog: "Sahyog Jama",
+    history: "Collection History"
+  };
+  
+  const title = titleMap[category] || "Jama";
+  const filtered = category === "history" ? jama : jama.filter(j => j.category === category);
+  const sorted = [...filtered].sort((a, b) => new Date(b.date) - new Date(a.date));
+
+  const [memberId, setMemberId] = useState(members[0]?.id || "");
+  const [amount, setAmount] = useState("");
+  const [date, setDate] = useState(todayStr());
+  const [note, setNote] = useState("");
+  const [err, setErr] = useState("");
+
+  const submit = () => {
+    if (!memberId) return setErr("पहले सदस्य जोड़ें");
+    if (!amount || Number(amount) <= 0) return setErr("सही राशि डालें");
+    onAdd({ memberId, amount, date, note, category });
+    setAmount("");
+    setNote("");
+  };
+
+  return (
+    <FullPageScreen title={title} onClose={onClose}>
+      {!isHistory && (
+        <div style={{ background: "#FFFFFF", padding: "20px 16px", borderRadius: 20, border: "1px solid #E2E8F0", marginBottom: 24, boxShadow: "0 2px 10px rgba(0,0,0,0.03)" }}>
+          <div style={{ fontSize: 16, fontFamily: "Baloo 2, sans-serif", fontWeight: 800, color: "#1E1638", marginBottom: 12 }}>नई एंट्री जोड़ें</div>
+          <label style={styles.label}>सदस्य</label>
+          {members.length === 0 ? (
+            <div style={styles.errText}>पहले सदस्य जोड़ें, फिर जमा दर्ज करें।</div>
+          ) : (
+            <select style={styles.input} value={memberId} onChange={(e) => setMemberId(e.target.value)}>
+              {members.map((m) => <option key={m.id} value={m.id}>{m.name}</option>)}
+            </select>
+          )}
+          <label style={styles.label}>राशि (₹)</label>
+          <input style={styles.input} type="number" value={amount} onChange={(e) => { setAmount(e.target.value); setErr(""); }} placeholder="जैसे: 500" />
+          <label style={styles.label}>तारीख</label>
+          <input style={styles.input} type="date" value={date} onChange={(e) => setDate(e.target.value)} />
+          <label style={styles.label}>नोट (वैकल्पिक)</label>
+          <input style={styles.input} value={note} onChange={(e) => setNote(e.target.value)} placeholder="जैसे: मासिक किस्त" />
+          {err && <div style={styles.errText}>{err}</div>}
+          <button className="hb-btn" onClick={submit} style={{ ...styles.submitBtn, marginTop: 20 }}>जमा जोड़ें</button>
+        </div>
+      )}
+
+      <div style={{ fontSize: 16, fontFamily: "Baloo 2, sans-serif", fontWeight: 800, color: "#1E1638", marginBottom: 12 }}>
+        {isHistory ? "सभी जमा (History)" : "हाल की एंट्रीज़"}
+      </div>
+      
+      {sorted.length === 0 ? (
+        <EmptyNote text="अभी कोई एंट्री नहीं है।" />
+      ) : (
+        <div style={styles.cardContainer}>
+          {sorted.map((j, i) => (
+            <div key={j.id} style={{ ...styles.listRow, borderBottom: i === sorted.length - 1 ? "none" : "1px solid #E2E8F0" }}>
+              <div style={{ ...styles.avatar, background: colorFor(memberName(j.memberId)) }}>
+                {memberName(j.memberId).trim().slice(0, 1).toUpperCase()}
+              </div>
+              <div style={{ flex: 1, minWidth: 0 }}>
+                <div style={{ fontSize: 14, color: "#1E1638", fontFamily: "Hind, sans-serif", fontWeight: 700 }}>{memberName(j.memberId)}</div>
+                <div style={{ fontSize: 11.5, color: "#7A849C", fontFamily: "Hind, sans-serif" }}>
+                  {dispDate(j.date)}
+                  {isHistory && j.category && ` · ${titleMap[j.category] || j.category}`}
+                  {j.note ? ` · ${j.note}` : ""}
+                </div>
+              </div>
+              <div style={{ fontFamily: "JetBrains Mono, monospace", fontSize: 14, fontWeight: 800, color: "#4C3F8A", marginRight: 8 }}>
+                +{fmt(j.amount)}
+              </div>
+              <button className="hb-btn" onClick={() => onRemove(j.id)} style={styles.trashBtn} aria-label="हटाएं">
+                <Trash2 size={15} color="#A0AABF" />
+              </button>
+            </div>
+          ))}
+        </div>
+      )}
+    </FullPageScreen>
+  );
+}
+
+function AddMemberScreen({ onClose, onSave }) {
   const [name, setName] = useState("");
   const [err, setErr] = useState("");
   const submit = () => {
@@ -501,56 +642,24 @@ function MemberModal({ onClose, onSave }) {
     onClose();
   };
   return (
-    <ModalShell title="नया सदस्य जोड़ें" onClose={onClose}>
-      <label style={styles.label}>सदस्य का नाम</label>
-      <input
-        style={styles.input}
-        value={name}
-        onChange={(e) => { setName(e.target.value); setErr(""); }}
-        placeholder="जैसे: रमेश कुमार"
-        autoFocus
-      />
-      {err && <div style={styles.errText}>{err}</div>}
-      <button className="hb-btn" onClick={submit} style={styles.submitBtn}>जोड़ें</button>
-    </ModalShell>
+    <FullPageScreen title="नया सदस्य जोड़ें" onClose={onClose}>
+      <div style={{ background: "#FFFFFF", padding: "20px 16px", borderRadius: 20, border: "1px solid #E2E8F0", boxShadow: "0 2px 10px rgba(0,0,0,0.03)" }}>
+        <label style={styles.label}>सदस्य का नाम</label>
+        <input
+          style={styles.input}
+          value={name}
+          onChange={(e) => { setName(e.target.value); setErr(""); }}
+          placeholder="जैसे: रमेश कुमार"
+          autoFocus
+        />
+        {err && <div style={styles.errText}>{err}</div>}
+        <button className="hb-btn" onClick={submit} style={{...styles.submitBtn, marginTop: 20}}>जोड़ें</button>
+      </div>
+    </FullPageScreen>
   );
 }
 
-function JamaModal({ members, onClose, onSave }) {
-  const [memberId, setMemberId] = useState(members[0]?.id || "");
-  const [amount, setAmount] = useState("");
-  const [date, setDate] = useState(todayStr());
-  const [note, setNote] = useState("");
-  const [err, setErr] = useState("");
-  const submit = () => {
-    if (!memberId) return setErr("पहले सदस्य जोड़ें");
-    if (!amount || Number(amount) <= 0) return setErr("सही राशि डालें");
-    onSave({ memberId, amount, date, note });
-    onClose();
-  };
-  return (
-    <ModalShell title="जमा दर्ज करें" onClose={onClose}>
-      <label style={styles.label}>सदस्य</label>
-      {members.length === 0 ? (
-        <div style={styles.errText}>पहले सदस्य जोड़ें, फिर जमा दर्ज करें।</div>
-      ) : (
-        <select style={styles.input} value={memberId} onChange={(e) => setMemberId(e.target.value)}>
-          {members.map((m) => <option key={m.id} value={m.id}>{m.name}</option>)}
-        </select>
-      )}
-      <label style={styles.label}>राशि (₹)</label>
-      <input style={styles.input} type="number" value={amount} onChange={(e) => { setAmount(e.target.value); setErr(""); }} placeholder="जैसे: 500" />
-      <label style={styles.label}>तारीख</label>
-      <input style={styles.input} type="date" value={date} onChange={(e) => setDate(e.target.value)} />
-      <label style={styles.label}>नोट (वैकल्पिक)</label>
-      <input style={styles.input} value={note} onChange={(e) => setNote(e.target.value)} placeholder="जैसे: मासिक किस्त" />
-      {err && <div style={styles.errText}>{err}</div>}
-      <button className="hb-btn" onClick={submit} style={styles.submitBtn}>जमा जोड़ें</button>
-    </ModalShell>
-  );
-}
-
-function ExpenseModal({ onClose, onSave }) {
+function AddExpenseScreen({ onClose, onSave }) {
   const [desc, setDesc] = useState("");
   const [amount, setAmount] = useState("");
   const [date, setDate] = useState(todayStr());
@@ -562,16 +671,18 @@ function ExpenseModal({ onClose, onSave }) {
     onClose();
   };
   return (
-    <ModalShell title="खर्च दर्ज करें" onClose={onClose}>
-      <label style={styles.label}>विवरण</label>
-      <input style={styles.input} value={desc} onChange={(e) => { setDesc(e.target.value); setErr(""); }} placeholder="जैसे: सजावट का सामान" autoFocus />
-      <label style={styles.label}>राशि (₹)</label>
-      <input style={styles.input} type="number" value={amount} onChange={(e) => { setAmount(e.target.value); setErr(""); }} placeholder="जैसे: 1200" />
-      <label style={styles.label}>तारीख</label>
-      <input style={styles.input} type="date" value={date} onChange={(e) => setDate(e.target.value)} />
-      {err && <div style={styles.errText}>{err}</div>}
-      <button className="hb-btn" onClick={submit} style={styles.submitBtn}>खर्च जोड़ें</button>
-    </ModalShell>
+    <FullPageScreen title="खर्च दर्ज करें" onClose={onClose}>
+      <div style={{ background: "#FFFFFF", padding: "20px 16px", borderRadius: 20, border: "1px solid #E2E8F0", boxShadow: "0 2px 10px rgba(0,0,0,0.03)" }}>
+        <label style={styles.label}>विवरण</label>
+        <input style={styles.input} value={desc} onChange={(e) => { setDesc(e.target.value); setErr(""); }} placeholder="जैसे: सजावट का सामान" autoFocus />
+        <label style={styles.label}>राशि (₹)</label>
+        <input style={styles.input} type="number" value={amount} onChange={(e) => { setAmount(e.target.value); setErr(""); }} placeholder="जैसे: 1200" />
+        <label style={styles.label}>तारीख</label>
+        <input style={styles.input} type="date" value={date} onChange={(e) => setDate(e.target.value)} />
+        {err && <div style={styles.errText}>{err}</div>}
+        <button className="hb-btn" onClick={submit} style={{...styles.submitBtn, marginTop: 20}}>खर्च जोड़ें</button>
+      </div>
+    </FullPageScreen>
   );
 }
 
@@ -586,6 +697,7 @@ const styles = {
     overflow: "hidden",
   },
   phoneFrame: {
+    position: "relative",
     width: "100%",
     height: "100%",
     maxWidth: "1080px",
@@ -697,29 +809,6 @@ const styles = {
     cursor: "pointer",
     boxShadow: "0 4px 12px rgba(107, 89, 179, 0.3)",
   },
-  closeBtn: {
-    background: "none",
-    border: "none",
-    cursor: "pointer",
-    padding: 4,
-  },
-  modalOverlay: {
-    position: "fixed",
-    inset: 0,
-    background: "rgba(0,0,0,0.55)",
-    display: "flex",
-    alignItems: "flex-end",
-    justifyContent: "center",
-    zIndex: 50,
-  },
-  modalCard: {
-    width: "100%",
-    maxWidth: "1080px",
-    background: "#FFFFFF",
-    borderRadius: "24px 24px 0 0",
-    padding: "24px 20px 30px",
-    boxShadow: "0 -4px 20px rgba(0,0,0,0.1)",
-  },
   label: {
     display: "block",
     fontSize: 12,
@@ -756,7 +845,6 @@ const styles = {
     padding: "14px 0",
     fontSize: 15,
     fontWeight: 800,
-    marginTop: 22,
     cursor: "pointer",
     fontFamily: "Hind, sans-serif",
     boxShadow: "0 4px 12px rgba(107, 89, 179, 0.25)",
