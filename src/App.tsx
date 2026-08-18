@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo } from "react";
-import { Home, Users, PiggyBank, Receipt, Plus, Trash2, ChevronRight, ArrowLeft, BarChart3, List, Calendar, Coins, HeartHandshake } from "lucide-react";
+import { Home, Users, PiggyBank, Receipt, Plus, Trash2, ChevronRight, ArrowLeft, BarChart3, List, Calendar, Coins, HeartHandshake, Menu, Settings, X, FileDown, FileUp, LogOut } from "lucide-react";
 
 const uid = () => Math.random().toString(36).slice(2, 10);
 const fmt = (n) => "₹" + Number(n || 0).toLocaleString("en-IN");
@@ -30,6 +30,8 @@ export default function HisaabApp() {
   const [tab, setTab] = useState("home");
   const [activePage, setActivePage] = useState(null);
   const [toast, setToast] = useState("");
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [isSettingsOpen, setIsSettingsOpen] = useState(false);
 
   useEffect(() => {
     try {
@@ -101,6 +103,9 @@ export default function HisaabApp() {
         {!activePage && (
           <div style={styles.appHeader}>
             <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+              <button className="hb-btn" onClick={() => setIsSidebarOpen(true)} style={{ background: "none", border: "none", cursor: "pointer", padding: "4px" }}>
+                <Menu size={24} color="#1E1638" />
+              </button>
               <div style={{ width: 38, height: 38, borderRadius: 12, background: "linear-gradient(135deg, #6B59B3 0%, #4C3F8A 100%)", display: "flex", alignItems: "center", justifyContent: "center", boxShadow: "0 4px 10px rgba(107, 89, 179, 0.3)" }}>
                 <span style={{ fontSize: 18, color: "#FFF" }}>🕉️</span>
               </div>
@@ -109,6 +114,9 @@ export default function HisaabApp() {
                 <div style={{ fontSize: 11, color: "#7A849C", fontFamily: "Hind, sans-serif", fontWeight: 700 }}>हिसाब किताब 2026</div>
               </div>
             </div>
+            <button className="hb-btn" onClick={() => setIsSettingsOpen(true)} style={{ background: "none", border: "none", cursor: "pointer", padding: "4px" }}>
+              <Settings size={24} color="#A0AABF" />
+            </button>
           </div>
         )}
 
@@ -182,7 +190,72 @@ export default function HisaabApp() {
         {/* Toast */}
         {toast && <div style={styles.toast}>{toast}</div>}
       </div>
+
+      </div>
+
+      {/* Sidebar Overlay and Drawer */}
+      <div style={{
+        position: "absolute", inset: 0, zIndex: 999, background: "rgba(0,0,0,0.5)",
+        opacity: isSidebarOpen ? 1 : 0, pointerEvents: isSidebarOpen ? "auto" : "none", transition: "opacity 0.3s ease"
+      }} onClick={() => setIsSidebarOpen(false)} />
+      
+      <div style={{
+        position: "absolute", top: 0, bottom: 0, left: 0, width: "80%", maxWidth: 320, background: "#FFF", zIndex: 1000,
+        transform: isSidebarOpen ? "translateX(0)" : "translateX(-100%)", transition: "transform 0.3s ease",
+        display: "flex", flexDirection: "column", boxShadow: "4px 0 24px rgba(0,0,0,0.15)"
+      }}>
+        <div style={{ background: "#4B20B5", color: "#FFF", padding: "24px 24px 20px", display: "flex", flexDirection: "column", justifyContent: "flex-end", height: 140, position: "relative" }}>
+          <button onClick={() => setIsSidebarOpen(false)} style={{ position: "absolute", top: 16, right: 16, background: "rgba(255,255,255,0.15)", border: "none", color: "#FFF", borderRadius: "50%", padding: 6, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center" }}>
+            <X size={20} />
+          </button>
+          <div style={{ fontFamily: "Baloo 2, sans-serif", fontSize: 22, fontWeight: 800, lineHeight: 1.2 }}>गणेश समिति ऐप</div>
+          <div style={{ fontSize: 12, color: "#D6CCF0", fontFamily: "Hind, sans-serif" }}>समिति का लेखा-जोखा</div>
+        </div>
+        
+        <div className="hb-scroll" style={{ flex: 1, overflowY: "auto", padding: "16px 0" }}>
+          <SidebarItem icon={<Home size={22} />} label="होम" active={tab === "home"} onClick={() => { setTab("home"); setIsSidebarOpen(false); }} />
+          <SidebarItem icon={<PiggyBank size={22} />} label="जमा (Collection)" active={tab === "collection"} onClick={() => { setTab("collection"); setIsSidebarOpen(false); }} />
+          <SidebarItem icon={<Users size={22} />} label="सदस्य" active={tab === "members"} onClick={() => { setTab("members"); setIsSidebarOpen(false); }} />
+          <SidebarItem icon={<Receipt size={22} />} label="खर्च शीट" active={tab === "expense"} onClick={() => { setTab("expense"); setIsSidebarOpen(false); }} />
+          <SidebarItem icon={<BarChart3 size={22} />} label="रिपोर्ट्स" active={tab === "reports"} onClick={() => { setTab("reports"); setIsSidebarOpen(false); }} />
+          
+          <div style={{ height: 1, background: "#E2E8F0", margin: "16px 24px" }} />
+          
+          <SidebarItem icon={<Settings size={22} />} label="सेटिंग्स" active={false} onClick={() => { setIsSidebarOpen(false); setIsSettingsOpen(true); }} />
+          <SidebarItem icon={<LogOut size={22} />} label="लॉगआउट" active={false} onClick={() => setIsSidebarOpen(false)} color="#D95F5F" />
+        </div>
+      </div>
+
+      {/* Settings Modal */}
+      {isSettingsOpen && (
+        <FullPageScreen title="सेटिंग्स" onClose={() => setIsSettingsOpen(false)}>
+          <div style={{ background: "#FFFFFF", padding: "20px 16px", borderRadius: 20, border: "1px solid #E2E8F0", boxShadow: "0 2px 10px rgba(0,0,0,0.03)" }}>
+            <div style={{ fontSize: 16, fontFamily: "Baloo 2, sans-serif", fontWeight: 800, color: "#1E1638", marginBottom: 12 }}>ऐप सेटिंग्स</div>
+            <EmptyNote text="यहां जल्द ही सेटिंग्स के विकल्प जोड़े जाएंगे।" />
+          </div>
+        </FullPageScreen>
+      )}
+
     </div>
+  );
+}
+
+function SidebarItem({ icon, label, active, onClick, color = "#1E1638" }) {
+  return (
+    <button
+      className="hb-btn"
+      onClick={onClick}
+      style={{
+        width: "100%", display: "flex", alignItems: "center", gap: 16, padding: "14px 24px",
+        background: active ? "#F3F0FA" : "transparent", border: "none", borderRight: active ? "4px solid #4B20B5" : "4px solid transparent",
+        cursor: "pointer", transition: "background 0.2s"
+      }}
+    >
+      <div style={{ color: active ? "#4B20B5" : "#7A849C" }}>{icon}</div>
+      <div style={{ fontSize: 15, fontFamily: "Hind, sans-serif", fontWeight: active ? 800 : 700, color: active ? "#4B20B5" : color }}>
+        {label}
+      </div>
+    </button>
   );
 }
 
